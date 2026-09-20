@@ -1159,7 +1159,7 @@ function EventFormModal({
 
                         <input
                           type="number"
-                          min="2"
+                          min="1"
                           value={form.minTeamSize}
                           onChange={(eventInput) =>
                             updateField("minTeamSize", eventInput.target.value)
