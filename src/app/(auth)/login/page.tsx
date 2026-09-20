@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Loader2, LogIn, Mail, Lock } from "lucide-react";
@@ -92,7 +92,7 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setUser = useAuthStore((state) => state.setUser);
@@ -347,5 +347,30 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-8 sm:px-6">
+          <div className="w-full max-w-md">
+            <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-sm">
+              <div className="mx-auto h-5 w-40 animate-pulse rounded bg-[var(--surface-muted)]" />
+              <div className="mx-auto mt-6 h-9 w-56 animate-pulse rounded bg-[var(--surface-muted)]" />
+              <div className="mx-auto mt-3 h-4 w-72 max-w-full animate-pulse rounded bg-[var(--surface-muted)]" />
+              <div className="mt-8 space-y-5">
+                <div className="h-12 animate-pulse rounded-xl bg-[var(--surface-muted)]" />
+                <div className="h-12 animate-pulse rounded-xl bg-[var(--surface-muted)]" />
+                <div className="h-12 animate-pulse rounded-xl bg-[var(--surface-muted)]" />
+              </div>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   );
 }
