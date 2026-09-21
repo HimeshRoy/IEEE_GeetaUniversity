@@ -21,11 +21,7 @@ import {
 import { useParams } from "next/navigation";
 import { api } from "@/lib/api";
 
-type EventAccess =
-  | "PUBLIC"
-  | "UNIVERSITY"
-  | "MEMBERS_ONLY"
-  | "INVITE_ONLY";
+type EventAccess = "PUBLIC" | "UNIVERSITY" | "MEMBERS_ONLY" | "INVITE_ONLY";
 
 type ParticipationType = "INDIVIDUAL" | "TEAM";
 
@@ -168,11 +164,7 @@ function getData<T>(response: unknown): T | undefined {
 
   const value = response as { data?: unknown };
 
-  if (
-    value.data &&
-    typeof value.data === "object" &&
-    "data" in value.data
-  ) {
+  if (value.data && typeof value.data === "object" && "data" in value.data) {
     return (value.data as { data?: T }).data;
   }
 
@@ -196,9 +188,7 @@ function getErrorMessage(error: unknown, fallback: string) {
     }
   }
 
-  return error instanceof Error && error.message
-    ? error.message
-    : fallback;
+  return error instanceof Error && error.message ? error.message : fallback;
 }
 
 function normalizeOptions(value: unknown): string[] {
@@ -206,9 +196,7 @@ function normalizeOptions(value: unknown): string[] {
     return [];
   }
 
-  return value.filter(
-    (item): item is string => typeof item === "string",
-  );
+  return value.filter((item): item is string => typeof item === "string");
 }
 
 function normalizeValidation(value: unknown): FormValidation {
@@ -417,8 +405,7 @@ async function createQrDownload(
 
     await new Promise<void>((resolve, reject) => {
       image.onload = () => resolve();
-      image.onerror = () =>
-        reject(new Error("Unable to prepare QR image"));
+      image.onerror = () => reject(new Error("Unable to prepare QR image"));
       image.src = imageUrl;
     });
 
@@ -438,8 +425,7 @@ async function createQrDownload(
 
     context.fillStyle = "#0f172a";
     context.textAlign = "center";
-    context.font =
-      '700 42px Inter, Arial, "Helvetica Neue", sans-serif';
+    context.font = '700 42px Inter, Arial, "Helvetica Neue", sans-serif';
 
     let currentY = 85;
 
@@ -453,16 +439,11 @@ async function createQrDownload(
     );
 
     context.fillStyle = "#64748b";
-    context.font =
-      '600 22px Inter, Arial, "Helvetica Neue", sans-serif';
+    context.font = '600 22px Inter, Arial, "Helvetica Neue", sans-serif';
 
     currentY += 18;
 
-    context.fillText(
-      "EVENT ENTRY QR CODE",
-      canvas.width / 2,
-      currentY,
-    );
+    context.fillText("EVENT ENTRY QR CODE", canvas.width / 2, currentY);
 
     const qrSize = 620;
     const qrX = (canvas.width - qrSize) / 2;
@@ -473,12 +454,7 @@ async function createQrDownload(
     context.shadowBlur = 24;
     context.shadowOffsetY = 8;
 
-    context.fillRect(
-      qrX - 25,
-      qrY - 25,
-      qrSize + 50,
-      qrSize + 50,
-    );
+    context.fillRect(qrX - 25, qrY - 25, qrSize + 50, qrSize + 50);
 
     context.shadowColor = "transparent";
     context.shadowBlur = 0;
@@ -489,34 +465,23 @@ async function createQrDownload(
     let detailsY = qrY + qrSize + 75;
 
     context.fillStyle = "#0f172a";
-    context.font =
-      '700 26px Inter, Arial, "Helvetica Neue", sans-serif';
+    context.font = '700 26px Inter, Arial, "Helvetica Neue", sans-serif';
 
-    context.fillText(
-      participantName,
-      canvas.width / 2,
-      detailsY,
-    );
+    context.fillText(participantName, canvas.width / 2, detailsY);
 
     if (teamName) {
       detailsY += 40;
 
       context.fillStyle = "#475569";
-      context.font =
-        '600 22px Inter, Arial, "Helvetica Neue", sans-serif';
+      context.font = '600 22px Inter, Arial, "Helvetica Neue", sans-serif';
 
-      context.fillText(
-        `Team: ${teamName}`,
-        canvas.width / 2,
-        detailsY,
-      );
+      context.fillText(`Team: ${teamName}`, canvas.width / 2, detailsY);
     }
 
     detailsY += 50;
 
     context.fillStyle = "#94a3b8";
-    context.font =
-      '500 18px Inter, Arial, "Helvetica Neue", sans-serif';
+    context.font = '500 18px Inter, Arial, "Helvetica Neue", sans-serif';
 
     context.fillText(
       "Keep this QR code ready for event entry and attendance verification.",
@@ -544,10 +509,7 @@ async function createQrDownload(
     anchor.click();
     anchor.remove();
 
-    window.setTimeout(
-      () => URL.revokeObjectURL(downloadUrl),
-      1000,
-    );
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
   } finally {
     URL.revokeObjectURL(imageUrl);
   }
@@ -570,9 +532,7 @@ function toggleAnswerCheckbox(
   option: string,
 ) {
   setter((current) => {
-    const selected = Array.isArray(current[key])
-      ? current[key]
-      : [];
+    const selected = Array.isArray(current[key]) ? current[key] : [];
 
     return {
       ...current,
@@ -611,19 +571,14 @@ function RegistrationField({
 
   const selected = Array.isArray(value) ? value : [];
 
-  if (
-    field.type === "FILE_UPLOAD" ||
-    field.type === "IMAGE_UPLOAD"
-  ) {
+  if (field.type === "FILE_UPLOAD" || field.type === "IMAGE_UPLOAD") {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm font-semibold text-amber-800">
-          {field.label}
-        </p>
+        <p className="text-sm font-semibold text-amber-800">{field.label}</p>
 
         <p className="mt-1 text-xs leading-5 text-amber-700">
-          File uploads are configured for this form, but this
-          registration endpoint does not provide file storage.
+          File uploads are configured for this form, but this registration
+          endpoint does not provide file storage.
         </p>
       </div>
     );
@@ -634,9 +589,7 @@ function RegistrationField({
       <textarea
         id={inputId}
         value={typeof value === "string" ? value : ""}
-        onChange={(event) =>
-          onChange(field.key, event.target.value)
-        }
+        onChange={(event) => onChange(field.key, event.target.value)}
         disabled={disabled}
         placeholder={field.placeholder ?? ""}
         required={field.required}
@@ -666,15 +619,11 @@ function RegistrationField({
               value={option}
               checked={value === option}
               disabled={disabled}
-              onChange={() =>
-                onChange(field.key, option)
-              }
+              onChange={() => onChange(field.key, option)}
               className="h-4 w-4"
             />
 
-            <span className="text-sm text-[var(--text)]">
-              {option}
-            </span>
+            <span className="text-sm text-[var(--text)]">{option}</span>
           </label>
         ))}
       </div>
@@ -700,15 +649,11 @@ function RegistrationField({
                 type="checkbox"
                 checked={checked}
                 disabled={disabled}
-                onChange={() =>
-                  onToggleCheckbox(field.key, option)
-                }
+                onChange={() => onToggleCheckbox(field.key, option)}
                 className="h-4 w-4"
               />
 
-              <span className="text-sm text-[var(--text)]">
-                {option}
-              </span>
+              <span className="text-sm text-[var(--text)]">{option}</span>
             </label>
           );
         })}
@@ -721,9 +666,7 @@ function RegistrationField({
       <select
         id={inputId}
         value={typeof value === "string" ? value : ""}
-        onChange={(event) =>
-          onChange(field.key, event.target.value)
-        }
+        onChange={(event) => onChange(field.key, event.target.value)}
         disabled={disabled}
         required={field.required}
         className={inputClasses}
@@ -757,8 +700,7 @@ function RegistrationField({
       id={inputId}
       type={inputType}
       value={
-        typeof value === "string" ||
-        typeof value === "number"
+        typeof value === "string" || typeof value === "number"
           ? String(value)
           : ""
       }
@@ -766,9 +708,7 @@ function RegistrationField({
         const raw = event.target.value;
 
         const nextValue: AnswerValue =
-          field.type === "NUMBER" && raw !== ""
-            ? Number(raw)
-            : raw;
+          field.type === "NUMBER" && raw !== "" ? Number(raw) : raw;
 
         onChange(field.key, nextValue);
       }}
@@ -776,16 +716,8 @@ function RegistrationField({
       required={field.required}
       minLength={validation.minLength}
       maxLength={validation.maxLength}
-      min={
-        field.type === "NUMBER"
-          ? validation.min
-          : undefined
-      }
-      max={
-        field.type === "NUMBER"
-          ? validation.max
-          : undefined
-      }
+      min={field.type === "NUMBER" ? validation.min : undefined}
+      max={field.type === "NUMBER" ? validation.max : undefined}
       placeholder={field.placeholder ?? ""}
       className={inputClasses}
     />
@@ -798,93 +730,68 @@ export default function EventRegistrationPage() {
 
   const [event, setEvent] = useState<Event | null>(null);
   const [form, setForm] = useState<EventForm | null>(null);
-  const [registration, setRegistration] =
-    useState<Registration | null>(null);
+  const [registration, setRegistration] = useState<Registration | null>(null);
 
   const [answers, setAnswers] = useState<Answers>({});
   const [teamAnswers, setTeamAnswers] = useState<Answers>({});
-  const [teamMembers, setTeamMembers] = useState<
-    TeamMemberDraft[]
-  >([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMemberDraft[]>([]);
 
   const [currentStep, setCurrentStep] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isFormLoading, setIsFormLoading] =
-    useState(false);
-  const [isSubmitting, setIsSubmitting] =
-    useState(false);
-  const [isDownloadingQr, setIsDownloadingQr] =
-    useState(false);
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDownloadingQr, setIsDownloadingQr] = useState(false);
+  const [downloadingMemberQrId, setDownloadingMemberQrId] = useState<
+    string | null
+  >(null);
 
   const [error, setError] = useState("");
   const [formError, setFormError] = useState("");
-  const [successMessage, setSuccessMessage] =
-    useState("");
-  const [downloadError, setDownloadError] =
-    useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [downloadError, setDownloadError] = useState("");
 
   const sortedFields = useMemo(
-    () =>
-      [...(form?.fields ?? [])].sort(
-        (a, b) => a.order - b.order,
-      ),
+    () => [...(form?.fields ?? [])].sort((a, b) => a.order - b.order),
     [form],
   );
 
   const participantFields = useMemo(
-    () =>
-      sortedFields.filter(
-        (field) => field.scope === "PARTICIPANT",
-      ),
+    () => sortedFields.filter((field) => field.scope === "PARTICIPANT"),
     [sortedFields],
   );
 
   const teamFields = useMemo(
     () =>
       sortedFields.filter(
-        (field) =>
-          field.scope === "TEAM" &&
-          field.key !== "team_name",
+        (field) => field.scope === "TEAM" && field.key !== "team_name",
       ),
     [sortedFields],
   );
 
   const minAdditionalMembers = useMemo(() => {
-    if (
-      !event ||
-      event.participationType !== "TEAM"
-    ) {
+    if (!event || event.participationType !== "TEAM") {
       return 0;
     }
 
-    return Math.max(
-      (event.minTeamSize ?? 1) - 1,
-      0,
-    );
+    return Math.max((event.minTeamSize ?? 1) - 1, 0);
   }, [event]);
 
   const maxAdditionalMembers = useMemo(() => {
-    if (
-      !event ||
-      event.participationType !== "TEAM"
-    ) {
+    if (!event || event.participationType !== "TEAM") {
       return 0;
     }
 
     const maxTeamSize =
-      typeof event.maxTeamSize === "number" &&
-      event.maxTeamSize > 0
+      typeof event.maxTeamSize === "number" && event.maxTeamSize > 0
         ? event.maxTeamSize
-        : event.minTeamSize ?? 1;
+        : (event.minTeamSize ?? 1);
 
     return Math.max(maxTeamSize - 1, 0);
   }, [event]);
 
   const totalSteps =
-    event?.participationType === "TEAM"
-      ? 2 + teamMembers.length
-      : 1;
+    event?.participationType === "TEAM" ? 2 + teamMembers.length : 1;
 
   const registrationClosed = useMemo(() => {
     if (!event || !form) {
@@ -904,14 +811,9 @@ export default function EventRegistrationPage() {
     }
 
     if (event.registrationDeadline) {
-      const deadline = new Date(
-        event.registrationDeadline,
-      ).getTime();
+      const deadline = new Date(event.registrationDeadline).getTime();
 
-      if (
-        !Number.isNaN(deadline) &&
-        deadline <= Date.now()
-      ) {
+      if (!Number.isNaN(deadline) && deadline <= Date.now()) {
         return true;
       }
     }
@@ -922,18 +824,11 @@ export default function EventRegistrationPage() {
   const qrEnabled =
     Boolean(event?.enableQrAttendance) &&
     Boolean(registration?.qrToken) &&
-    (registration?.registrationStatus ===
-      "REGISTERED" ||
-      registration?.registrationStatus ===
-        "ATTENDED");
+    (registration?.registrationStatus === "REGISTERED" ||
+      registration?.registrationStatus === "ATTENDED");
 
   useEffect(() => {
-    setCurrentStep((step) =>
-      Math.min(
-        step,
-        Math.max(totalSteps - 1, 0),
-      ),
-    );
+    setCurrentStep((step) => Math.min(step, Math.max(totalSteps - 1, 0)));
   }, [totalSteps]);
 
   useEffect(() => {
@@ -948,9 +843,7 @@ export default function EventRegistrationPage() {
         setIsLoading(true);
         setError("");
 
-        const response = await api.get(
-          `/events/slug/${slug}`,
-        );
+        const response = await api.get(`/events/slug/${slug}`);
 
         if (!mounted) {
           return;
@@ -966,23 +859,17 @@ export default function EventRegistrationPage() {
 
         if (typeof window !== "undefined") {
           try {
-            const storageKey =
-              `ieee-gu:event-registration:${eventData.id}`;
+            const storageKey = `ieee-gu:event-registration:${eventData.id}`;
 
-            const stored =
-              window.sessionStorage.getItem(
-                storageKey,
-              );
+            const stored = window.sessionStorage.getItem(storageKey);
 
             if (stored) {
-              const parsed =
-                JSON.parse(stored) as Registration;
+              const parsed = JSON.parse(stored) as Registration;
 
               if (
                 parsed &&
                 parsed.id &&
-                parsed.eventId ===
-                  eventData.id &&
+                parsed.eventId === eventData.id &&
                 parsed.name &&
                 parsed.email &&
                 parsed.registrationStatus
@@ -1001,12 +888,7 @@ export default function EventRegistrationPage() {
           return;
         }
 
-        setError(
-          getErrorMessage(
-            requestError,
-            "Unable to load this event.",
-          ),
-        );
+        setError(getErrorMessage(requestError, "Unable to load this event."));
       } finally {
         if (mounted) {
           setIsLoading(false);
@@ -1028,16 +910,12 @@ export default function EventRegistrationPage() {
 
     let mounted = true;
 
-    async function loadPublicForm(
-      eventId: string,
-    ) {
+    async function loadPublicForm(eventId: string) {
       try {
         setIsFormLoading(true);
         setFormError("");
 
-        const response = await api.get(
-          `/event-forms/public/${eventId}`,
-        );
+        const response = await api.get(`/event-forms/public/${eventId}`);
 
         const publicEvent = getData<
           Event & {
@@ -1045,21 +923,16 @@ export default function EventRegistrationPage() {
           }
         >(response);
 
-        const publicForm =
-          publicEvent?.registrationForm;
+        const publicForm = publicEvent?.registrationForm;
 
         if (!publicForm) {
-          throw new Error(
-            "Registration form is not available",
-          );
+          throw new Error("Registration form is not available");
         }
 
         const normalizedForm: EventForm = {
           ...publicForm,
           fields: Array.isArray(publicForm.fields)
-            ? [...publicForm.fields].sort(
-                (a, b) => a.order - b.order,
-              )
+            ? [...publicForm.fields].sort((a, b) => a.order - b.order)
             : [],
         };
 
@@ -1072,21 +945,14 @@ export default function EventRegistrationPage() {
         const initialAnswers: Answers = {};
 
         for (const field of normalizedForm.fields) {
-          if (
-            field.scope === "PARTICIPANT" &&
-            field.key === "academic_year"
-          ) {
+          if (field.scope === "PARTICIPANT" && field.key === "academic_year") {
             const now = new Date();
             const year = now.getFullYear();
-            const start =
-              now.getMonth() >= 6
-                ? year
-                : year - 1;
+            const start = now.getMonth() >= 6 ? year : year - 1;
 
-            initialAnswers[field.key] =
-              `${start}-${String(
-                (start + 1) % 100,
-              ).padStart(2, "0")}`;
+            initialAnswers[field.key] = `${start}-${String(
+              (start + 1) % 100,
+            ).padStart(2, "0")}`;
           }
         }
 
@@ -1114,16 +980,10 @@ export default function EventRegistrationPage() {
           ...current,
         }));
 
-        if (
-          publicEvent?.participationType ===
-          "TEAM"
-        ) {
+        if (publicEvent?.participationType === "TEAM") {
           setTeamMembers((current) => {
             const target = Math.min(
-              Math.max(
-                current.length,
-                minAdditionalMembers,
-              ),
+              Math.max(current.length, minAdditionalMembers),
               maxAdditionalMembers,
             );
 
@@ -1169,37 +1029,19 @@ export default function EventRegistrationPage() {
     maxAdditionalMembers,
   ]);
 
-  function updateAnswer(
-    key: string,
-    value: AnswerValue,
-  ) {
-    setAnswerValue(
-      setAnswers,
-      key,
-      value,
-    );
+  function updateAnswer(key: string, value: AnswerValue) {
+    setAnswerValue(setAnswers, key, value);
 
     setFormError("");
   }
 
-  function updateTeamAnswer(
-    key: string,
-    value: AnswerValue,
-  ) {
-    setAnswerValue(
-      setTeamAnswers,
-      key,
-      value,
-    );
+  function updateTeamAnswer(key: string, value: AnswerValue) {
+    setAnswerValue(setTeamAnswers, key, value);
 
     setFormError("");
   }
 
-  function updateMemberAnswer(
-    index: number,
-    key: string,
-    value: AnswerValue,
-  ) {
+  function updateMemberAnswer(index: number, key: string, value: AnswerValue) {
     setTeamMembers((current) =>
       current.map((member, memberIndex) =>
         memberIndex === index
@@ -1217,20 +1059,14 @@ export default function EventRegistrationPage() {
     setFormError("");
   }
 
-  function toggleMemberCheckbox(
-    index: number,
-    key: string,
-    option: string,
-  ) {
+  function toggleMemberCheckbox(index: number, key: string, option: string) {
     setTeamMembers((current) =>
       current.map((member, memberIndex) => {
         if (memberIndex !== index) {
           return member;
         }
 
-        const selected = Array.isArray(
-          member.answers[key],
-        )
+        const selected = Array.isArray(member.answers[key])
           ? member.answers[key]
           : [];
 
@@ -1239,9 +1075,7 @@ export default function EventRegistrationPage() {
           answers: {
             ...member.answers,
             [key]: selected.includes(option)
-              ? selected.filter(
-                  (item) => item !== option,
-                )
+              ? selected.filter((item) => item !== option)
               : [...selected, option],
           },
         };
@@ -1251,24 +1085,16 @@ export default function EventRegistrationPage() {
     setFormError("");
   }
 
-  function getMemberValue(
-    member: TeamMemberDraft,
-    field: FormField,
-  ) {
+  function getMemberValue(member: TeamMemberDraft, field: FormField) {
     return member.answers[field.key];
   }
 
   function addTeamMember() {
-    if (
-      event?.participationType !== "TEAM"
-    ) {
+    if (event?.participationType !== "TEAM") {
       return;
     }
 
-    if (
-      teamMembers.length >=
-      maxAdditionalMembers
-    ) {
+    if (teamMembers.length >= maxAdditionalMembers) {
       return;
     }
 
@@ -1283,43 +1109,23 @@ export default function EventRegistrationPage() {
   }
 
   function removeTeamMember(index: number) {
-    if (
-      teamMembers.length <=
-      minAdditionalMembers
-    ) {
+    if (teamMembers.length <= minAdditionalMembers) {
       return;
     }
 
     setTeamMembers((current) =>
-      current.filter(
-        (_, memberIndex) =>
-          memberIndex !== index,
-      ),
+      current.filter((_, memberIndex) => memberIndex !== index),
     );
 
     setCurrentStep((step) =>
-      Math.min(
-        step,
-        Math.max(
-          0,
-          1 + teamMembers.length - 1,
-        ),
-      ),
+      Math.min(step, Math.max(0, 1 + teamMembers.length - 1)),
     );
   }
 
-  function validateField(
-    field: FormField,
-    value: AnswerValue | undefined,
-  ) {
-    const validation = normalizeValidation(
-      field.validation,
-    );
+  function validateField(field: FormField, value: AnswerValue | undefined) {
+    const validation = normalizeValidation(field.validation);
 
-    if (
-      field.required &&
-      isEmpty(value)
-    ) {
+    if (field.required && isEmpty(value)) {
       return `${field.label} is required.`;
     }
 
@@ -1327,37 +1133,20 @@ export default function EventRegistrationPage() {
       return null;
     }
 
-    if (
-      field.type === "EMAIL" &&
-      typeof value === "string"
-    ) {
-      if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-          value.trim(),
-        )
-      ) {
+    if (field.type === "EMAIL" && typeof value === "string") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
         return `${field.label} must be a valid email address.`;
       }
     }
 
-    if (
-      field.type === "PHONE" &&
-      typeof value === "string"
-    ) {
-      if (
-        !/^\+?[0-9\s()-]{10,20}$/.test(
-          value.trim(),
-        )
-      ) {
+    if (field.type === "PHONE" && typeof value === "string") {
+      if (!/^\+?[0-9\s()-]{10,20}$/.test(value.trim())) {
         return `${field.label} must be a valid phone number.`;
       }
     }
 
     if (
-      (
-        field.type === "SHORT_ANSWER" ||
-        field.type === "PARAGRAPH"
-      ) &&
+      (field.type === "SHORT_ANSWER" || field.type === "PARAGRAPH") &&
       typeof value !== "string"
     ) {
       return `${field.label} must be text.`;
@@ -1365,10 +1154,7 @@ export default function EventRegistrationPage() {
 
     if (
       field.type === "NUMBER" &&
-      (
-        typeof value !== "number" ||
-        !Number.isFinite(value)
-      )
+      (typeof value !== "number" || !Number.isFinite(value))
     ) {
       return `${field.label} must be a valid number.`;
     }
@@ -1383,83 +1169,51 @@ export default function EventRegistrationPage() {
 
     if (
       field.type === "TIME" &&
-      (
-        typeof value !== "string" ||
-        !/^([01]\d|2[0-3]):[0-5]\d$/.test(
-          value,
-        )
-      )
+      (typeof value !== "string" || !/^([01]\d|2[0-3]):[0-5]\d$/.test(value))
     ) {
       return `${field.label} must be a valid time.`;
     }
 
-    const options = normalizeOptions(
-      field.options,
-    );
+    const options = normalizeOptions(field.options);
 
     if (field.type === "CHECKBOXES") {
       if (!Array.isArray(value)) {
         return `${field.label} contains invalid selections.`;
       }
 
-      if (
-        value.some(
-          (item) => !options.includes(item),
-        )
-      ) {
+      if (value.some((item) => !options.includes(item))) {
         return `${field.label} contains an invalid option.`;
       }
     }
 
     if (
-      (
-        field.type === "MULTIPLE_CHOICE" ||
-        field.type === "DROPDOWN"
-      ) &&
-      (
-        typeof value !== "string" ||
-        (
-          options.length > 0 &&
-          !options.includes(value)
-        )
-      )
+      (field.type === "MULTIPLE_CHOICE" || field.type === "DROPDOWN") &&
+      (typeof value !== "string" ||
+        (options.length > 0 && !options.includes(value)))
     ) {
       return `${field.label} contains an invalid option.`;
     }
 
     if (typeof value === "string") {
       if (
-        typeof validation.minLength ===
-          "number" &&
-        value.length <
-          validation.minLength
+        typeof validation.minLength === "number" &&
+        value.length < validation.minLength
       ) {
         return `${field.label} is shorter than the minimum allowed length.`;
       }
 
       if (
-        typeof validation.maxLength ===
-          "number" &&
-        value.length >
-          validation.maxLength
+        typeof validation.maxLength === "number" &&
+        value.length > validation.maxLength
       ) {
         return `${field.label} exceeds the maximum allowed length.`;
       }
 
-      const pattern =
-        validation.pattern ??
-        validation.regex;
+      const pattern = validation.pattern ?? validation.regex;
 
-      if (
-        typeof pattern === "string" &&
-        pattern.length > 0
-      ) {
+      if (typeof pattern === "string" && pattern.length > 0) {
         try {
-          if (
-            !new RegExp(pattern).test(
-              value,
-            )
-          ) {
+          if (!new RegExp(pattern).test(value)) {
             return `${field.label} has an invalid format.`;
           }
         } catch {
@@ -1469,86 +1223,58 @@ export default function EventRegistrationPage() {
     }
 
     if (typeof value === "number") {
-      if (
-        typeof validation.min ===
-          "number" &&
-        value < validation.min
-      ) {
+      if (typeof validation.min === "number" && value < validation.min) {
         return `${field.label} is below the minimum allowed value.`;
       }
 
-      if (
-        typeof validation.max ===
-          "number" &&
-        value > validation.max
-      ) {
+      if (typeof validation.max === "number" && value > validation.max) {
         return `${field.label} exceeds the maximum allowed value.`;
       }
     }
 
     if (Array.isArray(value)) {
       if (
-        typeof validation.minSelections ===
-          "number" &&
-        value.length <
-          validation.minSelections
+        typeof validation.minSelections === "number" &&
+        value.length < validation.minSelections
       ) {
         return `${field.label} requires more selections.`;
       }
 
       if (
-        typeof validation.maxSelections ===
-          "number" &&
-        value.length >
-          validation.maxSelections
+        typeof validation.maxSelections === "number" &&
+        value.length > validation.maxSelections
       ) {
         return `${field.label} allows fewer selections.`;
       }
     }
 
-    if (
-      field.type === "FILE_UPLOAD" ||
-      field.type === "IMAGE_UPLOAD"
-    ) {
+    if (field.type === "FILE_UPLOAD" || field.type === "IMAGE_UPLOAD") {
       return `${field.label} cannot be submitted until file upload storage is enabled.`;
     }
 
     return null;
   }
 
-  function validateParticipantAnswers(
-    values: Answers,
-  ) {
+  function validateParticipantAnswers(values: Answers) {
     for (const field of participantFields) {
-      const message = validateField(
-        field,
-        values[field.key],
-      );
+      const message = validateField(field, values[field.key]);
 
       if (message) {
         return message;
       }
     }
 
-    const nameValue =
-      values.name ??
-      values.full_name;
+    const nameValue = values.name ?? values.full_name;
 
-    const emailValue =
-      values.email;
+    const emailValue = values.email;
 
-    if (
-      typeof nameValue !== "string" ||
-      nameValue.trim().length < 2
-    ) {
+    if (typeof nameValue !== "string" || nameValue.trim().length < 2) {
       return "Full name is required.";
     }
 
     if (
       typeof emailValue !== "string" ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        emailValue.trim(),
-      )
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue.trim())
     ) {
       return "Please enter a valid email address.";
     }
@@ -1557,8 +1283,7 @@ export default function EventRegistrationPage() {
   }
 
   function validateTeamDetails() {
-    const teamName =
-      teamAnswers.team_name;
+    const teamName = teamAnswers.team_name;
 
     if (
       typeof teamName !== "string" ||
@@ -1569,10 +1294,7 @@ export default function EventRegistrationPage() {
     }
 
     for (const field of teamFields) {
-      const message = validateField(
-        field,
-        teamAnswers[field.key],
-      );
+      const message = validateField(field, teamAnswers[field.key]);
 
       if (message) {
         return message;
@@ -1582,26 +1304,18 @@ export default function EventRegistrationPage() {
     return null;
   }
 
-  function validateMember(
-    index: number,
-  ) {
-    const member =
-      teamMembers[index];
+  function validateMember(index: number) {
+    const member = teamMembers[index];
 
     if (!member) {
       return "Team member details are not available.";
     }
 
     for (const field of participantFields) {
-      const message = validateField(
-        field,
-        getMemberValue(member, field),
-      );
+      const message = validateField(field, getMemberValue(member, field));
 
       if (message) {
-        return `Team member ${
-          index + 2
-        }: ${message}`;
+        return `Team member ${index + 2}: ${message}`;
       }
     }
 
@@ -1612,20 +1326,12 @@ export default function EventRegistrationPage() {
     setFormError("");
 
     if (!event || !form) {
-      setFormError(
-        "Registration form is not available.",
-      );
+      setFormError("Registration form is not available.");
       return false;
     }
 
-    if (
-      event.participationType ===
-      "INDIVIDUAL"
-    ) {
-      const message =
-        validateParticipantAnswers(
-          answers,
-        );
+    if (event.participationType === "INDIVIDUAL") {
+      const message = validateParticipantAnswers(answers);
 
       if (message) {
         setFormError(message);
@@ -1636,10 +1342,7 @@ export default function EventRegistrationPage() {
     }
 
     if (currentStep === 0) {
-      const message =
-        validateParticipantAnswers(
-          answers,
-        );
+      const message = validateParticipantAnswers(answers);
 
       if (message) {
         setFormError(message);
@@ -1650,8 +1353,7 @@ export default function EventRegistrationPage() {
     }
 
     if (currentStep === 1) {
-      const message =
-        validateTeamDetails();
+      const message = validateTeamDetails();
 
       if (message) {
         setFormError(message);
@@ -1661,11 +1363,9 @@ export default function EventRegistrationPage() {
       return true;
     }
 
-    const memberIndex =
-      currentStep - 2;
+    const memberIndex = currentStep - 2;
 
-    const message =
-      validateMember(memberIndex);
+    const message = validateMember(memberIndex);
 
     if (message) {
       setFormError(message);
@@ -1677,40 +1377,27 @@ export default function EventRegistrationPage() {
 
   function validateEntireForm() {
     if (!event || !form) {
-      setFormError(
-        "Registration form is not available.",
-      );
+      setFormError("Registration form is not available.");
       return false;
     }
 
     if (registrationClosed) {
-      setFormError(
-        "Registration is not currently available.",
-      );
+      setFormError("Registration is not currently available.");
       return false;
     }
 
-    const participantMessage =
-      validateParticipantAnswers(
-        answers,
-      );
+    const participantMessage = validateParticipantAnswers(answers);
 
     if (participantMessage) {
       setFormError(participantMessage);
       return false;
     }
 
-    if (
-      event.participationType ===
-      "INDIVIDUAL"
-    ) {
+    if (event.participationType === "INDIVIDUAL") {
       return true;
     }
 
-    if (
-      teamMembers.length <
-      minAdditionalMembers
-    ) {
+    if (teamMembers.length < minAdditionalMembers) {
       setFormError(
         `This team requires at least ${
           event.minTeamSize ?? 2
@@ -1719,10 +1406,7 @@ export default function EventRegistrationPage() {
       return false;
     }
 
-    if (
-      teamMembers.length >
-      maxAdditionalMembers
-    ) {
+    if (teamMembers.length > maxAdditionalMembers) {
       setFormError(
         `This team cannot exceed ${
           event.maxTeamSize ?? "the maximum"
@@ -1731,8 +1415,7 @@ export default function EventRegistrationPage() {
       return false;
     }
 
-    const teamMessage =
-      validateTeamDetails();
+    const teamMessage = validateTeamDetails();
 
     if (teamMessage) {
       setFormError(teamMessage);
@@ -1741,49 +1424,28 @@ export default function EventRegistrationPage() {
 
     const leaderEmail =
       typeof answers.email === "string"
-        ? answers.email
-            .trim()
-            .toLowerCase()
+        ? answers.email.trim().toLowerCase()
         : "";
 
-    const memberEmails =
-      teamMembers.map((member) => {
-        const field =
-          participantFields.find(
-            (item) => item.key === "email",
-          );
+    const memberEmails = teamMembers.map((member) => {
+      const field = participantFields.find((item) => item.key === "email");
 
-        const value = field
-          ? member.answers[field.key]
-          : "";
+      const value = field ? member.answers[field.key] : "";
 
-        return typeof value === "string"
-          ? value.trim().toLowerCase()
-          : "";
-      });
+      return typeof value === "string" ? value.trim().toLowerCase() : "";
+    });
 
-    const allEmails = [
-      leaderEmail,
-      ...memberEmails,
-    ];
+    const allEmails = [leaderEmail, ...memberEmails];
 
-    if (
-      new Set(allEmails).size !==
-      allEmails.length
-    ) {
+    if (new Set(allEmails).size !== allEmails.length) {
       setFormError(
         "The same email address cannot be used more than once in a team.",
       );
       return false;
     }
 
-    for (
-      let index = 0;
-      index < teamMembers.length;
-      index += 1
-    ) {
-      const message =
-        validateMember(index);
+    for (let index = 0; index < teamMembers.length; index += 1) {
+      const message = validateMember(index);
 
       if (message) {
         setFormError(message);
@@ -1799,13 +1461,8 @@ export default function EventRegistrationPage() {
       return;
     }
 
-    if (
-      currentStep <
-      totalSteps - 1
-    ) {
-      setCurrentStep(
-        (step) => step + 1,
-      );
+    if (currentStep < totalSteps - 1) {
+      setCurrentStep((step) => step + 1);
 
       setFormError("");
 
@@ -1821,10 +1478,7 @@ export default function EventRegistrationPage() {
       return;
     }
 
-    setCurrentStep(
-      (step) =>
-        Math.max(step - 1, 0),
-    );
+    setCurrentStep((step) => Math.max(step - 1, 0));
 
     setFormError("");
 
@@ -1835,11 +1489,7 @@ export default function EventRegistrationPage() {
   }
 
   async function handleDownloadQr() {
-    if (
-      !event ||
-      !registration?.qrToken ||
-      !qrEnabled
-    ) {
+    if (!event || !registration?.qrToken || !qrEnabled) {
       return;
     }
 
@@ -1851,8 +1501,7 @@ export default function EventRegistrationPage() {
         registration.qrToken,
         event.title,
         registration.name,
-        registration.team?.name ??
-          null,
+        registration.team?.name ?? null,
       );
     } catch {
       setDownloadError(
@@ -1863,16 +1512,34 @@ export default function EventRegistrationPage() {
     }
   }
 
-  async function handleSubmit(
-    formEvent: FormEvent<HTMLFormElement>,
-  ) {
+  async function handleDownloadTeamMemberQr(member: RegistrationTeamMember) {
+    if (!event || !member.qrToken || !qrEnabled) {
+      return;
+    }
+
+    try {
+      setDownloadingMemberQrId(member.id);
+      setDownloadError("");
+
+      await createQrDownload(
+        member.qrToken,
+        event.title,
+        member.name,
+        registration?.team?.name ?? null,
+      );
+    } catch {
+      setDownloadError(
+        `The QR image for ${member.name} could not be prepared for download. Please try again.`,
+      );
+    } finally {
+      setDownloadingMemberQrId(null);
+    }
+  }
+
+  async function handleSubmit(formEvent: FormEvent<HTMLFormElement>) {
     formEvent.preventDefault();
 
-    if (
-      !event ||
-      registration ||
-      isSubmitting
-    ) {
+    if (!event || registration || isSubmitting) {
       return;
     }
 
@@ -1887,59 +1554,33 @@ export default function EventRegistrationPage() {
     try {
       setIsSubmitting(true);
 
-      const nameField =
-        participantFields.find(
-          (field) =>
-            field.key === "name" ||
-            field.key === "full_name",
-        );
+      const nameField = participantFields.find(
+        (field) => field.key === "name" || field.key === "full_name",
+      );
 
-      const emailField =
-        participantFields.find(
-          (field) =>
-            field.key === "email",
-        );
+      const emailField = participantFields.find(
+        (field) => field.key === "email",
+      );
 
-      const phoneField =
-        participantFields.find(
-          (field) =>
-            field.key === "phone" ||
-            field.key === "mobile_number",
-        );
+      const phoneField = participantFields.find(
+        (field) => field.key === "phone" || field.key === "mobile_number",
+      );
 
       const participantName =
-        typeof answers[
-          nameField?.key ?? "name"
-        ] === "string"
-          ? String(
-              answers[
-                nameField?.key ?? "name"
-              ],
-            ).trim()
+        typeof answers[nameField?.key ?? "name"] === "string"
+          ? String(answers[nameField?.key ?? "name"]).trim()
           : "";
 
       const participantEmail =
-        typeof answers[
-          emailField?.key ?? "email"
-        ] === "string"
-          ? String(
-              answers[
-                emailField?.key ?? "email"
-              ],
-            )
+        typeof answers[emailField?.key ?? "email"] === "string"
+          ? String(answers[emailField?.key ?? "email"])
               .trim()
               .toLowerCase()
           : "";
 
       const participantPhone =
-        typeof answers[
-          phoneField?.key ?? "phone"
-        ] === "string"
-          ? String(
-              answers[
-                phoneField?.key ?? "phone"
-              ],
-            ).replace(/\D/g, "")
+        typeof answers[phoneField?.key ?? "phone"] === "string"
+          ? String(answers[phoneField?.key ?? "phone"]).replace(/\D/g, "")
           : "";
 
       const payload: {
@@ -1966,146 +1607,86 @@ export default function EventRegistrationPage() {
       };
 
       if (participantPhone) {
-        payload.phone =
-          participantPhone;
+        payload.phone = participantPhone;
       }
 
-      if (
-        event.participationType ===
-        "TEAM"
-      ) {
+      if (event.participationType === "TEAM") {
         const teamName =
-          typeof teamAnswers.team_name ===
-          "string"
+          typeof teamAnswers.team_name === "string"
             ? teamAnswers.team_name.trim()
             : "";
 
-        payload.teamName =
-          teamName;
+        payload.teamName = teamName;
 
         payload.teamAnswers = {
           ...teamAnswers,
           team_name: teamName,
         };
 
-        payload.teamMembers =
-          teamMembers.map(
-            (member) => {
-              const memberAnswers = {
-                ...member.answers,
-              };
+        payload.teamMembers = teamMembers.map((member) => {
+          const memberAnswers = {
+            ...member.answers,
+          };
 
-              const memberName =
-                nameField
-                  ? memberAnswers[
-                      nameField.key
-                    ]
-                  : "";
+          const memberName = nameField ? memberAnswers[nameField.key] : "";
 
-              const memberEmail =
-                emailField
-                  ? memberAnswers[
-                      emailField.key
-                    ]
-                  : "";
+          const memberEmail = emailField ? memberAnswers[emailField.key] : "";
 
-              const memberPhone =
-                phoneField
-                  ? memberAnswers[
-                      phoneField.key
-                    ]
-                  : "";
+          const memberPhone = phoneField ? memberAnswers[phoneField.key] : "";
 
-              const name =
-                typeof memberName ===
-                "string"
-                  ? memberName.trim()
-                  : "";
+          const name = typeof memberName === "string" ? memberName.trim() : "";
 
-              const email =
-                typeof memberEmail ===
-                "string"
-                  ? memberEmail
-                      .trim()
-                      .toLowerCase()
-                  : "";
+          const email =
+            typeof memberEmail === "string"
+              ? memberEmail.trim().toLowerCase()
+              : "";
 
-              if (nameField) {
-                memberAnswers[
-                  nameField.key
-                ] = name;
-              }
+          if (nameField) {
+            memberAnswers[nameField.key] = name;
+          }
 
-              if (emailField) {
-                memberAnswers[
-                  emailField.key
-                ] = email;
-              }
+          if (emailField) {
+            memberAnswers[emailField.key] = email;
+          }
 
-              if (
-                phoneField &&
-                typeof memberPhone ===
-                  "string" &&
-                memberPhone.trim()
-              ) {
-                memberAnswers[
-                  phoneField.key
-                ] = memberPhone.replace(
-                  /\D/g,
-                  "",
-                );
-              }
+          if (
+            phoneField &&
+            typeof memberPhone === "string" &&
+            memberPhone.trim()
+          ) {
+            memberAnswers[phoneField.key] = memberPhone.replace(/\D/g, "");
+          }
 
-              return {
-                name,
-                email,
-                ...(typeof memberPhone ===
-                  "string" &&
-                memberPhone.trim()
-                  ? {
-                      phone:
-                        memberPhone.replace(
-                          /\D/g,
-                          "",
-                        ),
-                    }
-                  : {}),
-                answers:
-                  memberAnswers,
-              };
-            },
-          );
+          return {
+            name,
+            email,
+            ...(typeof memberPhone === "string" && memberPhone.trim()
+              ? {
+                  phone: memberPhone.replace(/\D/g, ""),
+                }
+              : {}),
+            answers: memberAnswers,
+          };
+        });
       }
 
-      const response = await api.post(
-        `/registrations/${event.id}`,
-        payload,
-      );
+      const response = await api.post(`/registrations/${event.id}`, payload);
 
-      const data =
-        getData<Registration>(
-          response,
-        );
+      const data = getData<Registration>(response);
 
       if (!data) {
-        throw new Error(
-          "Registration response was not returned.",
-        );
+        throw new Error("Registration response was not returned.");
       }
 
       setRegistration(data);
 
       setSuccessMessage(
-        data.registrationStatus ===
-          "WAITLISTED"
+        data.registrationStatus === "WAITLISTED"
           ? "Event is full. You have been added to the waitlist."
           : "Your registration has been completed successfully.",
       );
 
-      if (
-        typeof window !==
-        "undefined"
-      ) {
+      if (typeof window !== "undefined") {
         try {
           window.sessionStorage.setItem(
             `ieee-gu:event-registration:${event.id}`,
@@ -2115,8 +1696,7 @@ export default function EventRegistrationPage() {
       }
 
       if (
-        data.registrationStatus ===
-          "REGISTERED" &&
+        data.registrationStatus === "REGISTERED" &&
         event.enableQrAttendance &&
         data.qrToken
       ) {
@@ -2128,12 +1708,26 @@ export default function EventRegistrationPage() {
             data.qrToken,
             event.title,
             data.name,
-            data.team?.name ??
-              null,
+            data.team?.name ?? null,
           );
+
+          if (data.teamMembers && data.teamMembers.length > 0) {
+            for (const member of data.teamMembers) {
+              if (!member.qrToken) {
+                continue;
+              }
+
+              await createQrDownload(
+                member.qrToken,
+                event.title,
+                member.name,
+                data.team?.name ?? null,
+              );
+            }
+          }
         } catch {
           setDownloadError(
-            "Registration succeeded, but the automatic QR download failed. Use the Download QR Code button below.",
+            "Registration succeeded, but one or more QR downloads failed. Use the download buttons below.",
           );
         } finally {
           setIsDownloadingQr(false);
@@ -2145,11 +1739,10 @@ export default function EventRegistrationPage() {
         behavior: "smooth",
       });
     } catch (requestError: unknown) {
-      const message =
-        getErrorMessage(
-          requestError,
-          "Registration failed. Please try again.",
-        );
+      const message = getErrorMessage(
+        requestError,
+        "Registration failed. Please try again.",
+      );
 
       setError(message);
     } finally {
@@ -2184,9 +1777,7 @@ export default function EventRegistrationPage() {
               Unable to load event
             </h1>
 
-            <p className="mt-2 text-sm leading-6 text-red-700">
-              {error}
-            </p>
+            <p className="mt-2 text-sm leading-6 text-red-700">{error}</p>
 
             <Link
               href="/events"
@@ -2205,18 +1796,12 @@ export default function EventRegistrationPage() {
     return null;
   }
 
-  const deadline = formatDateTime(
-    event.registrationDeadline,
-  );
+  const deadline = formatDateTime(event.registrationDeadline);
 
   if (registration) {
-    const isWaitlisted =
-      registration.registrationStatus ===
-      "WAITLISTED";
+    const isWaitlisted = registration.registrationStatus === "WAITLISTED";
 
-    const isCancelled =
-      registration.registrationStatus ===
-      "CANCELLED";
+    const isCancelled = registration.registrationStatus === "CANCELLED";
 
     return (
       <div className="min-h-screen px-4 py-8 sm:py-10">
@@ -2273,9 +1858,7 @@ export default function EventRegistrationPage() {
             <div className="p-6 sm:p-8">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
-                  {getAccessLabel(
-                    event.access,
-                  )}
+                  {getAccessLabel(event.access)}
                 </span>
 
                 <span
@@ -2283,9 +1866,7 @@ export default function EventRegistrationPage() {
                     registration.registrationStatus,
                   )}`}
                 >
-                  {getStatusLabel(
-                    registration.registrationStatus,
-                  )}
+                  {getStatusLabel(registration.registrationStatus)}
                 </span>
               </div>
 
@@ -2296,22 +1877,14 @@ export default function EventRegistrationPage() {
               <div className="mt-5 grid gap-3 rounded-xl bg-[var(--surface)] p-4 sm:grid-cols-2">
                 <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
                   <CalendarDays className="h-4 w-4 text-[var(--primary)]" />
-                  {formatDate(
-                    event.eventDate,
-                  )}
+                  {formatDate(event.eventDate)}
                 </div>
 
                 {event.startTime && (
                   <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
                     <Clock3 className="h-4 w-4 text-[var(--primary)]" />
-                    {formatTime(
-                      event.startTime,
-                    )}
-                    {event.endTime
-                      ? ` - ${formatTime(
-                          event.endTime,
-                        )}`
-                      : ""}
+                    {formatTime(event.startTime)}
+                    {event.endTime ? ` - ${formatTime(event.endTime)}` : ""}
                     {" IST"}
                   </div>
                 )}
@@ -2348,37 +1921,34 @@ export default function EventRegistrationPage() {
               )}
 
               {registration.teamMembers &&
-                registration.teamMembers.length >
-                  0 && (
+                registration.teamMembers.length > 0 && (
                   <div className="mt-4 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
                     <p className="text-sm font-semibold text-[var(--text)]">
                       Team Members
                     </p>
 
                     <div className="mt-3 space-y-2">
-                      {registration.teamMembers.map(
-                        (member) => (
-                          <div
-                            key={member.id}
-                            className="rounded-lg border border-[var(--border)] bg-white p-3"
-                          >
-                            <p className="text-sm font-semibold text-[var(--text)]">
-                              {member.name}
-                            </p>
+                      {registration.teamMembers.map((member) => (
+                        <div
+                          key={member.id}
+                          className="rounded-lg border border-[var(--border)] bg-white p-3"
+                        >
+                          <p className="text-sm font-semibold text-[var(--text)]">
+                            {member.name}
+                          </p>
 
-                            <p className="mt-1 text-xs text-[var(--muted)]">
-                              {member.email}
-                            </p>
-                          </div>
-                        ),
-                      )}
+                          <p className="mt-1 text-xs text-[var(--muted)]">
+                            {member.email}
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
 
-              {qrEnabled &&
-                registration.qrToken && (
-                  <div className="mt-7 rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] p-5 sm:p-7">
+              {qrEnabled && registration.qrToken && (
+                <div className="mt-7 space-y-5">
+                  <div className="rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] p-5 sm:p-7">
                     <div className="text-center">
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary-light)]">
                         <QrCode className="h-6 w-6 text-[var(--primary)]" />
@@ -2389,32 +1959,36 @@ export default function EventRegistrationPage() {
                       </h3>
 
                       <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[var(--muted)]">
-                        Important: download and keep this
-                        QR code safe. It will be scanned
-                        at the event for entry and
-                        attendance verification.
+                        This QR code is unique to your registration. Keep it
+                        saved on your phone and show it at the event entrance
+                        for verification and attendance.
                       </p>
                     </div>
 
                     <div className="mx-auto mt-6 w-fit rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
                       <img
-                        src={getQrImageUrl(
-                          registration.qrToken,
-                        )}
-                        alt={`QR code for ${event.title}`}
+                        src={getQrImageUrl(registration.qrToken)}
+                        alt={`QR code for ${registration.name}`}
                         className="h-64 w-64 sm:h-72 sm:w-72"
                       />
                     </div>
 
+                    <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+                      <p className="text-sm font-bold text-amber-800">
+                        Important: Download your QR code
+                      </p>
+
+                      <p className="mt-1 text-xs leading-5 text-amber-700">
+                        Download and keep this QR code safe. It will be scanned
+                        at the event for entry and attendance verification.
+                      </p>
+                    </div>
+
                     <button
                       type="button"
-                      onClick={() =>
-                        void handleDownloadQr()
-                      }
-                      disabled={
-                        isDownloadingQr
-                      }
-                      className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                      onClick={() => void handleDownloadQr()}
+                      disabled={isDownloadingQr}
+                      className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {isDownloadingQr ? (
                         <>
@@ -2428,14 +2002,105 @@ export default function EventRegistrationPage() {
                         </>
                       )}
                     </button>
-
-                    {downloadError && (
-                      <p className="mt-3 text-center text-xs font-medium text-red-600">
-                        {downloadError}
-                      </p>
-                    )}
                   </div>
-                )}
+
+                  {registration.team &&
+                    registration.teamMembers &&
+                    registration.teamMembers.length > 0 && (
+                      <div className="rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] p-5 sm:p-7">
+                        <div>
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary-light)]">
+                              <QrCode className="h-5 w-5 text-[var(--primary)]" />
+                            </div>
+
+                            <div>
+                              <h3 className="text-lg font-bold text-[var(--text)]">
+                                Team Member QR Codes
+                              </h3>
+
+                              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                                Each team member has a separate QR code for
+                                individual entry and attendance verification.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-5 space-y-4">
+                          {registration.teamMembers.map((member) => (
+                            <div
+                              key={member.id}
+                              className="rounded-xl border border-[var(--border)] bg-white p-4"
+                            >
+                              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold text-[var(--text)]">
+                                    {member.name}
+                                  </p>
+
+                                  <p className="mt-1 break-all text-xs text-[var(--muted)]">
+                                    {member.email}
+                                  </p>
+
+                                  <p className="mt-1 text-xs font-medium text-[var(--primary)]">
+                                    Team Member
+                                  </p>
+                                </div>
+
+                                {member.qrToken ? (
+                                  <div className="flex shrink-0 flex-col items-center gap-3">
+                                    <div className="rounded-xl bg-white p-2 shadow-sm ring-1 ring-black/5">
+                                      <img
+                                        src={getQrImageUrl(member.qrToken)}
+                                        alt={`QR code for ${member.name}`}
+                                        className="h-36 w-36 sm:h-40 sm:w-40"
+                                      />
+                                    </div>
+
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        void handleDownloadTeamMemberQr(member)
+                                      }
+                                      disabled={
+                                        isDownloadingQr ||
+                                        downloadingMemberQrId === member.id
+                                      }
+                                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                                    >
+                                      {downloadingMemberQrId === member.id ? (
+                                        <>
+                                          <Loader2 className="h-4 w-4 animate-spin" />
+                                          Downloading...
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Download className="h-4 w-4" />
+                                          Download QR
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-medium text-amber-700">
+                                    QR code is not currently available.
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  {downloadError && (
+                    <p className="text-center text-xs font-medium text-red-600">
+                      {downloadError}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {event.enableQrAttendance &&
                 !qrEnabled &&
@@ -2443,27 +2108,23 @@ export default function EventRegistrationPage() {
                 !isCancelled && (
                   <div className="mt-7 rounded-xl border border-amber-200 bg-amber-50 p-4">
                     <p className="text-sm font-semibold text-amber-800">
-                      QR attendance is enabled for this
-                      event, but a QR code is not currently
-                      available for this registration.
+                      QR attendance is enabled for this event, but a QR code is
+                      not currently available for this registration.
                     </p>
                   </div>
                 )}
 
-              {!event.enableQrAttendance &&
-                !isWaitlisted &&
-                !isCancelled && (
-                  <div className="mt-7 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                    <p className="text-sm font-semibold text-[var(--text)]">
-                      QR attendance is not enabled for
-                      this event.
-                    </p>
+              {!event.enableQrAttendance && !isWaitlisted && !isCancelled && (
+                <div className="mt-7 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                  <p className="text-sm font-semibold text-[var(--text)]">
+                    QR attendance is not enabled for this event.
+                  </p>
 
-                    <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                      Your registration is confirmed.
-                    </p>
-                  </div>
-                )}
+                  <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                    Your registration is confirmed.
+                  </p>
+                </div>
+              )}
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Link
@@ -2477,10 +2138,7 @@ export default function EventRegistrationPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (
-                      typeof window !==
-                      "undefined"
-                    ) {
+                    if (typeof window !== "undefined") {
                       window.sessionStorage.removeItem(
                         `ieee-gu:event-registration:${event.id}`,
                       );
@@ -2515,8 +2173,7 @@ export default function EventRegistrationPage() {
     );
   }
 
-  const isInviteOnly =
-    event.access === "INVITE_ONLY";
+  const isInviteOnly = event.access === "INVITE_ONLY";
 
   return (
     <div className="min-h-screen px-4 py-8 sm:py-10">
@@ -2547,18 +2204,11 @@ export default function EventRegistrationPage() {
               </span>
 
               <span className="inline-flex rounded-full border border-[var(--border)] px-3 py-1 text-xs font-semibold text-[var(--muted)]">
-                {event.participationType ===
-                "TEAM"
+                {event.participationType === "TEAM"
                   ? `Team Event${
-                      event.minTeamSize ||
-                      event.maxTeamSize
-                        ? ` · ${
-                            event.minTeamSize ??
-                            1
-                          }–${
-                            event.maxTeamSize ??
-                            event.minTeamSize ??
-                            1
+                      event.minTeamSize || event.maxTeamSize
+                        ? ` · ${event.minTeamSize ?? 1}–${
+                            event.maxTeamSize ?? event.minTeamSize ?? 1
                           } members`
                         : ""
                     }`
@@ -2579,22 +2229,14 @@ export default function EventRegistrationPage() {
             <div className="mt-5 grid gap-3 rounded-xl bg-[var(--surface)] p-4 sm:grid-cols-2">
               <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
                 <CalendarDays className="h-4 w-4 text-[var(--primary)]" />
-                {formatDate(
-                  event.eventDate,
-                )}
+                {formatDate(event.eventDate)}
               </div>
 
               {event.startTime && (
                 <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
                   <Clock3 className="h-4 w-4 text-[var(--primary)]" />
-                  {formatTime(
-                    event.startTime,
-                  )}
-                  {event.endTime
-                    ? ` - ${formatTime(
-                        event.endTime,
-                      )}`
-                    : ""}
+                  {formatTime(event.startTime)}
+                  {event.endTime ? ` - ${formatTime(event.endTime)}` : ""}
                   {" IST"}
                 </div>
               )}
@@ -2623,8 +2265,7 @@ export default function EventRegistrationPage() {
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-amber-700">
-              This event is available only to invited
-              participants.
+              This event is available only to invited participants.
             </p>
           </div>
         ) : isFormLoading ? (
@@ -2643,9 +2284,7 @@ export default function EventRegistrationPage() {
               Registration form unavailable
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-red-700">
-              {formError}
-            </p>
+            <p className="mt-2 text-sm leading-6 text-red-700">{formError}</p>
           </div>
         ) : registrationClosed ? (
           <div className="rounded-2xl border border-[var(--border)] bg-white p-6">
@@ -2654,8 +2293,7 @@ export default function EventRegistrationPage() {
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-              {form?.status !==
-              "PUBLISHED"
+              {form?.status !== "PUBLISHED"
                 ? "The registration form is not currently open."
                 : "Registration is not currently available for this event."}
             </p>
@@ -2672,8 +2310,7 @@ export default function EventRegistrationPage() {
               </h2>
 
               <p className="mt-1.5 text-sm text-[var(--muted)]">
-                Complete the registration form. No account
-                is required.
+                Complete the registration form. No account is required.
               </p>
             </div>
 
@@ -2687,28 +2324,21 @@ export default function EventRegistrationPage() {
               </div>
             )}
 
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 space-y-7"
-            >
+            <form onSubmit={handleSubmit} className="mt-6 space-y-7">
               <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
-                      Step {currentStep + 1} of{" "}
-                      {totalSteps}
+                      Step {currentStep + 1} of {totalSteps}
                     </p>
 
                     <p className="mt-1 text-sm font-semibold text-[var(--text)]">
-                      {event.participationType ===
-                      "TEAM"
+                      {event.participationType === "TEAM"
                         ? currentStep === 0
                           ? "Team Leader Details"
                           : currentStep === 1
                             ? "Team Details"
-                            : `Team Member ${
-                                currentStep - 1
-                              } Details`
+                            : `Team Member ${currentStep - 1} Details`
                         : "Participant Details"}
                     </p>
                   </div>
@@ -2722,8 +2352,7 @@ export default function EventRegistrationPage() {
                         <span
                           key={index}
                           className={`h-1.5 shrink-0 rounded-full transition-all ${
-                            index <=
-                            currentStep
+                            index <= currentStep
                               ? "w-7 bg-[var(--primary)]"
                               : "w-3 bg-[var(--border)]"
                           }`}
@@ -2738,371 +2367,262 @@ export default function EventRegistrationPage() {
                 <section className="space-y-5">
                   <div>
                     <h3 className="text-lg font-bold text-[var(--text)]">
-                      {event.participationType ===
-                      "TEAM"
+                      {event.participationType === "TEAM"
                         ? "Team Leader Details"
                         : "Participant Details"}
                     </h3>
 
                     <p className="mt-1 text-sm text-[var(--muted)]">
-                      Complete every field configured in
-                      the registration form.
+                      Complete every field configured in the registration form.
                     </p>
                   </div>
 
-                  {participantFields.map(
-                    (field) => (
-                      <div
-                        key={field.id}
-                        className="space-y-2"
+                  {participantFields.map((field) => (
+                    <div key={field.id} className="space-y-2">
+                      <label
+                        htmlFor={`field-${field.id}`}
+                        className="block text-sm font-semibold text-[var(--text)]"
                       >
-                        <label
-                          htmlFor={`field-${field.id}`}
-                          className="block text-sm font-semibold text-[var(--text)]"
-                        >
-                          {field.label}
+                        {field.label}
 
-                          {field.required && (
-                            <span className="ml-1 text-red-500">
-                              *
-                            </span>
-                          )}
-                        </label>
-
-                        {field.description && (
-                          <p className="text-xs leading-5 text-[var(--muted)]">
-                            {field.description}
-                          </p>
+                        {field.required && (
+                          <span className="ml-1 text-red-500">*</span>
                         )}
+                      </label>
 
-                        <RegistrationField
-                          field={field}
-                          value={
-                            answers[field.key]
-                          }
-                          onChange={
-                            updateAnswer
-                          }
-                          onToggleCheckbox={(
-                            key,
-                            option,
-                          ) =>
-                            toggleAnswerCheckbox(
-                              setAnswers,
-                              key,
-                              option,
-                            )
-                          }
-                        />
+                      {field.description && (
+                        <p className="text-xs leading-5 text-[var(--muted)]">
+                          {field.description}
+                        </p>
+                      )}
+
+                      <RegistrationField
+                        field={field}
+                        value={answers[field.key]}
+                        onChange={updateAnswer}
+                        onToggleCheckbox={(key, option) =>
+                          toggleAnswerCheckbox(setAnswers, key, option)
+                        }
+                      />
+                    </div>
+                  ))}
+                </section>
+              )}
+
+              {event.participationType === "TEAM" && currentStep === 1 && (
+                <section className="space-y-5">
+                  <div>
+                    <h3 className="text-lg font-bold text-[var(--text)]">
+                      Team Details
+                    </h3>
+
+                    <p className="mt-1 text-sm text-[var(--muted)]">
+                      Enter the team information and add all required team
+                      members.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="team-name"
+                      className="mb-2 block text-sm font-semibold text-[var(--text)]"
+                    >
+                      Team Name <span className="text-red-500">*</span>
+                    </label>
+
+                    <input
+                      id="team-name"
+                      value={
+                        typeof teamAnswers.team_name === "string"
+                          ? teamAnswers.team_name
+                          : ""
+                      }
+                      onChange={(event) =>
+                        updateTeamAnswer("team_name", event.target.value)
+                      }
+                      minLength={2}
+                      maxLength={100}
+                      required
+                      placeholder="Enter your team name"
+                      className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10"
+                    />
+                  </div>
+
+                  {teamFields.map((field) => (
+                    <div key={field.id} className="space-y-2">
+                      <label
+                        htmlFor={`team-field-${field.id}`}
+                        className="block text-sm font-semibold text-[var(--text)]"
+                      >
+                        {field.label}
+
+                        {field.required && (
+                          <span className="ml-1 text-red-500">*</span>
+                        )}
+                      </label>
+
+                      {field.description && (
+                        <p className="text-xs leading-5 text-[var(--muted)]">
+                          {field.description}
+                        </p>
+                      )}
+
+                      <RegistrationField
+                        field={field}
+                        value={teamAnswers[field.key]}
+                        onChange={updateTeamAnswer}
+                        onToggleCheckbox={(key, option) =>
+                          toggleAnswerCheckbox(setTeamAnswers, key, option)
+                        }
+                      />
+                    </div>
+                  ))}
+
+                  <div className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--text)]">
+                          Team Members
+                        </p>
+
+                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                          {teamMembers.length + 1} of{" "}
+                          {event.maxTeamSize ?? teamMembers.length + 1} team
+                          members added.
+                        </p>
+
+                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                          {teamMembers.length < minAdditionalMembers
+                            ? `${
+                                minAdditionalMembers - teamMembers.length
+                              } more member${
+                                minAdditionalMembers - teamMembers.length === 1
+                                  ? ""
+                                  : "s"
+                              } required.`
+                            : teamMembers.length < maxAdditionalMembers
+                              ? `You can add ${
+                                  maxAdditionalMembers - teamMembers.length
+                                } more member${
+                                  maxAdditionalMembers - teamMembers.length ===
+                                  1
+                                    ? ""
+                                    : "s"
+                                }.`
+                              : "Maximum team size reached."}
+                        </p>
                       </div>
-                    ),
+
+                      <button
+                        type="button"
+                        onClick={addTeamMember}
+                        disabled={
+                          isSubmitting ||
+                          isFormLoading ||
+                          teamMembers.length >= maxAdditionalMembers
+                        }
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Member
+                      </button>
+                    </div>
+                  </div>
+
+                  {teamMembers.length > 0 && (
+                    <div className="space-y-2">
+                      {teamMembers.map((_, index) => (
+                        <div
+                          key={`member-summary-${index}`}
+                          className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-white px-4 py-3"
+                        >
+                          <div>
+                            <p className="text-sm font-semibold text-[var(--text)]">
+                              Member {index + 2}
+                            </p>
+
+                            <p className="mt-0.5 text-xs text-[var(--muted)]">
+                              Complete their details in the next steps.
+                            </p>
+                          </div>
+
+                          {teamMembers.length > minAdditionalMembers && (
+                            <button
+                              type="button"
+                              onClick={() => removeTeamMember(index)}
+                              disabled={isSubmitting}
+                              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </section>
               )}
 
-              {event.participationType ===
-                "TEAM" &&
-                currentStep === 1 && (
-                  <section className="space-y-5">
-                    <div>
-                      <h3 className="text-lg font-bold text-[var(--text)]">
-                        Team Details
-                      </h3>
-
-                      <p className="mt-1 text-sm text-[var(--muted)]">
-                        Enter the team information and add
-                        all required team members.
-                      </p>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="team-name"
-                        className="mb-2 block text-sm font-semibold text-[var(--text)]"
-                      >
-                        Team Name{" "}
-                        <span className="text-red-500">
-                          *
-                        </span>
-                      </label>
-
-                      <input
-                        id="team-name"
-                        value={
-                          typeof teamAnswers.team_name ===
-                          "string"
-                            ? teamAnswers.team_name
-                            : ""
-                        }
-                        onChange={(event) =>
-                          updateTeamAnswer(
-                            "team_name",
-                            event.target.value,
-                          )
-                        }
-                        minLength={2}
-                        maxLength={100}
-                        required
-                        placeholder="Enter your team name"
-                        className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10"
-                      />
-                    </div>
-
-                    {teamFields.map(
-                      (field) => (
-                        <div
-                          key={field.id}
-                          className="space-y-2"
-                        >
-                          <label
-                            htmlFor={`team-field-${field.id}`}
-                            className="block text-sm font-semibold text-[var(--text)]"
-                          >
-                            {field.label}
-
-                            {field.required && (
-                              <span className="ml-1 text-red-500">
-                                *
-                              </span>
-                            )}
-                          </label>
-
-                          {field.description && (
-                            <p className="text-xs leading-5 text-[var(--muted)]">
-                              {field.description}
-                            </p>
-                          )}
-
-                          <RegistrationField
-                            field={field}
-                            value={
-                              teamAnswers[
-                                field.key
-                              ]
-                            }
-                            onChange={
-                              updateTeamAnswer
-                            }
-                            onToggleCheckbox={(
-                              key,
-                              option,
-                            ) =>
-                              toggleAnswerCheckbox(
-                                setTeamAnswers,
-                                key,
-                                option,
-                              )
-                            }
-                          />
-                        </div>
-                      ),
-                    )}
-
-                    <div className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--text)]">
-                            Team Members
-                          </p>
-
-                          <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                            {teamMembers.length + 1} of{" "}
-                            {event.maxTeamSize ??
-                              teamMembers.length +
-                                1}{" "}
-                            team members added.
-                          </p>
-
-                          <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                            {teamMembers.length <
-                            minAdditionalMembers
-                              ? `${
-                                  minAdditionalMembers -
-                                  teamMembers.length
-                                } more member${
-                                  minAdditionalMembers -
-                                    teamMembers.length ===
-                                  1
-                                    ? ""
-                                    : "s"
-                                } required.`
-                              : teamMembers.length <
-                                maxAdditionalMembers
-                                ? `You can add ${
-                                    maxAdditionalMembers -
-                                    teamMembers.length
-                                  } more member${
-                                    maxAdditionalMembers -
-                                      teamMembers.length ===
-                                    1
-                                      ? ""
-                                      : "s"
-                                  }.`
-                                : "Maximum team size reached."}
-                          </p>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={
-                            addTeamMember
-                          }
-                          disabled={
-                            isSubmitting ||
-                            isFormLoading ||
-                            teamMembers.length >=
-                              maxAdditionalMembers
-                          }
-                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          <Plus className="h-4 w-4" />
-                          Add Member
-                        </button>
-                      </div>
-                    </div>
-
-                    {teamMembers.length >
-                      0 && (
-                      <div className="space-y-2">
-                        {teamMembers.map(
-                          (_, index) => (
-                            <div
-                              key={`member-summary-${index}`}
-                              className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-white px-4 py-3"
-                            >
-                              <div>
-                                <p className="text-sm font-semibold text-[var(--text)]">
-                                  Member{" "}
-                                  {index + 2}
-                                </p>
-
-                                <p className="mt-0.5 text-xs text-[var(--muted)]">
-                                  Complete their
-                                  details in the
-                                  next steps.
-                                </p>
-                              </div>
-
-                              {teamMembers.length >
-                                minAdditionalMembers && (
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    removeTeamMember(
-                                      index,
-                                    )
-                                  }
-                                  disabled={
-                                    isSubmitting
-                                  }
-                                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                  Remove
-                                </button>
-                              )}
-                            </div>
-                          ),
-                        )}
-                      </div>
-                    )}
-                  </section>
-                )}
-
-              {event.participationType ===
-                "TEAM" &&
+              {event.participationType === "TEAM" &&
                 currentStep >= 2 &&
-                teamMembers[
-                  currentStep - 2
-                ] && (
+                teamMembers[currentStep - 2] && (
                   <section className="space-y-5">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
-                        Team Member{" "}
-                        {currentStep - 1}
+                        Team Member {currentStep - 1}
                       </p>
 
                       <h3 className="mt-1 text-lg font-bold text-[var(--text)]">
-                        Complete Member{" "}
-                        {currentStep - 1} Details
+                        Complete Member {currentStep - 1} Details
                       </h3>
 
                       <p className="mt-1 text-sm text-[var(--muted)]">
-                        Complete every field configured
-                        in the registration form for this
-                        participant.
+                        Complete every field configured in the registration form
+                        for this participant.
                       </p>
                     </div>
 
                     <div className="space-y-5 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
-                      {participantFields.map(
-                        (field) => {
-                          const memberIndex =
-                            currentStep - 2;
+                      {participantFields.map((field) => {
+                        const memberIndex = currentStep - 2;
 
-                          const member =
-                            teamMembers[
-                              memberIndex
-                            ];
+                        const member = teamMembers[memberIndex];
 
-                          return (
-                            <div
-                              key={field.id}
-                              className="space-y-2"
+                        return (
+                          <div key={field.id} className="space-y-2">
+                            <label
+                              htmlFor={`member-${memberIndex}-${field.id}`}
+                              className="block text-sm font-semibold text-[var(--text)]"
                             >
-                              <label
-                                htmlFor={`member-${memberIndex}-${field.id}`}
-                                className="block text-sm font-semibold text-[var(--text)]"
-                              >
-                                {field.label}
+                              {field.label}
 
-                                {field.required && (
-                                  <span className="ml-1 text-red-500">
-                                    *
-                                  </span>
-                                )}
-                              </label>
-
-                              {field.description && (
-                                <p className="text-xs leading-5 text-[var(--muted)]">
-                                  {field.description}
-                                </p>
+                              {field.required && (
+                                <span className="ml-1 text-red-500">*</span>
                               )}
+                            </label>
 
-                              <RegistrationField
-                                field={field}
-                                value={
-                                  member.answers[
-                                    field.key
-                                  ]
-                                }
-                                onChange={(
-                                  key,
-                                  value,
-                                ) =>
-                                  updateMemberAnswer(
-                                    memberIndex,
-                                    key,
-                                    value,
-                                  )
-                                }
-                                onToggleCheckbox={(
-                                  key,
-                                  option,
-                                ) =>
-                                  toggleMemberCheckbox(
-                                    memberIndex,
-                                    key,
-                                    option,
-                                  )
-                                }
-                                idPrefix={`member-${memberIndex}`}
-                                inputName={`member-${memberIndex}-${field.key}`}
-                              />
-                            </div>
-                          );
-                        },
-                      )}
+                            {field.description && (
+                              <p className="text-xs leading-5 text-[var(--muted)]">
+                                {field.description}
+                              </p>
+                            )}
+
+                            <RegistrationField
+                              field={field}
+                              value={member.answers[field.key]}
+                              onChange={(key, value) =>
+                                updateMemberAnswer(memberIndex, key, value)
+                              }
+                              onToggleCheckbox={(key, option) =>
+                                toggleMemberCheckbox(memberIndex, key, option)
+                              }
+                              idPrefix={`member-${memberIndex}`}
+                              inputName={`member-${memberIndex}-${field.key}`}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </section>
                 )}
@@ -3120,12 +2640,8 @@ export default function EventRegistrationPage() {
                   {currentStep > 0 && (
                     <button
                       type="button"
-                      onClick={
-                        handlePreviousStep
-                      }
-                      disabled={
-                        isSubmitting
-                      }
+                      onClick={handlePreviousStep}
+                      disabled={isSubmitting}
                       className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3.5 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)] disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <ArrowLeft className="h-4 w-4" />
@@ -3133,17 +2649,12 @@ export default function EventRegistrationPage() {
                     </button>
                   )}
 
-                  {currentStep <
-                  totalSteps - 1 ? (
+                  {currentStep < totalSteps - 1 ? (
                     <button
                       type="button"
-                      onClick={
-                        handleNextStep
-                      }
+                      onClick={handleNextStep}
                       disabled={
-                        isSubmitting ||
-                        isFormLoading ||
-                        registrationClosed
+                        isSubmitting || isFormLoading || registrationClosed
                       }
                       className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                     >
@@ -3154,9 +2665,7 @@ export default function EventRegistrationPage() {
                     <button
                       type="submit"
                       disabled={
-                        isSubmitting ||
-                        isFormLoading ||
-                        registrationClosed
+                        isSubmitting || isFormLoading || registrationClosed
                       }
                       className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                     >
@@ -3176,8 +2685,7 @@ export default function EventRegistrationPage() {
                 </div>
 
                 <p className="mt-3 text-center text-xs text-[var(--muted)]">
-                  {currentStep <
-                  totalSteps - 1
+                  {currentStep < totalSteps - 1
                     ? "Complete this step to continue."
                     : "By confirming, you submit the information provided in this registration form."}
                 </p>
