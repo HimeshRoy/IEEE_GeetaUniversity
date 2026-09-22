@@ -329,7 +329,7 @@ function getStatusClasses(status: RegistrationStatus) {
     return "border-gray-200 bg-gray-50 text-gray-700";
   }
 
-  return "border-blue-200 bg-blue-50 text-blue-700";
+  return "border-[var(--primary)]/20 bg-[var(--primary)]/10 text-[var(--primary)]";
 }
 
 function getQrImageUrl(token: string) {
@@ -567,16 +567,15 @@ function RegistrationField({
   const radioName = inputName ?? field.key;
 
   const inputClasses =
-    "w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10 disabled:bg-gray-50 disabled:text-gray-500";
+    "w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--secondary)] shadow-sm outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400 sm:py-3.5";
 
   const selected = Array.isArray(value) ? value : [];
 
   if (field.type === "FILE_UPLOAD" || field.type === "IMAGE_UPLOAD") {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm font-semibold text-amber-800">{field.label}</p>
-
-        <p className="mt-1 text-xs leading-5 text-amber-700">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm sm:p-5">
+        <p className="text-sm font-bold text-amber-800">{field.label}</p>
+        <p className="mt-1.5 text-xs leading-relaxed text-amber-700 sm:text-sm">
           File uploads are configured for this form, but this registration
           endpoint does not provide file storage.
         </p>
@@ -595,22 +594,22 @@ function RegistrationField({
         required={field.required}
         minLength={validation.minLength}
         maxLength={validation.maxLength}
-        rows={5}
-        className={`${inputClasses} resize-y`}
+        rows={4}
+        className={`${inputClasses} resize-y leading-relaxed sm:rows-5`}
       />
     );
   }
 
   if (field.type === "MULTIPLE_CHOICE") {
     return (
-      <div className="space-y-2">
+      <div className="space-y-2.5 sm:space-y-3">
         {options.map((option) => (
           <label
             key={option}
-            className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
+            className={`group flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 shadow-sm transition-all duration-200 sm:px-4 sm:py-3.5 ${
               value === option
-                ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                : "border-[var(--border)] bg-white hover:bg-[var(--surface)]"
+                ? "border-[var(--primary)] bg-[var(--primary)]/5 ring-1 ring-[var(--primary)]"
+                : "border-[var(--border)] bg-white hover:border-[var(--primary)]/40 hover:bg-[var(--surface)]"
             }`}
           >
             <input
@@ -620,10 +619,11 @@ function RegistrationField({
               checked={value === option}
               disabled={disabled}
               onChange={() => onChange(field.key, option)}
-              className="h-4 w-4"
+              className="h-4 w-4 text-[var(--primary)] focus:ring-[var(--primary)] sm:h-4.5 sm:w-4.5"
             />
-
-            <span className="text-sm text-[var(--text)]">{option}</span>
+            <span className={`text-sm font-medium ${value === option ? "text-[var(--primary)]" : "text-[var(--secondary)]"}`}>
+              {option}
+            </span>
           </label>
         ))}
       </div>
@@ -632,17 +632,17 @@ function RegistrationField({
 
   if (field.type === "CHECKBOXES") {
     return (
-      <div className="space-y-2">
+      <div className="space-y-2.5 sm:space-y-3">
         {options.map((option) => {
           const checked = selected.includes(option);
 
           return (
             <label
               key={option}
-              className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${
+              className={`group flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 shadow-sm transition-all duration-200 sm:px-4 sm:py-3.5 ${
                 checked
-                  ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                  : "border-[var(--border)] bg-white hover:bg-[var(--surface)]"
+                  ? "border-[var(--primary)] bg-[var(--primary)]/5 ring-1 ring-[var(--primary)]"
+                  : "border-[var(--border)] bg-white hover:border-[var(--primary)]/40 hover:bg-[var(--surface)]"
               }`}
             >
               <input
@@ -650,10 +650,11 @@ function RegistrationField({
                 checked={checked}
                 disabled={disabled}
                 onChange={() => onToggleCheckbox(field.key, option)}
-                className="h-4 w-4"
+                className="h-4 w-4 rounded text-[var(--primary)] focus:ring-[var(--primary)] sm:h-4.5 sm:w-4.5"
               />
-
-              <span className="text-sm text-[var(--text)]">{option}</span>
+              <span className={`text-sm font-medium ${checked ? "text-[var(--primary)]" : "text-[var(--secondary)]"}`}>
+                {option}
+              </span>
             </label>
           );
         })}
@@ -672,7 +673,6 @@ function RegistrationField({
         className={inputClasses}
       >
         <option value="">Select an option</option>
-
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -1031,13 +1031,11 @@ export default function EventRegistrationPage() {
 
   function updateAnswer(key: string, value: AnswerValue) {
     setAnswerValue(setAnswers, key, value);
-
     setFormError("");
   }
 
   function updateTeamAnswer(key: string, value: AnswerValue) {
     setAnswerValue(setTeamAnswers, key, value);
-
     setFormError("");
   }
 
@@ -1055,7 +1053,6 @@ export default function EventRegistrationPage() {
           : member,
       ),
     );
-
     setFormError("");
   }
 
@@ -1081,7 +1078,6 @@ export default function EventRegistrationPage() {
         };
       }),
     );
-
     setFormError("");
   }
 
@@ -1265,7 +1261,6 @@ export default function EventRegistrationPage() {
     }
 
     const nameValue = values.name ?? values.full_name;
-
     const emailValue = values.email;
 
     if (typeof nameValue !== "string" || nameValue.trim().length < 2) {
@@ -1364,7 +1359,6 @@ export default function EventRegistrationPage() {
     }
 
     const memberIndex = currentStep - 2;
-
     const message = validateMember(memberIndex);
 
     if (message) {
@@ -1429,9 +1423,7 @@ export default function EventRegistrationPage() {
 
     const memberEmails = teamMembers.map((member) => {
       const field = participantFields.find((item) => item.key === "email");
-
       const value = field ? member.answers[field.key] : "";
-
       return typeof value === "string" ? value.trim().toLowerCase() : "";
     });
 
@@ -1463,9 +1455,7 @@ export default function EventRegistrationPage() {
 
     if (currentStep < totalSteps - 1) {
       setCurrentStep((step) => step + 1);
-
       setFormError("");
-
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -1479,9 +1469,7 @@ export default function EventRegistrationPage() {
     }
 
     setCurrentStep((step) => Math.max(step - 1, 0));
-
     setFormError("");
-
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -1629,13 +1617,10 @@ export default function EventRegistrationPage() {
           };
 
           const memberName = nameField ? memberAnswers[nameField.key] : "";
-
           const memberEmail = emailField ? memberAnswers[emailField.key] : "";
-
           const memberPhone = phoneField ? memberAnswers[phoneField.key] : "";
 
           const name = typeof memberName === "string" ? memberName.trim() : "";
-
           const email =
             typeof memberEmail === "string"
               ? memberEmail.trim().toLowerCase()
@@ -1752,12 +1737,11 @@ export default function EventRegistrationPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen px-4 py-10">
-        <div className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center">
-          <div className="w-full rounded-2xl border border-[var(--border)] bg-white p-10 text-center shadow-sm">
-            <Loader2 className="mx-auto h-8 w-8 animate-spin text-[var(--primary)]" />
-
-            <p className="mt-3 text-sm text-[var(--muted)]">
+      <div className="min-h-screen bg-[var(--background)] px-4 py-8 sm:py-10">
+        <div className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center animate-in fade-in duration-500">
+          <div className="w-full rounded-3xl border border-[var(--border)] bg-white p-8 sm:p-12 text-center shadow-sm">
+            <Loader2 className="mx-auto h-10 w-10 animate-spin text-[var(--primary)]" />
+            <p className="mt-5 text-base font-semibold text-[var(--secondary)]">
               Loading event registration...
             </p>
           </div>
@@ -1768,22 +1752,22 @@ export default function EventRegistrationPage() {
 
   if (error && !event) {
     return (
-      <div className="min-h-screen px-4 py-10">
-        <div className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center">
-          <div className="w-full rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-            <AlertCircle className="mx-auto h-8 w-8 text-red-600" />
+      <div className="min-h-screen bg-[var(--background)] px-4 py-8 sm:py-10">
+        <div className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center animate-in fade-in duration-500">
+          <div className="w-full rounded-3xl border border-red-200 bg-red-50 p-6 sm:p-10 text-center shadow-sm">
+            <AlertCircle className="mx-auto h-10 w-10 text-red-600" />
 
-            <h1 className="mt-4 text-xl font-bold text-red-800">
+            <h1 className="mt-4 text-xl sm:text-2xl font-bold text-red-800">
               Unable to load event
             </h1>
 
-            <p className="mt-2 text-sm leading-6 text-red-700">{error}</p>
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-red-700">{error}</p>
 
             <Link
               href="/events"
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold !text-white"
+              className="group mx-auto mt-6 sm:mt-8 flex w-fit items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 sm:px-6 sm:py-3.5 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
               Back to Events
             </Link>
           </div>
@@ -1800,27 +1784,26 @@ export default function EventRegistrationPage() {
 
   if (registration) {
     const isWaitlisted = registration.registrationStatus === "WAITLISTED";
-
     const isCancelled = registration.registrationStatus === "CANCELLED";
 
     return (
-      <div className="min-h-screen px-4 py-8 sm:py-10">
-        <div className="mx-auto max-w-3xl space-y-6">
+      <div className="min-h-screen bg-[var(--background)] px-4 py-8 sm:py-14 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+        <div className="mx-auto max-w-3xl space-y-6 sm:space-y-8">
           <Link
             href={`/events/${event.slug}`}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)]"
+            className="group inline-flex items-center gap-2 text-sm font-bold text-[var(--muted-foreground)] transition-colors duration-300 hover:text-[var(--primary)]"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
             Back to Event
           </Link>
 
-          <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-sm">
-            <div className="p-6 text-center sm:p-8">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
-                <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+          <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-sm">
+            <div className="p-6 text-center sm:p-10 lg:p-12">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 sm:h-20 sm:w-20">
+                <CheckCircle2 className="h-8 w-8 text-emerald-600 sm:h-10 sm:w-10" />
               </div>
 
-              <h1 className="mt-5 text-2xl font-bold text-[var(--text)] sm:text-3xl">
+              <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-[var(--secondary)] sm:mt-6 sm:text-3xl lg:text-4xl">
                 {isWaitlisted
                   ? "You're on the Waitlist"
                   : isCancelled
@@ -1828,7 +1811,7 @@ export default function EventRegistrationPage() {
                     : "Registration Successful"}
               </h1>
 
-              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[var(--muted)]">
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[var(--muted-foreground)] sm:mt-4 sm:text-base">
                 {isWaitlisted
                   ? "The event has reached its capacity. Your registration has been added to the waitlist."
                   : isCancelled
@@ -1837,8 +1820,8 @@ export default function EventRegistrationPage() {
               </p>
 
               {successMessage && (
-                <div className="mx-auto mt-5 max-w-xl rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-left">
-                  <p className="text-sm font-medium leading-6 text-emerald-700">
+                <div className="mx-auto mt-5 max-w-xl rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5 text-left shadow-sm">
+                  <p className="text-sm font-semibold leading-relaxed text-emerald-800">
                     {successMessage}
                   </p>
                 </div>
@@ -1846,7 +1829,7 @@ export default function EventRegistrationPage() {
             </div>
 
             {event.bannerImage && (
-              <div className="relative h-44 bg-[var(--surface)] sm:h-56">
+              <div className="relative aspect-video sm:aspect-[21/9] w-full bg-[var(--surface)]">
                 <img
                   src={event.bannerImage}
                   alt={event.title}
@@ -1855,14 +1838,14 @@ export default function EventRegistrationPage() {
               </div>
             )}
 
-            <div className="p-6 sm:p-8">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
+            <div className="p-5 sm:p-8 lg:p-12">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                   {getAccessLabel(event.access)}
                 </span>
 
                 <span
-                  className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${getStatusClasses(
+                  className={`inline-flex rounded-full border px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs font-bold uppercase tracking-widest shadow-sm ${getStatusClasses(
                     registration.registrationStatus,
                   )}`}
                 >
@@ -1870,19 +1853,19 @@ export default function EventRegistrationPage() {
                 </span>
               </div>
 
-              <h2 className="mt-4 text-xl font-bold text-[var(--text)] sm:text-2xl">
+              <h2 className="mt-5 text-xl font-extrabold tracking-tight text-[var(--secondary)] sm:mt-6 sm:text-2xl lg:text-3xl">
                 {event.title}
               </h2>
 
-              <div className="mt-5 grid gap-3 rounded-xl bg-[var(--surface)] p-4 sm:grid-cols-2">
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <CalendarDays className="h-4 w-4 text-[var(--primary)]" />
+              <div className="mt-6 grid gap-3 rounded-2xl bg-[var(--surface)]/50 p-4 sm:p-6 sm:gap-4 sm:grid-cols-2 border border-[var(--border)]">
+                <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                  <CalendarDays className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                   {formatDate(event.eventDate)}
                 </div>
 
                 {event.startTime && (
-                  <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                    <Clock3 className="h-4 w-4 text-[var(--primary)]" />
+                  <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                    <Clock3 className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                     {formatTime(event.startTime)}
                     {event.endTime ? ` - ${formatTime(event.endTime)}` : ""}
                     {" IST"}
@@ -1890,30 +1873,30 @@ export default function EventRegistrationPage() {
                 )}
 
                 {event.venue && (
-                  <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                    <MapPin className="h-4 w-4 text-[var(--primary)]" />
+                  <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                    <MapPin className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                     {event.venue}
                   </div>
                 )}
 
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <UserRound className="h-4 w-4 text-[var(--primary)]" />
+                <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                  <UserRound className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                   {registration.name}
                 </div>
               </div>
 
               {registration.team?.name && (
-                <div className="mt-4 rounded-xl border border-[var(--border)] bg-white p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+                <div className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-5 sm:p-6 shadow-sm">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                     Team
                   </p>
 
-                  <p className="mt-1 text-base font-bold text-[var(--text)]">
+                  <p className="mt-1.5 text-base sm:text-lg font-extrabold text-[var(--secondary)]">
                     {registration.team.name}
                   </p>
 
                   {registration.isTeamLeader && (
-                    <p className="mt-1 text-xs font-medium text-[var(--primary)]">
+                    <p className="mt-1.5 inline-flex rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-bold text-[var(--primary)]">
                       Team Leader
                     </p>
                   )}
@@ -1922,22 +1905,22 @@ export default function EventRegistrationPage() {
 
               {registration.teamMembers &&
                 registration.teamMembers.length > 0 && (
-                  <div className="mt-4 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
-                    <p className="text-sm font-semibold text-[var(--text)]">
+                  <div className="mt-6 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
+                    <p className="text-base font-bold tracking-tight text-[var(--secondary)]">
                       Team Members
                     </p>
 
-                    <div className="mt-3 space-y-2">
+                    <div className="mt-4 grid gap-3 sm:gap-4 sm:grid-cols-2">
                       {registration.teamMembers.map((member) => (
                         <div
                           key={member.id}
-                          className="rounded-lg border border-[var(--border)] bg-white p-3"
+                          className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
                         >
-                          <p className="text-sm font-semibold text-[var(--text)]">
+                          <p className="text-sm font-bold text-[var(--secondary)]">
                             {member.name}
                           </p>
 
-                          <p className="mt-1 text-xs text-[var(--muted)]">
+                          <p className="mt-1 text-xs font-medium text-[var(--muted-foreground)]">
                             {member.email}
                           </p>
                         </div>
@@ -1947,38 +1930,38 @@ export default function EventRegistrationPage() {
                 )}
 
               {qrEnabled && registration.qrToken && (
-                <div className="mt-7 space-y-5">
-                  <div className="rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] p-5 sm:p-7">
+                <div className="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
+                  <div className="rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-b from-[var(--surface)] to-white p-6 shadow-lg shadow-[var(--primary)]/5 sm:p-10">
                     <div className="text-center">
-                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary-light)]">
-                        <QrCode className="h-6 w-6 text-[var(--primary)]" />
+                      <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-[var(--primary)]/10">
+                        <QrCode className="h-6 w-6 sm:h-8 sm:w-8 text-[var(--primary)]" />
                       </div>
 
-                      <h3 className="mt-4 text-xl font-bold text-[var(--text)]">
+                      <h3 className="mt-5 text-xl sm:text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
                         Your Event QR Code
                       </h3>
 
-                      <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[var(--muted)]">
+                      <p className="mx-auto mt-2 sm:mt-3 max-w-lg text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">
                         This QR code is unique to your registration. Keep it
                         saved on your phone and show it at the event entrance
                         for verification and attendance.
                       </p>
                     </div>
 
-                    <div className="mx-auto mt-6 w-fit rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
+                    <div className="mx-auto mt-6 w-fit rounded-3xl bg-white p-4 sm:p-6 shadow-xl ring-1 ring-black/5">
                       <img
                         src={getQrImageUrl(registration.qrToken)}
                         alt={`QR code for ${registration.name}`}
-                        className="h-64 w-64 sm:h-72 sm:w-72"
+                        className="h-48 w-48 sm:h-64 sm:w-64 lg:h-72 lg:w-72"
                       />
                     </div>
 
-                    <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+                    <div className="mt-6 sm:mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4 sm:p-5">
                       <p className="text-sm font-bold text-amber-800">
                         Important: Download your QR code
                       </p>
 
-                      <p className="mt-1 text-xs leading-5 text-amber-700">
+                      <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-amber-700">
                         Download and keep this QR code safe. It will be scanned
                         at the event for entry and attendance verification.
                       </p>
@@ -1988,16 +1971,16 @@ export default function EventRegistrationPage() {
                       type="button"
                       onClick={() => void handleDownloadQr()}
                       disabled={isDownloadingQr}
-                      className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 sm:px-6 sm:py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {isDownloadingQr ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Loader2 className="h-5 w-5 animate-spin" />
                           Downloading QR...
                         </>
                       ) : (
                         <>
-                          <Download className="h-4 w-4" />
+                          <Download className="h-4.5 w-4.5 transition-transform duration-300 group-hover:-translate-y-0.5" />
                           Download QR Code
                         </>
                       )}
@@ -2007,19 +1990,19 @@ export default function EventRegistrationPage() {
                   {registration.team &&
                     registration.teamMembers &&
                     registration.teamMembers.length > 0 && (
-                      <div className="rounded-2xl border border-[var(--primary)]/15 bg-[var(--surface)] p-5 sm:p-7">
+                      <div className="rounded-3xl border border-[var(--primary)]/20 bg-[var(--surface)]/50 p-5 sm:p-8">
                         <div>
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary-light)]">
-                              <QrCode className="h-5 w-5 text-[var(--primary)]" />
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10">
+                              <QrCode className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--primary)]" />
                             </div>
 
                             <div>
-                              <h3 className="text-lg font-bold text-[var(--text)]">
+                              <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary)]">
                                 Team Member QR Codes
                               </h3>
 
-                              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                              <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                                 Each team member has a separate QR code for
                                 individual entry and attendance verification.
                               </p>
@@ -2027,34 +2010,34 @@ export default function EventRegistrationPage() {
                           </div>
                         </div>
 
-                        <div className="mt-5 space-y-4">
+                        <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-5">
                           {registration.teamMembers.map((member) => (
                             <div
                               key={member.id}
-                              className="rounded-xl border border-[var(--border)] bg-white p-4"
+                              className="rounded-2xl border border-[var(--border)] bg-white p-4 sm:p-6 shadow-sm"
                             >
-                              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                                 <div className="min-w-0">
-                                  <p className="text-sm font-semibold text-[var(--text)]">
+                                  <p className="text-sm sm:text-base font-bold text-[var(--secondary)]">
                                     {member.name}
                                   </p>
 
-                                  <p className="mt-1 break-all text-xs text-[var(--muted)]">
+                                  <p className="mt-1 break-all text-xs sm:text-sm font-medium text-[var(--muted-foreground)]">
                                     {member.email}
                                   </p>
 
-                                  <p className="mt-1 text-xs font-medium text-[var(--primary)]">
+                                  <p className="mt-2 inline-flex rounded-full bg-[var(--primary)]/10 px-2.5 py-1 text-[11px] sm:text-xs font-bold text-[var(--primary)]">
                                     Team Member
                                   </p>
                                 </div>
 
                                 {member.qrToken ? (
-                                  <div className="flex shrink-0 flex-col items-center gap-3">
-                                    <div className="rounded-xl bg-white p-2 shadow-sm ring-1 ring-black/5">
+                                  <div className="flex shrink-0 flex-col items-center gap-3 sm:gap-4">
+                                    <div className="rounded-2xl bg-white p-2 sm:p-3 shadow-md ring-1 ring-black/5">
                                       <img
                                         src={getQrImageUrl(member.qrToken)}
                                         alt={`QR code for ${member.name}`}
-                                        className="h-36 w-36 sm:h-40 sm:w-40"
+                                        className="h-28 w-28 sm:h-32 sm:w-32 lg:h-40 lg:w-40"
                                       />
                                     </div>
 
@@ -2067,7 +2050,7 @@ export default function EventRegistrationPage() {
                                         isDownloadingQr ||
                                         downloadingMemberQrId === member.id
                                       }
-                                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold !text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                                     >
                                       {downloadingMemberQrId === member.id ? (
                                         <>
@@ -2083,7 +2066,7 @@ export default function EventRegistrationPage() {
                                     </button>
                                   </div>
                                 ) : (
-                                  <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-medium text-amber-700">
+                                  <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium text-amber-800">
                                     QR code is not currently available.
                                   </div>
                                 )}
@@ -2095,7 +2078,7 @@ export default function EventRegistrationPage() {
                     )}
 
                   {downloadError && (
-                    <p className="text-center text-xs font-medium text-red-600">
+                    <p className="text-center text-xs sm:text-sm font-medium text-red-600">
                       {downloadError}
                     </p>
                   )}
@@ -2106,8 +2089,8 @@ export default function EventRegistrationPage() {
                 !qrEnabled &&
                 !isWaitlisted &&
                 !isCancelled && (
-                  <div className="mt-7 rounded-xl border border-amber-200 bg-amber-50 p-4">
-                    <p className="text-sm font-semibold text-amber-800">
+                  <div className="mt-6 sm:mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4 sm:p-5 shadow-sm">
+                    <p className="text-sm font-semibold leading-relaxed text-amber-800">
                       QR attendance is enabled for this event, but a QR code is
                       not currently available for this registration.
                     </p>
@@ -2115,23 +2098,23 @@ export default function EventRegistrationPage() {
                 )}
 
               {!event.enableQrAttendance && !isWaitlisted && !isCancelled && (
-                <div className="mt-7 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                  <p className="text-sm font-semibold text-[var(--text)]">
+                <div className="mt-6 sm:mt-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 shadow-sm">
+                  <p className="text-sm sm:text-base font-bold text-[var(--secondary)]">
                     QR attendance is not enabled for this event.
                   </p>
 
-                  <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                  <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                     Your registration is confirmed.
                   </p>
                 </div>
               )}
 
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row border-t border-[var(--border)] pt-6 sm:pt-8">
                 <Link
                   href={`/events/${event.slug}`}
-                  className="flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)]"
+                  className="group flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3.5 sm:px-6 sm:py-4 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50"
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                   Back to Event
                 </Link>
 
@@ -2154,14 +2137,14 @@ export default function EventRegistrationPage() {
                     setTeamMembers([]);
                     setCurrentStep(0);
                   }}
-                  className="flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] bg-white px-5 py-3 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)]"
+                  className="flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] bg-white px-5 py-3.5 sm:px-6 sm:py-4 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50"
                 >
-                  Register Another Participant
+                  Register Another
                 </button>
 
                 <Link
                   href="/events"
-                  className="flex flex-1 items-center justify-center rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold !text-white hover:opacity-90"
+                  className="flex flex-1 items-center justify-center rounded-xl bg-[var(--primary)] px-5 py-3.5 sm:px-6 sm:py-4 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
                 >
                   Browse Events
                 </Link>
@@ -2176,19 +2159,19 @@ export default function EventRegistrationPage() {
   const isInviteOnly = event.access === "INVITE_ONLY";
 
   return (
-    <div className="min-h-screen px-4 py-8 sm:py-10">
-      <div className="mx-auto max-w-3xl space-y-6">
+    <div className="min-h-screen bg-[var(--background)] px-4 py-8 sm:py-14 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+      <div className="mx-auto max-w-3xl space-y-6 sm:space-y-8">
         <Link
           href={`/events/${event.slug}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)]"
+          className="group inline-flex items-center gap-2 text-sm font-bold text-[var(--muted-foreground)] transition-colors duration-300 hover:text-[var(--primary)]"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
           Back to Event
         </Link>
 
-        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-sm">
+        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-sm">
           {event.bannerImage && (
-            <div className="relative h-44 bg-[var(--surface)] sm:h-56">
+            <div className="relative aspect-video sm:aspect-[21/9] w-full bg-[var(--surface)]">
               <img
                 src={event.bannerImage}
                 alt={event.title}
@@ -2197,13 +2180,13 @@ export default function EventRegistrationPage() {
             </div>
           )}
 
-          <div className="p-5 sm:p-7">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
+          <div className="p-5 sm:p-8 lg:p-12">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                 {getAccessLabel(event.access)}
               </span>
 
-              <span className="inline-flex rounded-full border border-[var(--border)] px-3 py-1 text-xs font-semibold text-[var(--muted)]">
+              <span className="inline-flex rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--secondary)] shadow-sm">
                 {event.participationType === "TEAM"
                   ? `Team Event${
                       event.minTeamSize || event.maxTeamSize
@@ -2216,25 +2199,25 @@ export default function EventRegistrationPage() {
               </span>
             </div>
 
-            <h1 className="mt-4 text-2xl font-bold text-[var(--text)] sm:text-3xl">
+            <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-[var(--secondary)] sm:mt-6 sm:text-4xl lg:text-5xl lg:leading-[1.1]">
               Register for {event.title}
             </h1>
 
             {event.shortDescription && (
-              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+              <p className="mt-3 text-sm leading-relaxed text-[var(--muted-foreground)] sm:mt-4 sm:text-base sm:leading-relaxed">
                 {event.shortDescription}
               </p>
             )}
 
-            <div className="mt-5 grid gap-3 rounded-xl bg-[var(--surface)] p-4 sm:grid-cols-2">
-              <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                <CalendarDays className="h-4 w-4 text-[var(--primary)]" />
+            <div className="mt-6 grid gap-3 rounded-2xl bg-[var(--surface)]/50 p-4 sm:p-6 sm:gap-4 sm:grid-cols-2 border border-[var(--border)]">
+              <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                <CalendarDays className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                 {formatDate(event.eventDate)}
               </div>
 
               {event.startTime && (
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <Clock3 className="h-4 w-4 text-[var(--primary)]" />
+                <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                  <Clock3 className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                   {formatTime(event.startTime)}
                   {event.endTime ? ` - ${formatTime(event.endTime)}` : ""}
                   {" IST"}
@@ -2242,15 +2225,15 @@ export default function EventRegistrationPage() {
               )}
 
               {event.venue && (
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <MapPin className="h-4 w-4 text-[var(--primary)]" />
+                <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                  <MapPin className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                   {event.venue}
                 </div>
               )}
 
               {deadline && (
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <Clock3 className="h-4 w-4 text-[var(--primary)]" />
+                <div className="flex items-center gap-3 text-sm font-medium text-[var(--secondary)]">
+                  <Clock3 className="h-4.5 w-4.5 text-[var(--primary)] shrink-0" />
                   Deadline: {deadline} IST
                 </div>
               )}
@@ -2259,80 +2242,76 @@ export default function EventRegistrationPage() {
         </div>
 
         {isInviteOnly ? (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6">
-            <h2 className="text-lg font-bold text-amber-800">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-8 shadow-sm">
+            <h2 className="text-lg sm:text-xl font-bold text-amber-800">
               Invitation Required
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-amber-700">
+            <p className="mt-2.5 sm:mt-3 text-sm sm:text-base leading-relaxed text-amber-700">
               This event is available only to invited participants.
             </p>
           </div>
         ) : isFormLoading ? (
-          <div className="flex min-h-[50vh] items-center justify-center rounded-2xl border border-[var(--border)] bg-white p-10 text-center">
+          <div className="flex min-h-[40vh] items-center justify-center rounded-3xl border border-[var(--border)] bg-white p-8 sm:p-12 text-center shadow-sm">
             <div>
-              <Loader2 className="mx-auto h-8 w-8 animate-spin text-[var(--primary)]" />
-
-              <p className="mt-3 text-sm text-[var(--muted)]">
+              <Loader2 className="mx-auto h-8 w-8 sm:h-10 sm:w-10 animate-spin text-[var(--primary)]" />
+              <p className="mt-4 sm:mt-5 text-sm sm:text-base font-semibold text-[var(--secondary)]">
                 Loading registration form...
               </p>
             </div>
           </div>
         ) : formError && !form ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
-            <h2 className="text-lg font-bold text-red-800">
+          <div className="rounded-3xl border border-red-200 bg-red-50 p-6 sm:p-8 shadow-sm">
+            <h2 className="text-lg sm:text-xl font-bold text-red-800">
               Registration form unavailable
             </h2>
-
-            <p className="mt-2 text-sm leading-6 text-red-700">{formError}</p>
+            <p className="mt-2.5 sm:mt-3 text-sm sm:text-base leading-relaxed text-red-700">{formError}</p>
           </div>
         ) : registrationClosed ? (
-          <div className="rounded-2xl border border-[var(--border)] bg-white p-6">
-            <h2 className="text-lg font-bold text-[var(--text)]">
+          <div className="rounded-3xl border border-[var(--border)] bg-white p-6 sm:p-8 shadow-sm">
+            <h2 className="text-lg sm:text-xl font-bold text-[var(--secondary)]">
               Registration is closed
             </h2>
-
-            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+            <p className="mt-2.5 sm:mt-3 text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">
               {form?.status !== "PUBLISHED"
                 ? "The registration form is not currently open."
                 : "Registration is not currently available for this event."}
             </p>
           </div>
         ) : form ? (
-          <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm sm:p-7">
+          <div className="rounded-3xl border border-[var(--border)] bg-white p-5 sm:p-10 shadow-sm">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+              <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                 Public Registration
               </p>
 
-              <h2 className="mt-1 text-xl font-bold text-[var(--text)]">
+              <h2 className="mt-2.5 sm:mt-3 text-xl sm:text-2xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-3xl">
                 {form.title}
               </h2>
 
-              <p className="mt-1.5 text-sm text-[var(--muted)]">
+              <p className="mt-2.5 sm:mt-3 text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">
                 Complete the registration form. No account is required.
               </p>
             </div>
 
             {(error || formError) && (
-              <div className="mt-5 flex gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
-
-                <p className="text-sm font-medium leading-6 text-red-700">
+              <div className="mt-6 sm:mt-8 flex gap-3 sm:gap-4 rounded-2xl border border-red-200 bg-red-50 p-4 sm:p-5 shadow-sm">
+                <AlertCircle className="mt-0.5 h-5 w-5 sm:h-6 sm:w-6 shrink-0 text-red-600" />
+                <p className="text-xs sm:text-sm font-semibold leading-relaxed text-red-800">
                   {error || formError}
                 </p>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="mt-6 space-y-7">
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-5 sm:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+                    <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                       Step {currentStep + 1} of {totalSteps}
                     </p>
 
-                    <p className="mt-1 text-sm font-semibold text-[var(--text)]">
+                    <p className="mt-1.5 sm:mt-2 text-sm sm:text-base font-extrabold tracking-tight text-[var(--secondary)] sm:text-lg">
                       {event.participationType === "TEAM"
                         ? currentStep === 0
                           ? "Team Leader Details"
@@ -2343,7 +2322,7 @@ export default function EventRegistrationPage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-1.5 overflow-x-auto">
+                  <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto">
                     {Array.from(
                       {
                         length: totalSteps,
@@ -2351,10 +2330,10 @@ export default function EventRegistrationPage() {
                       (_, index) => (
                         <span
                           key={index}
-                          className={`h-1.5 shrink-0 rounded-full transition-all ${
+                          className={`h-1.5 sm:h-2 shrink-0 rounded-full transition-all duration-300 ${
                             index <= currentStep
-                              ? "w-7 bg-[var(--primary)]"
-                              : "w-3 bg-[var(--border)]"
+                              ? "w-6 sm:w-8 bg-[var(--primary)]"
+                              : "w-2.5 sm:w-3 bg-[var(--border)]"
                           }`}
                         />
                       ),
@@ -2364,134 +2343,136 @@ export default function EventRegistrationPage() {
               </div>
 
               {currentStep === 0 && (
-                <section className="space-y-5">
-                  <div>
-                    <h3 className="text-lg font-bold text-[var(--text)]">
+                <section className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <div className="border-b border-[var(--border)] pb-5 sm:pb-6">
+                    <h3 className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                       {event.participationType === "TEAM"
                         ? "Team Leader Details"
                         : "Participant Details"}
                     </h3>
 
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                       Complete every field configured in the registration form.
                     </p>
                   </div>
 
-                  {participantFields.map((field) => (
-                    <div key={field.id} className="space-y-2">
-                      <label
-                        htmlFor={`field-${field.id}`}
-                        className="block text-sm font-semibold text-[var(--text)]"
-                      >
-                        {field.label}
+                  <div className="space-y-5 sm:space-y-6">
+                    {participantFields.map((field) => (
+                      <div key={field.id} className="space-y-2.5 sm:space-y-3">
+                        <label
+                          htmlFor={`field-${field.id}`}
+                          className="block text-sm font-bold text-[var(--secondary)]"
+                        >
+                          {field.label}
+                          {field.required && (
+                            <span className="ml-1 text-red-500">*</span>
+                          )}
+                        </label>
 
-                        {field.required && (
-                          <span className="ml-1 text-red-500">*</span>
+                        {field.description && (
+                          <p className="text-[11px] sm:text-xs font-medium leading-relaxed text-[var(--muted-foreground)]">
+                            {field.description}
+                          </p>
                         )}
-                      </label>
 
-                      {field.description && (
-                        <p className="text-xs leading-5 text-[var(--muted)]">
-                          {field.description}
-                        </p>
-                      )}
-
-                      <RegistrationField
-                        field={field}
-                        value={answers[field.key]}
-                        onChange={updateAnswer}
-                        onToggleCheckbox={(key, option) =>
-                          toggleAnswerCheckbox(setAnswers, key, option)
-                        }
-                      />
-                    </div>
-                  ))}
+                        <RegistrationField
+                          field={field}
+                          value={answers[field.key]}
+                          onChange={updateAnswer}
+                          onToggleCheckbox={(key, option) =>
+                            toggleAnswerCheckbox(setAnswers, key, option)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </section>
               )}
 
               {event.participationType === "TEAM" && currentStep === 1 && (
-                <section className="space-y-5">
-                  <div>
-                    <h3 className="text-lg font-bold text-[var(--text)]">
+                <section className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                  <div className="border-b border-[var(--border)] pb-5 sm:pb-6">
+                    <h3 className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                       Team Details
                     </h3>
 
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                       Enter the team information and add all required team
                       members.
                     </p>
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="team-name"
-                      className="mb-2 block text-sm font-semibold text-[var(--text)]"
-                    >
-                      Team Name <span className="text-red-500">*</span>
-                    </label>
-
-                    <input
-                      id="team-name"
-                      value={
-                        typeof teamAnswers.team_name === "string"
-                          ? teamAnswers.team_name
-                          : ""
-                      }
-                      onChange={(event) =>
-                        updateTeamAnswer("team_name", event.target.value)
-                      }
-                      minLength={2}
-                      maxLength={100}
-                      required
-                      placeholder="Enter your team name"
-                      className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10"
-                    />
-                  </div>
-
-                  {teamFields.map((field) => (
-                    <div key={field.id} className="space-y-2">
+                  <div className="space-y-5 sm:space-y-6">
+                    <div className="space-y-2.5 sm:space-y-3">
                       <label
-                        htmlFor={`team-field-${field.id}`}
-                        className="block text-sm font-semibold text-[var(--text)]"
+                        htmlFor="team-name"
+                        className="block text-sm font-bold text-[var(--secondary)]"
                       >
-                        {field.label}
-
-                        {field.required && (
-                          <span className="ml-1 text-red-500">*</span>
-                        )}
+                        Team Name <span className="ml-1 text-red-500">*</span>
                       </label>
 
-                      {field.description && (
-                        <p className="text-xs leading-5 text-[var(--muted)]">
-                          {field.description}
-                        </p>
-                      )}
-
-                      <RegistrationField
-                        field={field}
-                        value={teamAnswers[field.key]}
-                        onChange={updateTeamAnswer}
-                        onToggleCheckbox={(key, option) =>
-                          toggleAnswerCheckbox(setTeamAnswers, key, option)
+                      <input
+                        id="team-name"
+                        value={
+                          typeof teamAnswers.team_name === "string"
+                            ? teamAnswers.team_name
+                            : ""
                         }
+                        onChange={(event) =>
+                          updateTeamAnswer("team_name", event.target.value)
+                        }
+                        minLength={2}
+                        maxLength={100}
+                        required
+                        placeholder="Enter your team name"
+                        className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 sm:py-3.5 text-sm text-[var(--secondary)] shadow-sm outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                       />
                     </div>
-                  ))}
 
-                  <div className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
+                    {teamFields.map((field) => (
+                      <div key={field.id} className="space-y-2.5 sm:space-y-3">
+                        <label
+                          htmlFor={`team-field-${field.id}`}
+                          className="block text-sm font-bold text-[var(--secondary)]"
+                        >
+                          {field.label}
+                          {field.required && (
+                            <span className="ml-1 text-red-500">*</span>
+                          )}
+                        </label>
+
+                        {field.description && (
+                          <p className="text-[11px] sm:text-xs font-medium leading-relaxed text-[var(--muted-foreground)]">
+                            {field.description}
+                          </p>
+                        )}
+
+                        <RegistrationField
+                          field={field}
+                          value={teamAnswers[field.key]}
+                          onChange={updateTeamAnswer}
+                          onToggleCheckbox={(key, option) =>
+                            toggleAnswerCheckbox(setTeamAnswers, key, option)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]/50 p-5 sm:p-6 shadow-sm">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="text-sm font-semibold text-[var(--text)]">
+                        <p className="text-sm sm:text-base font-bold text-[var(--secondary)]">
                           Team Members
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                           {teamMembers.length + 1} of{" "}
                           {event.maxTeamSize ?? teamMembers.length + 1} team
                           members added.
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                        <p className="mt-1 text-xs sm:text-sm font-medium leading-relaxed text-[var(--primary)]">
                           {teamMembers.length < minAdditionalMembers
                             ? `${
                                 minAdditionalMembers - teamMembers.length
@@ -2521,79 +2502,78 @@ export default function EventRegistrationPage() {
                           isFormLoading ||
                           teamMembers.length >= maxAdditionalMembers
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
                       >
                         <Plus className="h-4 w-4" />
                         Add Member
                       </button>
                     </div>
-                  </div>
 
-                  {teamMembers.length > 0 && (
-                    <div className="space-y-2">
-                      {teamMembers.map((_, index) => (
-                        <div
-                          key={`member-summary-${index}`}
-                          className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-white px-4 py-3"
-                        >
-                          <div>
-                            <p className="text-sm font-semibold text-[var(--text)]">
-                              Member {index + 2}
-                            </p>
+                    {teamMembers.length > 0 && (
+                      <div className="mt-5 sm:mt-6 space-y-3 border-t border-[var(--border)]/60 pt-5 sm:pt-6">
+                        {teamMembers.map((_, index) => (
+                          <div
+                            key={`member-summary-${index}`}
+                            className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-[var(--border)] bg-white px-4 py-3 sm:px-5 sm:py-4 shadow-sm"
+                          >
+                            <div>
+                              <p className="text-xs sm:text-sm font-bold text-[var(--secondary)]">
+                                Member {index + 2}
+                              </p>
 
-                            <p className="mt-0.5 text-xs text-[var(--muted)]">
-                              Complete their details in the next steps.
-                            </p>
+                              <p className="mt-1 text-[11px] sm:text-xs font-medium text-[var(--muted-foreground)]">
+                                Complete their details in the next steps.
+                              </p>
+                            </div>
+
+                            {teamMembers.length > minAdditionalMembers && (
+                              <button
+                                type="button"
+                                onClick={() => removeTeamMember(index)}
+                                disabled={isSubmitting}
+                                className="group inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-bold text-red-600 transition-colors hover:bg-red-100 disabled:opacity-50 w-fit"
+                              >
+                                <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:scale-110" />
+                                Remove
+                              </button>
+                            )}
                           </div>
-
-                          {teamMembers.length > minAdditionalMembers && (
-                            <button
-                              type="button"
-                              onClick={() => removeTeamMember(index)}
-                              disabled={isSubmitting}
-                              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Remove
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </section>
               )}
 
               {event.participationType === "TEAM" &&
                 currentStep >= 2 &&
                 teamMembers[currentStep - 2] && (
-                  <section className="space-y-5">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+                  <section className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div className="border-b border-[var(--border)] pb-5 sm:pb-6">
+                      <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                         Team Member {currentStep - 1}
                       </p>
 
-                      <h3 className="mt-1 text-lg font-bold text-[var(--text)]">
+                      <h3 className="mt-1.5 sm:mt-2 text-lg sm:text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                         Complete Member {currentStep - 1} Details
                       </h3>
 
-                      <p className="mt-1 text-sm text-[var(--muted)]">
+                      <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                         Complete every field configured in the registration form
                         for this participant.
                       </p>
                     </div>
 
-                    <div className="space-y-5 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
+                    <div className="space-y-5 sm:space-y-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/30 p-5 sm:p-8 shadow-sm">
                       {participantFields.map((field) => {
                         const memberIndex = currentStep - 2;
-
                         const member = teamMembers[memberIndex];
 
                         return (
-                          <div key={field.id} className="space-y-2">
+                          <div key={field.id} className="space-y-2.5 sm:space-y-3">
                             <label
                               htmlFor={`member-${memberIndex}-${field.id}`}
-                              className="block text-sm font-semibold text-[var(--text)]"
+                              className="block text-sm font-bold text-[var(--secondary)]"
                             >
                               {field.label}
 
@@ -2603,7 +2583,7 @@ export default function EventRegistrationPage() {
                             </label>
 
                             {field.description && (
-                              <p className="text-xs leading-5 text-[var(--muted)]">
+                              <p className="text-[11px] sm:text-xs font-medium leading-relaxed text-[var(--muted-foreground)]">
                                 {field.description}
                               </p>
                             )}
@@ -2628,23 +2608,23 @@ export default function EventRegistrationPage() {
                 )}
 
               {form.description && (
-                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                  <p className="text-sm leading-6 text-[var(--muted)]">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-5 sm:p-6 shadow-sm">
+                  <p className="text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
                     {form.description}
                   </p>
                 </div>
               )}
 
-              <div className="border-t border-[var(--border)] pt-5">
+              <div className="border-t border-[var(--border)] pt-6 sm:pt-8">
                 <div className="flex flex-col gap-3 sm:flex-row">
                   {currentStep > 0 && (
                     <button
                       type="button"
                       onClick={handlePreviousStep}
                       disabled={isSubmitting}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3.5 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)] disabled:cursor-not-allowed disabled:opacity-60"
+                      className="group flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-bold text-[var(--secondary)] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                     >
-                      <ArrowLeft className="h-4 w-4" />
+                      <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                       Back
                     </button>
                   )}
@@ -2656,10 +2636,10 @@ export default function EventRegistrationPage() {
                       disabled={
                         isSubmitting || isFormLoading || registrationClosed
                       }
-                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                     >
                       Next
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
                   ) : (
                     <button
@@ -2667,16 +2647,16 @@ export default function EventRegistrationPage() {
                       disabled={
                         isSubmitting || isFormLoading || registrationClosed
                       }
-                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3.5 text-sm font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--primary)] to-blue-600 px-5 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-bold !text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[var(--primary)]/20 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Loader2 className="h-4.5 w-4.5 animate-spin" />
                           Registering...
                         </>
                       ) : (
                         <>
-                          <CheckCircle2 className="h-4 w-4" />
+                          <CheckCircle2 className="h-4.5 w-4.5 transition-transform duration-300 group-hover:scale-110" />
                           Confirm Registration
                         </>
                       )}
@@ -2684,7 +2664,7 @@ export default function EventRegistrationPage() {
                   )}
                 </div>
 
-                <p className="mt-3 text-center text-xs text-[var(--muted)]">
+                <p className="mt-5 sm:mt-6 text-center text-[11px] sm:text-xs font-medium text-[var(--muted-foreground)]">
                   {currentStep < totalSteps - 1
                     ? "Complete this step to continue."
                     : "By confirming, you submit the information provided in this registration form."}

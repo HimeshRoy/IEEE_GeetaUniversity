@@ -236,25 +236,25 @@ export default function WebHeadDashboard() {
 
   if (loading) {
     return (
-      <div className="mx-auto w-full max-w-7xl animate-pulse">
-        <div className="mb-7">
-          <div className="h-4 w-28 rounded bg-[var(--background)]" />
-          <div className="mt-3 h-8 w-80 rounded bg-[var(--background)]" />
-          <div className="mt-2 h-4 w-96 max-w-full rounded bg-[var(--background)]" />
+      <div className="mx-auto w-full max-w-7xl animate-pulse px-4 py-8 sm:px-6">
+        <div className="mb-8">
+          <div className="h-4 w-32 rounded-lg bg-[var(--surface)]" />
+          <div className="mt-4 h-9 w-72 rounded-xl bg-[var(--surface)]" />
+          <div className="mt-2.5 h-5 w-96 max-w-full rounded-lg bg-[var(--surface)]" />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[1, 2, 3, 4].map((item) => (
             <div
               key={item}
-              className="h-28 rounded-xl border border-[var(--border)] bg-[var(--surface)]"
+              className="h-32 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50"
             />
           ))}
         </div>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-3">
-          <div className="h-96 rounded-xl border border-[var(--border)] bg-[var(--surface)] lg:col-span-2" />
-          <div className="h-96 rounded-xl border border-[var(--border)] bg-[var(--surface)]" />
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div className="h-[420px] rounded-3xl border border-[var(--border)] bg-[var(--surface)]/50 lg:col-span-2" />
+          <div className="h-[420px] rounded-3xl border border-[var(--border)] bg-[var(--surface)]/50" />
         </div>
       </div>
     );
@@ -262,12 +262,12 @@ export default function WebHeadDashboard() {
 
   if (error) {
     return (
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5">
-          <h1 className="text-base font-semibold text-red-800">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-6 sm:p-8 shadow-sm">
+          <h1 className="text-lg font-bold text-red-800">
             Unable to load Webmaster dashboard
           </h1>
-          <p className="mt-1.5 text-sm text-red-700">{error}</p>
+          <p className="mt-2 text-sm leading-relaxed text-red-700">{error}</p>
         </div>
       </div>
     );
@@ -278,126 +278,126 @@ export default function WebHeadDashboard() {
   const welcomeName = user?.firstName || (isChairman ? "Chairman" : "Webmaster");
 
   return (
-    <div className="mx-auto w-full max-w-7xl">
-      <div className="mb-7">
-        <p className="mb-1.5 text-sm font-semibold text-[var(--primary)]">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+      <div className="mb-8 sm:mb-10">
+        <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
           {portalTitle}
-        </p>
+        </span>
 
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
+        <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl">
           Welcome back, {welcomeName}
         </h1>
 
-        <p className="mt-1.5 text-sm leading-6 text-[var(--muted)]">
+        <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">
           Manage the digital operations of IEEE Geeta University Student Branch.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="group rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all duration-300 hover:border-[var(--primary)]/30 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                 Total Events
               </p>
-              <p className="mt-2 text-2xl font-bold text-[var(--foreground)]">
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--secondary)]">
                 {events.length}
               </p>
             </div>
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-              <CalendarDays className="h-4 w-4 text-[var(--primary)]" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+              <CalendarDays size={22} />
             </div>
           </div>
 
-          <p className="mt-3 text-[11px] text-[var(--muted)]">
+          <p className="mt-4 text-xs font-medium text-[var(--muted-foreground)]">
             Events available for branch management
           </p>
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div className="group rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all duration-300 hover:border-amber-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                 Pending Approval
               </p>
-              <p className="mt-2 text-2xl font-bold text-[var(--foreground)]">
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--secondary)]">
                 {pendingEvents}
               </p>
             </div>
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50">
-              <Clock3 className="h-4 w-4 text-amber-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-transform duration-300 group-hover:scale-110">
+              <Clock3 size={22} />
             </div>
           </div>
 
           <Link
             href="/dashboard/events"
-            className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--primary)]"
+            className="group/link mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--primary)] hover:text-[var(--primary-dark)]"
           >
             Review events
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
           </Link>
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div className="group rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all duration-300 hover:border-emerald-300 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                 Published Events
               </p>
-              <p className="mt-2 text-2xl font-bold text-[var(--foreground)]">
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--secondary)]">
                 {publishedEvents}
               </p>
             </div>
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform duration-300 group-hover:scale-110">
+              <CheckCircle2 size={22} />
             </div>
           </div>
 
-          <p className="mt-3 text-[11px] text-[var(--muted)]">
+          <p className="mt-4 text-xs font-medium text-[var(--muted-foreground)]">
             Currently published events
           </p>
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div className="group rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all duration-300 hover:border-[var(--primary)]/30 hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-[var(--muted)]">
+              <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                 Draft Events
               </p>
-              <p className="mt-2 text-2xl font-bold text-[var(--foreground)]">
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--secondary)]">
                 {draftEvents}
               </p>
             </div>
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-              <FileText className="h-4 w-4 text-[var(--primary)]" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+              <FileText size={22} />
             </div>
           </div>
 
-          <p className="mt-3 text-[11px] text-[var(--muted)]">
+          <p className="mt-4 text-xs font-medium text-[var(--muted-foreground)]">
             Events still in draft status
           </p>
         </div>
       </div>
 
-      <div className="mt-6 grid gap-5 lg:grid-cols-3">
-        <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)] lg:col-span-2">
-          <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-3.5">
+      <div className="mt-8 grid gap-8 lg:grid-cols-3">
+        <section className="rounded-3xl border border-[var(--border)] bg-white shadow-sm lg:col-span-2 overflow-hidden">
+          <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5">
             <div>
-              <h2 className="text-base font-bold text-[var(--foreground)]">
+              <h2 className="text-lg font-bold text-[var(--secondary)]">
                 Event Operations
               </h2>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">
+              <p className="mt-1 text-xs font-medium text-[var(--muted-foreground)]">
                 Current event workflow and upcoming activities
               </p>
             </div>
 
             <Link
               href="/dashboard/events"
-              className="text-xs font-semibold text-[var(--primary)]"
+              className="text-xs font-bold text-[var(--primary)] transition-colors hover:text-[var(--primary-dark)]"
             >
               Manage events
             </Link>
@@ -405,12 +405,12 @@ export default function WebHeadDashboard() {
 
           <div className="divide-y divide-[var(--border)]">
             {upcomingEvents.length === 0 ? (
-              <div className="px-5 py-12 text-center">
-                <CalendarDays className="mx-auto h-7 w-7 text-[var(--muted)]" />
-                <p className="mt-3 text-sm font-medium text-[var(--foreground)]">
+              <div className="px-6 py-16 text-center">
+                <CalendarDays className="mx-auto h-10 w-10 text-[var(--muted-foreground)]" />
+                <p className="mt-4 text-base font-bold text-[var(--secondary)]">
                   No upcoming events
                 </p>
-                <p className="mt-1 text-xs text-[var(--muted)]">
+                <p className="mt-1.5 text-sm text-[var(--muted-foreground)]">
                   Upcoming events will appear here when available.
                 </p>
               </div>
@@ -418,32 +418,32 @@ export default function WebHeadDashboard() {
               upcomingEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="flex gap-3 px-4 py-3.5 transition hover:bg-[var(--background)]"
+                  className="group flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-5 transition-colors hover:bg-[var(--surface)]/40"
                 >
-                  <div className="h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-[var(--background)]">
+                  <div className="relative aspect-[16/9] w-full sm:h-16 sm:w-28 shrink-0 overflow-hidden rounded-xl bg-[var(--surface)] border border-[var(--border)]">
                     {event.bannerImage ? (
                       <Image
                         src={event.bannerImage}
                         alt={event.title}
-                        width={80}
-                        height={56}
-                        className="h-full w-full object-cover"
+                        width={112}
+                        height={64}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center">
-                        <CalendarDays className="h-5 w-5 text-[var(--muted)]" />
+                        <CalendarDays className="h-5 w-5 text-[var(--muted-foreground)]" />
                       </div>
                     )}
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <h3 className="line-clamp-1 text-sm font-semibold text-[var(--foreground)]">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className="line-clamp-1 text-base font-bold text-[var(--secondary)]">
                         {event.title}
                       </h3>
 
                       <span
-                        className={`shrink-0 rounded-full border px-2 py-1 text-[10px] font-semibold ${getStatusClasses(
+                        className={`shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${getStatusClasses(
                           event.status,
                         )}`}
                       >
@@ -451,7 +451,7 @@ export default function WebHeadDashboard() {
                       </span>
                     </div>
 
-                    <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[var(--muted)]">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-medium text-[var(--muted-foreground)]">
                       <span>{formatDate(event.eventDate)}</span>
 
                       {event.startTime && (
@@ -473,7 +473,7 @@ export default function WebHeadDashboard() {
 
                   <Link
                     href={`/dashboard/events/${event.slug}`}
-                    className="hidden shrink-0 self-center rounded-lg border border-[var(--border)] px-2.5 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--background)] sm:inline-flex"
+                    className="inline-flex shrink-0 items-center justify-center rounded-xl border border-[var(--border)] bg-white px-4 py-2 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 sm:self-center"
                   >
                     View
                   </Link>
@@ -483,165 +483,164 @@ export default function WebHeadDashboard() {
           </div>
         </section>
 
-        <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)]">
-          <div className="border-b border-[var(--border)] px-4 py-3.5">
-            <h2 className="text-base font-bold text-[var(--foreground)]">
+        <section className="rounded-3xl border border-[var(--border)] bg-white shadow-sm overflow-hidden flex flex-col">
+          <div className="border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5">
+            <h2 className="text-lg font-bold text-[var(--secondary)]">
               Management
             </h2>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
+            <p className="mt-1 text-xs font-medium text-[var(--muted-foreground)]">
               {isChairman
                 ? "Branch operational control areas"
                 : "Webmaster control areas"}
             </p>
           </div>
 
-          <div className="p-3">
+          <div className="p-4 space-y-2 flex-1">
             <Link
               href="/dashboard/users"
-              className="flex items-center gap-3 rounded-xl p-3 transition hover:bg-[var(--background)]"
+              className="group flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-[var(--surface)]/60 border border-transparent hover:border-[var(--border)]"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-                <Users className="h-4 w-4 text-[var(--primary)]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+                <Users size={22} />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-[var(--foreground)]">
+                <p className="text-base font-bold text-[var(--secondary)]">
                   Users
                 </p>
-                <p className="text-xs text-[var(--muted)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
                   Accounts and access
                 </p>
               </div>
 
-              <ArrowRight className="h-4 w-4 text-[var(--muted)]" />
+              <ArrowRight size={18} className="text-[var(--muted-foreground)] transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/dashboard/leadership"
-              className="flex items-center gap-3 rounded-xl p-3 transition hover:bg-[var(--background)]"
+              className="group flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-[var(--surface)]/60 border border-transparent hover:border-[var(--border)]"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-                <ShieldCheck className="h-4 w-4 text-[var(--primary)]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+                <ShieldCheck size={22} />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-[var(--foreground)]">
+                <p className="text-base font-bold text-[var(--secondary)]">
                   Leadership
                 </p>
-                <p className="text-xs text-[var(--muted)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
                   Branch positions
                 </p>
               </div>
 
-              <ArrowRight className="h-4 w-4 text-[var(--muted)]" />
+              <ArrowRight size={18} className="text-[var(--muted-foreground)] transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/dashboard/announcements"
-              className="flex items-center gap-3 rounded-xl p-3 transition hover:bg-[var(--background)]"
+              className="group flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-[var(--surface)]/60 border border-transparent hover:border-[var(--border)]"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-                <Bell className="h-4 w-4 text-[var(--primary)]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+                <Bell size={22} />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-[var(--foreground)]">
+                <p className="text-base font-bold text-[var(--secondary)]">
                   Announcements
                 </p>
-                <p className="text-xs text-[var(--muted)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
                   Branch communication
                 </p>
               </div>
 
-              <ArrowRight className="h-4 w-4 text-[var(--muted)]" />
+              <ArrowRight size={18} className="text-[var(--muted-foreground)] transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/dashboard/gallery"
-              className="flex items-center gap-3 rounded-xl p-3 transition hover:bg-[var(--background)]"
+              className="group flex items-center gap-4 rounded-2xl p-4 transition-all hover:bg-[var(--surface)]/60 border border-transparent hover:border-[var(--border)]"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--background)]">
-                <GalleryHorizontal className="h-4 w-4 text-[var(--primary)]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+                <GalleryHorizontal size={22} />
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-[var(--foreground)]">
+                <p className="text-base font-bold text-[var(--secondary)]">
                   Gallery
                 </p>
-                <p className="text-xs text-[var(--muted)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
                   Media and albums
                 </p>
               </div>
 
-              <ArrowRight className="h-4 w-4 text-[var(--muted)]" />
+              <ArrowRight size={18} className="text-[var(--muted-foreground)] transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </section>
       </div>
 
-      <section className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
-        <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-3.5">
+      <section className="mt-8 rounded-3xl border border-[var(--border)] bg-white shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5">
           <div>
-            <h2 className="text-base font-bold text-[var(--foreground)]">
+            <h2 className="text-lg font-bold text-[var(--secondary)]">
               Recent Announcements
             </h2>
-
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
+            <p className="mt-1 text-xs font-medium text-[var(--muted-foreground)]">
               Latest branch communication
             </p>
           </div>
 
           <Link
             href="/dashboard/announcements"
-            className="text-xs font-semibold text-[var(--primary)]"
+            className="text-xs font-bold text-[var(--primary)] transition-colors hover:text-[var(--primary-dark)]"
           >
             View all
           </Link>
         </div>
 
         {announcements.length === 0 ? (
-          <div className="px-5 py-10 text-center">
-            <Bell className="mx-auto h-7 w-7 text-[var(--muted)]" />
-
-            <p className="mt-3 text-sm font-medium text-[var(--foreground)]">
+          <div className="px-6 py-16 text-center">
+            <Bell className="mx-auto h-10 w-10 text-[var(--muted-foreground)]" />
+            <p className="mt-4 text-base font-bold text-[var(--secondary)]">
               No announcements
             </p>
-
-            <p className="mt-1 text-xs text-[var(--muted)]">
+            <p className="mt-1.5 text-sm text-[var(--muted-foreground)]">
               Published announcements will appear here.
             </p>
           </div>
         ) : (
-          <div className="grid gap-3 p-3 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3">
             {announcements.map((announcement) => (
               <Link
                 key={announcement.id}
                 href={`/dashboard/announcements/${announcement.id}`}
-                className="rounded-xl border border-[var(--border)] p-3.5 transition hover:bg-[var(--background)]"
+                className="group flex flex-col justify-between rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm transition-all duration-300 hover:border-[var(--primary)]/30 hover:shadow-md"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="line-clamp-2 text-sm font-semibold text-[var(--foreground)]">
-                    {announcement.title}
-                  </h3>
+                <div>
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="line-clamp-2 text-base font-bold text-[var(--secondary)] transition-colors group-hover:text-[var(--primary)]">
+                      {announcement.title}
+                    </h3>
 
-                  <span
-                    className={`shrink-0 rounded-full border px-2 py-1 text-[10px] font-semibold ${getStatusClasses(
-                      announcement.isPublished
+                    <span
+                      className={`shrink-0 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${getStatusClasses(
+                        announcement.isPublished
+                          ? "PUBLISHED"
+                          : announcement.approvalStatus,
+                      )}`}
+                    >
+                      {announcement.isPublished
                         ? "PUBLISHED"
-                        : announcement.approvalStatus,
-                    )}`}
-                  >
-                    {announcement.isPublished
-                      ? "PUBLISHED"
-                      : announcement.approvalStatus.replaceAll("_", " ")}
-                  </span>
+                        : announcement.approvalStatus.replaceAll("_", " ")}
+                    </span>
+                  </div>
+
+                  <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-[var(--muted-foreground)]">
+                    {announcement.content}
+                  </p>
                 </div>
 
-                <p className="mt-2 line-clamp-2 text-xs leading-5 text-[var(--muted)]">
-                  {announcement.content}
-                </p>
-
-                <p className="mt-3 text-[10px] text-[var(--muted)]">
+                <p className="mt-5 text-[11px] font-semibold text-[var(--muted-foreground)] pt-3 border-t border-[var(--border)]/60">
                   {formatDate(
                     announcement.publishedAt || announcement.createdAt,
                   )}

@@ -139,7 +139,7 @@ function EventCard({
   return (
     <article
       className={[
-        "group overflow-hidden rounded-xl border border-[var(--border)] bg-white transition-shadow hover:shadow-md",
+        "group overflow-hidden rounded-xl border border-[var(--border)] bg-white transition-all duration-300 hover:border-[var(--primary)]/40 hover:shadow-md",
         compact ? "flex" : "",
       ].join(" ")}
     >
@@ -157,13 +157,13 @@ function EventCard({
             <img
               src={event.bannerImage}
               alt={event.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="flex h-full items-center justify-center">
               <CalendarDays
                 size={compact ? 28 : 40}
-                className="text-[var(--muted-light)]"
+                className="text-[var(--muted-light)] transition-colors duration-300 group-hover:text-[var(--primary)]"
               />
             </div>
           )}
@@ -177,13 +177,13 @@ function EventCard({
 
         <div className={compact ? "min-w-0 flex-1 p-4" : "p-4"}>
           <div className="flex items-center gap-2 text-xs font-semibold text-[var(--primary)]">
-            <CalendarDays size={14} />
+            <CalendarDays size={14} className="transition-transform duration-300 group-hover:scale-110" />
             {formatDate(event.eventDate)}
           </div>
 
           <h3
             className={[
-              "mt-2 font-bold text-[var(--secondary)] transition-colors group-hover:text-[var(--primary)]",
+              "mt-2 font-bold text-[var(--secondary)] transition-colors duration-300 group-hover:text-[var(--primary)]",
               compact ? "line-clamp-2 text-sm" : "line-clamp-2 text-lg",
             ].join(" ")}
           >
@@ -199,7 +199,7 @@ function EventCard({
           <div className="mt-3 space-y-1.5">
             {startTime && (
               <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Clock3 size={14} />
+                <Clock3 size={14} className="transition-colors duration-300 group-hover:text-[var(--primary)]" />
                 <span>
                   {startTime}
                   {endTime ? ` – ${endTime}` : ""}
@@ -209,8 +209,7 @@ function EventCard({
 
             {event.venue && (
               <div className="flex items-start gap-2 text-xs text-[var(--muted)]">
-                <MapPin size={14} className="mt-0.5 shrink-0" />
-
+                <MapPin size={14} className="mt-0.5 shrink-0 transition-colors duration-300 group-hover:text-[var(--primary)]" />
                 <span className="line-clamp-1">{event.venue}</span>
               </div>
             )}
@@ -219,7 +218,7 @@ function EventCard({
           {!compact && (
             <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)]">
               View details
-              <ArrowRight size={16} />
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </div>
           )}
         </div>
@@ -242,17 +241,16 @@ export default async function EventsPage() {
   const pastEvents = events.filter((event) => isEventPast(event, now));
 
   return (
-    <>
-      {/* Hero */}
-      <section className="border-b border-[var(--border)] bg-[var(--primary-light)] py-16 sm:py-20">
+    <main className="min-h-screen overflow-x-hidden bg-[var(--background)]">
+      <section className="border-b border-[var(--border)] bg-[var(--primary-light)] py-16 sm:py-20 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
         <Container>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+              <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
                 IEEE GU Activities
               </p>
 
-              <h1 className="mt-3 text-4xl font-bold tracking-tight text-[var(--secondary)] sm:text-5xl">
+              <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-5xl">
                 Events
               </h1>
 
@@ -272,27 +270,27 @@ export default async function EventsPage() {
         </Container>
       </section>
 
-      {/* Upcoming Events */}
       <section className="bg-white py-14 sm:py-16">
         <Container>
-          <div className="flex items-end justify-between gap-5">
+          <div className="flex items-end justify-between gap-5 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
             <div>
-              <div className="flex items-center gap-2">
-                <CalendarDays size={21} className="text-[var(--primary)]" />
-
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]">
+                  <CalendarDays size={20} />
+                </div>
                 <h2 className="text-2xl font-bold text-[var(--secondary)] sm:text-3xl">
                   Upcoming Events
                 </h2>
               </div>
 
-              <p className="mt-2 text-sm text-[var(--muted)]">
+              <p className="mt-3 text-sm text-[var(--muted)]">
                 Discover what's coming up at IEEE GU.
               </p>
             </div>
           </div>
 
           {upcomingEvents.length === 0 ? (
-            <div className="mt-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 py-12 text-center">
+            <div className="mt-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 py-12 text-center animate-in fade-in duration-700 ease-out">
               <CalendarDays size={34} className="mx-auto text-[var(--muted)]" />
 
               <h3 className="mt-4 font-semibold text-[var(--secondary)]">
@@ -304,95 +302,114 @@ export default async function EventsPage() {
               </p>
             </div>
           ) : (
-            <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingEvents.slice(0, 6).map((event) => (
-                <EventCard key={event.id} event={event} />
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.slice(0, 6).map((event, index) => (
+                <div 
+                  key={event.id}
+                  className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <EventCard event={event} />
+                </div>
               ))}
             </div>
           )}
         </Container>
       </section>
 
-      {/* Ongoing Events */}
       {ongoingEvents.length > 0 && (
         <section className="border-y border-[var(--border)] bg-[var(--surface)] py-14 sm:py-16">
           <Container>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--success)]" />
-
+            <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
+                  <span className="h-3 w-3 rounded-full bg-green-500 animate-pulse" />
+                </div>
                 <h2 className="text-2xl font-bold text-[var(--secondary)] sm:text-3xl">
                   Ongoing Events
                 </h2>
               </div>
 
-              <p className="mt-2 text-sm text-[var(--muted)]">
+              <p className="mt-3 text-sm text-[var(--muted)]">
                 Events happening right now.
               </p>
             </div>
 
             <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {ongoingEvents.map((event) => (
-                <EventCard key={event.id} event={event} compact />
+              {ongoingEvents.map((event, index) => (
+                <div 
+                  key={event.id}
+                  className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <EventCard event={event} compact />
+                </div>
               ))}
             </div>
           </Container>
         </section>
       )}
 
-      {/* Calendar */}
       <section className="bg-white py-14 sm:py-16">
         <Container>
-          <EventCalendar
-            events={events.map((event) => ({
-              id: event.id,
-              title: event.title,
-              slug: event.slug,
-              eventDate: event.eventDate,
-              startTime: event.startTime,
-              endTime: event.endTime,
-              venue: event.venue,
-              bannerImage: event.bannerImage,
-              access: event.access,
-            }))}
-          />
+          <div className="animate-in fade-in duration-700 ease-out">
+            <EventCalendar
+              events={events.map((event) => ({
+                id: event.id,
+                title: event.title,
+                slug: event.slug,
+                eventDate: event.eventDate,
+                startTime: event.startTime,
+                endTime: event.endTime,
+                venue: event.venue,
+                bannerImage: event.bannerImage,
+                access: event.access,
+              }))}
+            />
+          </div>
         </Container>
       </section>
 
-      {/* Past Events */}
       <section className="border-t border-[var(--border)] bg-[var(--surface)] py-14 sm:py-16">
         <Container>
-          <div className="flex items-end justify-between gap-5">
+          <div className="flex items-end justify-between gap-5 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
             <div>
-              <div className="flex items-center gap-2">
-                <Clock3 size={21} className="text-[var(--primary)]" />
-
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]">
+                  <Clock3 size={20} />
+                </div>
                 <h2 className="text-2xl font-bold text-[var(--secondary)] sm:text-3xl">
                   Past Events
                 </h2>
               </div>
 
-              <p className="mt-2 text-sm text-[var(--muted)]">
+              <p className="mt-3 text-sm text-[var(--muted)]">
                 Take a look at previous IEEE GU activities.
               </p>
             </div>
           </div>
 
           {pastEvents.length === 0 ? (
-            <div className="mt-8 rounded-xl border border-[var(--border)] bg-white px-6 py-12 text-center">
+            <div className="mt-8 rounded-xl border border-[var(--border)] bg-white px-6 py-12 text-center animate-in fade-in duration-700 ease-out">
               <p className="text-sm text-[var(--muted)]">
                 No past events available.
               </p>
             </div>
           ) : (
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {pastEvents.slice(0, 6).map((event) => (
-                <EventCard key={event.id} event={event} compact />
+              {pastEvents.slice(0, 6).map((event, index) => (
+                <div 
+                  key={event.id}
+                  className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <EventCard event={event} compact />
+                </div>
               ))}
             </div>
           )}
         </Container>
       </section>
-    </>
+    </main>
   );
 }

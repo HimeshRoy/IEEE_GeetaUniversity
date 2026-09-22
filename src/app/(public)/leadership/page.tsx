@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  AlertCircle,
-  Loader2,
-  UserRound,
-} from "lucide-react";
+import { AlertCircle, Loader2, UserRound } from "lucide-react";
 
 import { api } from "@/lib/api";
 import Container from "@/components/ui/Container";
@@ -43,10 +39,7 @@ type LeadershipResponse = {
   data: LeadershipMember[];
 };
 
-const POSITION_LABELS: Record<
-  LeadershipPosition,
-  string
-> = {
+const POSITION_LABELS: Record<LeadershipPosition, string> = {
   IEEE_COUNSELOR: "IEEE Counselor",
   FACULTY_ADVISOR: "Faculty Advisor",
   FACULTY_MEMBER: "Faculty Member",
@@ -58,52 +51,30 @@ const POSITION_LABELS: Record<
   TREASURER: "Treasurer",
 };
 
-const POSITION_DESCRIPTIONS: Record<
-  LeadershipPosition,
-  string
-> = {
-  IEEE_COUNSELOR:
-    "Faculty guidance and branch mentorship",
-  FACULTY_ADVISOR:
-    "Supports the branch through academic and institutional guidance",
-  FACULTY_MEMBER:
-    "Faculty support and academic guidance",
-  CHAIRMAN:
-    "Leads the student branch",
-  VICE_CHAIRMAN:
-    "Supports branch leadership and operations",
-  JOINT_SECRETARY:
-    "Coordinates branch activities and communication",
-  WEBMASTER:
-    "Manages the branch's digital platform",
-  PHOTOGRAPHER:
-    "Documents branch activities and events",
-  TREASURER:
-    "Supports financial administration",
+const POSITION_DESCRIPTIONS: Record<LeadershipPosition, string> = {
+  IEEE_COUNSELOR: "Faculty guidance and branch mentorship",
+  FACULTY_ADVISOR: "Supports the branch through academic and institutional guidance",
+  FACULTY_MEMBER: "Faculty support and academic guidance",
+  CHAIRMAN: "Leads the student branch",
+  VICE_CHAIRMAN: "Supports branch leadership and operations",
+  JOINT_SECRETARY: "Coordinates branch activities and communication",
+  WEBMASTER: "Manages the branch's digital platform",
+  PHOTOGRAPHER: "Documents branch activities and events",
+  TREASURER: "Supports financial administration",
 };
 
 function getFullName(member: LeadershipMember) {
-  return [member.user.firstName, member.user.lastName]
-    .filter(Boolean)
-    .join(" ");
+  return [member.user.firstName, member.user.lastName].filter(Boolean).join(" ");
 }
 
 function getInitials(member: LeadershipMember) {
-  const first =
-    member.user.firstName?.charAt(0) ?? "";
-
-  const last =
-    member.user.lastName?.charAt(0) ?? "";
-
+  const first = member.user.firstName?.charAt(0) ?? "";
+  const last = member.user.lastName?.charAt(0) ?? "";
   return `${first}${last}`.toUpperCase();
 }
 
 function getErrorMessage(error: unknown) {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "response" in error
-  ) {
+  if (typeof error === "object" && error !== null && "response" in error) {
     const response = (
       error as {
         response?: {
@@ -136,80 +107,61 @@ function PersonCard({
   featured?: boolean;
 }) {
   const isVacant = !member;
-
-  const name = member
-    ? getFullName(member)
-    : "Position Vacant";
-
-  const initials = member
-    ? getInitials(member)
-    : "";
-
-  const membershipId =
-    member?.user.ieeeMembershipNumber ?? null;
+  const name = member ? getFullName(member) : "Position Vacant";
+  const initials = member ? getInitials(member) : "";
+  const membershipId = member?.user.ieeeMembershipNumber ?? null;
 
   return (
     <article
       className={[
-        "group relative w-full overflow-hidden rounded-2xl",
-        "border border-[var(--border)]",
-        "bg-[var(--surface)]",
-        "shadow-[0_8px_30px_rgba(15,23,42,0.06)]",
-        "transition-all duration-200",
-        "hover:-translate-y-1",
-        "hover:shadow-[0_14px_40px_rgba(15,23,42,0.10)]",
-        featured
-          ? "max-w-[350px] p-6"
-          : "max-w-[310px] p-4",
+        "group relative w-full overflow-hidden rounded-2xl mx-auto",
+        isVacant
+          ? "border-2 border-dashed border-[var(--border)] bg-[var(--surface)]/50"
+          : "border border-[var(--border)] bg-gradient-to-b from-[var(--surface)] to-[var(--background)]",
+        "shadow-lg shadow-black/[0.03] backdrop-blur-sm",
+        "transition-all duration-300 ease-out",
+        "hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--primary)]/10",
+        !isVacant && "hover:border-[var(--primary)]/30",
+        featured ? "max-w-[350px] p-6 sm:p-7" : "max-w-[310px] p-4 sm:p-5",
       ].join(" ")}
     >
       <div
         className={[
-          "absolute inset-x-0 top-0 h-1",
+          "absolute inset-x-0 top-0 h-1.5 transition-colors duration-300",
           isVacant
             ? "bg-[var(--border)]"
-            : "bg-[var(--primary)]",
+            : "bg-gradient-to-r from-[var(--primary)] to-blue-500 group-hover:to-purple-500",
         ].join(" ")}
       />
 
-      <div
-        className={[
-          "flex items-center",
-          featured ? "gap-4" : "gap-3",
-        ].join(" ")}
-      >
+      <div className={["flex items-center", featured ? "gap-4 sm:gap-5" : "gap-3 sm:gap-4"].join(" ")}>
         <div
           className={[
-            "shrink-0 overflow-hidden rounded-full",
-            "border-2",
+            "shrink-0 overflow-hidden rounded-full transition-transform duration-300 group-hover:ring-4",
             isVacant
-              ? "border-[var(--border)] bg-[var(--background)]"
-              : "border-[var(--primary)]/20 bg-[var(--background)]",
-            featured
-              ? "h-[72px] w-[72px]"
-              : "h-[58px] w-[58px]",
+              ? "border-2 border-dashed border-[var(--border)] bg-[var(--background)] group-hover:ring-[var(--border)]/20"
+              : "ring-2 ring-[var(--primary)]/20 ring-offset-2 ring-offset-[var(--background)] bg-[var(--background)] group-hover:ring-[var(--primary)]/40",
+            featured ? "h-[64px] w-[64px] sm:h-[76px] sm:w-[76px]" : "h-[54px] w-[54px] sm:h-[64px] sm:w-[64px]",
           ].join(" ")}
         >
           {member?.user.profileImage ? (
             <img
               src={member.user.profileImage}
               alt={name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="flex h-full w-full items-center justify-center bg-[var(--surface)]">
               {member && initials ? (
-                <span className="text-sm font-bold text-[var(--primary)]">
+                <span className="text-base font-bold tracking-wider text-[var(--primary)]">
                   {initials}
                 </span>
               ) : (
                 <UserRound
                   className={[
-                    featured
-                      ? "h-7 w-7"
-                      : "h-5 w-5",
-                    "text-[var(--muted-foreground)]",
+                    featured ? "h-7 w-7 sm:h-8 sm:w-8" : "h-5 w-5 sm:h-6 sm:w-6",
+                    "text-[var(--muted-foreground)] opacity-60 transition-opacity group-hover:opacity-100",
                   ].join(" ")}
                 />
               )}
@@ -220,58 +172,49 @@ function PersonCard({
         <div className="min-w-0 flex-1">
           <div
             className={[
-              "inline-flex max-w-full rounded-full px-2.5 py-1",
+              "inline-flex max-w-full rounded-md px-2 py-0.5",
               isVacant
-                ? "border border-[var(--border)] bg-[var(--background)]"
-                : "bg-[var(--primary)]",
+                ? "bg-[var(--surface)] text-[var(--muted-foreground)] border border-[var(--border)]"
+                : "bg-[var(--primary)]/10 text-[var(--primary)]",
             ].join(" ")}
           >
-            <span
-              className={[
-                "truncate text-[10px] font-bold uppercase tracking-[0.08em]",
-                isVacant
-                  ? "text-[var(--muted-foreground)]"
-                  : "text-white",
-              ].join(" ")}
-            >
+            <span className="truncate text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">
               {POSITION_LABELS[position]}
             </span>
           </div>
 
           <h3
             className={[
-              "mt-2 truncate font-bold",
-              featured ? "text-lg" : "text-base",
-              isVacant
-                ? "text-[var(--muted-foreground)]"
-                : "text-[var(--foreground)]",
+              "mt-2 sm:mt-2.5 truncate font-bold tracking-tight",
+              featured ? "text-lg sm:text-xl" : "text-base sm:text-lg",
+              isVacant ? "text-[var(--muted-foreground)]" : "text-[var(--foreground)]",
             ].join(" ")}
           >
             {name}
           </h3>
 
           {member && membershipId && (
-            <p className="mt-1 truncate text-xs font-medium text-[var(--primary)]">
-              IEEE Membership ID: {membershipId}
+            <p className="mt-1 truncate text-[11px] sm:text-xs font-medium text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors">
+              ID: {membershipId}
             </p>
           )}
 
           {member && !membershipId && (
-            <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-              IEEE Membership ID not available
+            <p className="mt-1 text-[11px] sm:text-xs text-[var(--muted-foreground)] opacity-70">
+              ID not available
             </p>
           )}
 
           {isVacant && (
-            <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-              This position is currently unassigned
+            <p className="mt-1 text-[11px] sm:text-xs text-[var(--muted-foreground)] opacity-70">
+              Currently unassigned
             </p>
           )}
         </div>
       </div>
 
       {!isVacant && featured && (
-        <p className="mt-4 border-t border-[var(--border)] pt-3 text-xs leading-5 text-[var(--muted-foreground)]">
+        <p className="mt-4 sm:mt-5 border-t border-[var(--border)]/60 pt-3 sm:pt-4 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
           {POSITION_DESCRIPTIONS[position]}
         </p>
       )}
@@ -289,18 +232,45 @@ function SectionHeading({
   description: string;
 }) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
-      <span className="inline-flex rounded-full border border-[var(--primary)]/15 bg-[var(--primary)]/[0.06] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--primary)]">
+    <div className="mx-auto max-w-2xl text-center px-4 sm:px-0">
+      <span className="inline-flex rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/[0.08] px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[var(--primary)] backdrop-blur-md">
         {eyebrow}
       </span>
 
-      <h2 className="mt-4 text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
+      <h2 className="mt-4 sm:mt-5 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
         {title}
       </h2>
 
-      <p className="mt-3 text-sm leading-6 text-[var(--muted-foreground)] sm:text-base">
+      <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg leading-relaxed text-[var(--muted-foreground)]">
         {description}
       </p>
+    </div>
+  );
+}
+
+function VerticalConnector() {
+  return (
+    <div aria-hidden="true" className="relative h-12 sm:h-14 w-10 -my-2 sm:-my-3 z-0 flex justify-center">
+      <style>{`
+        @keyframes dash-flow {
+          to { stroke-dashoffset: -100; }
+        }
+      `}</style>
+      <svg className="absolute inset-0 h-full w-full drop-shadow-sm" viewBox="0 0 40 48" preserveAspectRatio="none">
+        <path
+          d="M20 0 L20 48"
+          fill="none"
+          stroke="var(--primary)"
+          strokeOpacity="0.4"
+          strokeWidth="2"
+          strokeDasharray="4 4"
+          vectorEffect="non-scaling-stroke"
+          style={{ animation: 'dash-flow 20s linear infinite' }}
+        />
+      </svg>
+      {/* Absolute Dots prevent oval stretching */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-primary shadow-[0_0_6px_var(--primary)]" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/60" />
     </div>
   );
 }
@@ -322,147 +292,61 @@ function FacultyTree({
         description="Guiding, supporting, and mentoring the IEEE student community."
       />
 
-      <div className="relative mt-12">
-        <div className="flex justify-center">
-          <PersonCard
-            member={counselor}
-            position="IEEE_COUNSELOR"
-            featured
-          />
+      <div className="relative mt-12 sm:mt-16 flex flex-col items-center">
+        {/* Top Node */}
+        <div className="relative z-10 w-full flex justify-center px-4">
+          <PersonCard member={counselor} position="IEEE_COUNSELOR" featured />
         </div>
 
-        <div className="relative mx-auto h-24 w-full max-w-3xl">
+        {/* Mobile Vertical Connector */}
+        <div className="sm:hidden flex justify-center -my-2 relative z-0">
+          <VerticalConnector />
+        </div>
+
+        {/* Desktop SVG Branch (1 to 2) */}
+        <div className="relative h-16 sm:h-20 w-full max-w-4xl -my-2 z-0 hidden sm:block">
           <svg
-            className="absolute inset-0 hidden h-full w-full sm:block"
-            viewBox="0 0 800 100"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M400 0 C400 30 400 42 270 58 C220 64 170 70 150 100"
-              fill="none"
-              stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
-            />
-
-            <path
-              d="M400 0 C400 30 400 42 530 58 C580 64 630 70 650 100"
-              fill="none"
-              stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
-            />
-
-            <circle
-              cx="400"
-              cy="3"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
-            />
-
-            <circle
-              cx="150"
-              cy="97"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
-            />
-
-            <circle
-              cx="650"
-              cy="97"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
-            />
-          </svg>
-
-          <svg
-            className="absolute inset-0 h-full w-full sm:hidden"
+            className="absolute inset-0 h-full w-full drop-shadow-md"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
             <path
-              d="M50 0 C50 25 35 35 50 52 C65 68 50 75 50 100"
+              d="M50 0 C50 50, 25 50, 25 100"
               fill="none"
               stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
+              strokeOpacity="0.4"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
             />
-
-            <circle
-              cx="50"
-              cy="3"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
-            />
-
-            <circle
-              cx="50"
-              cy="97"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
+            <path
+              d="M50 0 C50 50, 75 50, 75 100"
+              fill="none"
+              stroke="var(--primary)"
+              strokeOpacity="0.4"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
             />
           </svg>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_var(--primary)]" />
+          <div className="absolute bottom-0 left-[25%] -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/70" />
+          <div className="absolute bottom-0 left-[75%] -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/70" />
         </div>
 
-        <div className="grid grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 sm:gap-8">
-          <PersonCard
-            member={facultyAdvisor}
-            position="FACULTY_ADVISOR"
-          />
-
-          <PersonCard
-            member={facultyMember}
-            position="FACULTY_MEMBER"
-          />
+        {/* Bottom Nodes (No gap to preserve exact 25% / 75% alignment) */}
+        <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 relative z-10">
+          <div className="px-4 flex flex-col items-center">
+            <PersonCard member={facultyAdvisor} position="FACULTY_ADVISOR" />
+            <div className="sm:hidden flex justify-center -mb-8 mt-2 relative z-0">
+              <VerticalConnector />
+            </div>
+          </div>
+          <div className="px-4 flex flex-col items-center mt-6 sm:mt-0">
+            <PersonCard member={facultyMember} position="FACULTY_MEMBER" />
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function VerticalConnector() {
-  return (
-    <div
-      aria-hidden="true"
-      className="relative h-12 w-10"
-    >
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 40 48"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M20 0 C20 14 31 18 31 27 C31 36 20 36 20 48"
-          fill="none"
-          stroke="var(--primary)"
-          strokeOpacity="0.35"
-          strokeWidth="1.5"
-        />
-
-        <circle
-          cx="20"
-          cy="2"
-          r="3"
-          fill="var(--primary)"
-          fillOpacity="0.8"
-        />
-
-        <circle
-          cx="20"
-          cy="46"
-          r="3"
-          fill="var(--primary)"
-          fillOpacity="0.8"
-        />
-      </svg>
-    </div>
   );
 }
 
@@ -482,109 +366,91 @@ function StudentTree({
   treasurer?: LeadershipMember;
 }) {
   return (
-    <section className="mt-20 sm:mt-24">
+    <section className="mt-24 sm:mt-32">
       <SectionHeading
         eyebrow="Student Branch"
         title="Student Branch Leadership"
         description="A coordinated leadership structure driving activities, collaboration, and innovation."
       />
 
-      <div className="mt-10">
-        <div className="flex justify-center">
-          <PersonCard
-            member={chairman}
-            position="CHAIRMAN"
-            featured
-          />
+      <div className="mt-12 sm:mt-16 flex flex-col items-center">
+        {/* Core Hierarchy Chain */}
+        <div className="relative z-10 w-full flex justify-center px-4">
+          <PersonCard member={chairman} position="CHAIRMAN" featured />
         </div>
 
-        <div className="flex justify-center">
+        <VerticalConnector />
+
+        <div className="relative z-10 w-full flex justify-center px-4">
+          <PersonCard member={viceChairman} position="VICE_CHAIRMAN" />
+        </div>
+
+        <VerticalConnector />
+
+        <div className="relative z-10 w-full flex justify-center px-4">
+          <PersonCard member={jointSecretary} position="JOINT_SECRETARY" />
+        </div>
+
+        {/* Mobile Vertical Connector */}
+        <div className="sm:hidden flex justify-center -my-2 relative z-0">
           <VerticalConnector />
         </div>
 
-        <div className="flex justify-center">
-          <PersonCard
-            member={viceChairman}
-            position="VICE_CHAIRMAN"
-          />
-        </div>
-
-        <div className="flex justify-center">
-          <VerticalConnector />
-        </div>
-
-        <div className="flex justify-center">
-          <PersonCard
-            member={jointSecretary}
-            position="JOINT_SECRETARY"
-          />
-        </div>
-
-        <div className="relative mx-auto mt-8 max-w-6xl">
+        {/* Desktop SVG Branch (1 to 3) */}
+        <div className="relative h-16 sm:h-20 w-full max-w-5xl -my-2 z-0 hidden sm:block">
           <svg
-            className="absolute left-1/2 top-0 hidden h-16 w-full -translate-x-1/2 sm:block"
-            viewBox="0 0 1200 70"
+            className="absolute inset-0 h-full w-full drop-shadow-md"
+            viewBox="0 0 100 100"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
             <path
-              d="M600 0 C600 18 600 28 390 42 C270 50 210 55 180 70"
+              d="M50 0 C50 50, 16.66 50, 16.66 100"
               fill="none"
               stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
+              strokeOpacity="0.4"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
             />
-
             <path
-              d="M600 0 C600 25 600 35 600 70"
+              d="M50 0 L50 100"
               fill="none"
               stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
+              strokeOpacity="0.4"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
             />
-
             <path
-              d="M600 0 C600 18 600 28 810 42 C930 50 990 55 1020 70"
+              d="M50 0 C50 50, 83.33 50, 83.33 100"
               fill="none"
               stroke="var(--primary)"
-              strokeOpacity="0.35"
-              strokeWidth="1.5"
-            />
-
-            <circle
-              cx="600"
-              cy="3"
-              r="4"
-              fill="var(--primary)"
-              fillOpacity="0.8"
+              strokeOpacity="0.4"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
             />
           </svg>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_var(--primary)]" />
+          <div className="absolute bottom-0 left-[16.66%] -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/70" />
+          <div className="absolute bottom-0 left-[50%] -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/70" />
+          <div className="absolute bottom-0 left-[83.33%] -translate-x-1/2 translate-y-1/2 h-2 w-2 rounded-full bg-primary/70" />
+        </div>
 
-          <div className="flex justify-center sm:hidden">
-            <VerticalConnector />
+        {/* Bottom Nodes (No gap to preserve exact 16.66% / 50% / 83.33% alignment) */}
+        <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-3 relative z-10">
+          <div className="px-3 flex flex-col items-center">
+            <PersonCard member={webmaster} position="WEBMASTER" />
+            <div className="sm:hidden flex justify-center -mb-8 mt-2 relative z-0">
+              <VerticalConnector />
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-5 pt-5 sm:grid-cols-3 sm:gap-8 sm:pt-16">
-            <div className="relative flex justify-center">
-              <PersonCard
-                member={webmaster}
-                position="WEBMASTER"
-              />
+          <div className="px-3 flex flex-col items-center mt-6 sm:mt-0">
+            <PersonCard member={photographer} position="PHOTOGRAPHER" />
+            <div className="sm:hidden flex justify-center -mb-8 mt-2 relative z-0">
+              <VerticalConnector />
             </div>
-
-            <div className="relative flex justify-center">
-              <PersonCard
-                member={photographer}
-                position="PHOTOGRAPHER"
-              />
-            </div>
-
-            <div className="relative flex justify-center">
-              <PersonCard
-                member={treasurer}
-                position="TREASURER"
-              />
-            </div>
+          </div>
+          <div className="px-3 flex flex-col items-center mt-6 sm:mt-0">
+            <PersonCard member={treasurer} position="TREASURER" />
           </div>
         </div>
       </div>
@@ -593,16 +459,9 @@ function StudentTree({
 }
 
 export default function LeadershipPage() {
-  const [leadership, setLeadership] = useState<
-    LeadershipMember[]
-  >([]);
-
-  const [isLoading, setIsLoading] =
-    useState(true);
-
-  const [error, setError] = useState<
-    string | null
-  >(null);
+  const [leadership, setLeadership] = useState<LeadershipMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -612,121 +471,73 @@ export default function LeadershipPage() {
         setIsLoading(true);
         setError(null);
 
-        const response =
-          await api.get<LeadershipResponse>(
-            "/users/leadership",
-          );
+        const response = await api.get<LeadershipResponse>("/users/leadership");
 
         if (!response.data.success) {
-          throw new Error(
-            response.data.message ||
-              "Failed to load leadership.",
-          );
+          throw new Error(response.data.message || "Failed to load leadership.");
         }
 
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
 
-        const currentLeadership =
-          response.data.data.filter(
-            (member) =>
-              member.isCurrent &&
-              member.user,
-          );
+        const currentLeadership = response.data.data.filter(
+          (member) => member.isCurrent && member.user
+        );
 
         setLeadership(currentLeadership);
       } catch (error) {
-        if (!mounted) {
-          return;
-        }
-
+        if (!mounted) return;
         setError(getErrorMessage(error));
       } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+        if (mounted) setIsLoading(false);
       }
     }
 
     void loadLeadership();
-
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   const structure = useMemo(() => {
-    function find(
-      position: LeadershipPosition,
-    ) {
-      return leadership.find(
-        (member) =>
-          member.position === position,
-      );
+    function find(position: LeadershipPosition) {
+      return leadership.find((member) => member.position === position);
     }
 
     return {
-      counselor:
-        find("IEEE_COUNSELOR"),
-
-      facultyAdvisor:
-        find("FACULTY_ADVISOR"),
-
-      facultyMember:
-        find("FACULTY_MEMBER"),
-
-      chairman:
-        find("CHAIRMAN"),
-
-      viceChairman:
-        find("VICE_CHAIRMAN"),
-
-      jointSecretary:
-        find("JOINT_SECRETARY"),
-
-      webmaster:
-        find("WEBMASTER"),
-
-      photographer:
-        find("PHOTOGRAPHER"),
-
-      treasurer:
-        find("TREASURER"),
+      counselor: find("IEEE_COUNSELOR"),
+      facultyAdvisor: find("FACULTY_ADVISOR"),
+      facultyMember: find("FACULTY_MEMBER"),
+      chairman: find("CHAIRMAN"),
+      viceChairman: find("VICE_CHAIRMAN"),
+      jointSecretary: find("JOINT_SECRETARY"),
+      webmaster: find("WEBMASTER"),
+      photographer: find("PHOTOGRAPHER"),
+      treasurer: find("TREASURER"),
     };
   }, [leadership]);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[var(--background)]">
-      <section className="relative overflow-hidden border-b border-[var(--border)]">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-        >
-          <div className="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-[var(--primary)]/[0.045] blur-3xl" />
-
-          <div className="absolute -right-40 top-10 h-[420px] w-[420px] rounded-full bg-[var(--primary)]/[0.04] blur-3xl" />
+    <main className="min-h-screen overflow-x-hidden bg-[var(--background)] pb-24">
+      <section className="relative overflow-hidden border-b border-[var(--border)] bg-gradient-to-b from-[var(--surface)]/40 to-transparent">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-40 -top-40 h-[400px] w-[400px] sm:h-[500px] sm:w-[500px] rounded-full bg-[var(--primary)]/[0.06] blur-3xl animate-[pulse_8s_ease-in-out_infinite]" />
+          <div className="absolute -right-40 top-20 h-[350px] w-[350px] sm:h-[450px] sm:w-[450px] rounded-full bg-blue-500/[0.04] blur-3xl animate-[pulse_10s_ease-in-out_infinite_reverse]" />
         </div>
 
         <Container>
-          <div className="relative py-16 text-center sm:py-20 lg:py-24">
-            <span className="inline-flex rounded-full border border-[var(--primary)]/15 bg-[var(--primary)]/[0.06] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--primary)]">
+          <div className="relative py-16 text-center sm:py-24 lg:py-28 px-4 sm:px-0">
+            <span className="inline-flex rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/[0.08] px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)] shadow-sm backdrop-blur-md">
               IEEE Geeta University
             </span>
 
-            <h1 className="mx-auto mt-5 max-w-4xl text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl">
+            <h1 className="mx-auto mt-5 sm:mt-6 max-w-4xl text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-6xl">
               Meet Our{" "}
-              <span className="text-[var(--primary)]">
+              <span className="bg-gradient-to-r from-[var(--primary)] to-blue-500 bg-clip-text text-transparent">
                 Leadership
               </span>{" "}
               Team
             </h1>
 
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[var(--muted-foreground)] sm:text-base">
-              Meet the individuals guiding the IEEE
-              Geeta University Student Branch and
-              contributing to its growth, activities,
-              and technical community.
+            <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-sm leading-7 sm:text-base sm:leading-8 text-[var(--muted-foreground)]">
+              Meet the individuals guiding the IEEE Geeta University Student Branch and contributing to its growth, activities, and technical community.
             </p>
           </div>
         </Container>
@@ -734,98 +545,63 @@ export default function LeadershipPage() {
 
       <section>
         <Container>
-          <div className="py-14 sm:py-18 lg:py-20">
+          <div className="py-14 sm:py-20 lg:py-24">
             {isLoading && (
-              <div className="flex min-h-[500px] items-center justify-center">
-                <div className="flex flex-col items-center text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)]">
-                    <Loader2 className="h-5 w-5 animate-spin text-[var(--primary)]" />
+              <div className="flex min-h-[400px] sm:min-h-[500px] items-center justify-center">
+                <div className="flex flex-col items-center text-center animate-in fade-in duration-500 px-4">
+                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-lg shadow-black/5">
+                    <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
                   </div>
-
-                  <p className="mt-4 font-medium text-[var(--foreground)]">
-                    Loading leadership
-                  </p>
-
-                  <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-                    Fetching the current branch structure...
-                  </p>
+                  <p className="mt-4 sm:mt-5 font-semibold text-[var(--foreground)]">Loading leadership</p>
+                  <p className="mt-2 text-sm text-[var(--muted-foreground)]">Fetching the current branch structure...</p>
                 </div>
               </div>
             )}
 
             {!isLoading && error && (
-              <div className="mx-auto flex min-h-[420px] max-w-xl items-center justify-center">
-                <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-sm">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)]/[0.08]">
-                    <AlertCircle className="h-6 w-6 text-[var(--primary)]" />
+              <div className="mx-auto flex min-h-[400px] max-w-xl items-center justify-center px-4">
+                <div className="w-full rounded-3xl border border-red-500/20 bg-red-500/[0.02] p-8 sm:p-10 text-center shadow-sm backdrop-blur-sm">
+                  <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-red-500/10">
+                    <AlertCircle className="h-6 w-6 sm:h-7 sm:w-7 text-red-500" />
                   </div>
+                  <h2 className="mt-5 sm:mt-6 text-lg sm:text-xl font-bold text-[var(--foreground)]">Unable to load leadership</h2>
+                  <p className="mt-3 text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">{error}</p>
+                </div>
+              </div>
+            )}
 
-                  <h2 className="mt-5 text-lg font-bold text-[var(--foreground)]">
-                    Unable to load leadership
-                  </h2>
-
-                  <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
-                    {error}
+            {!isLoading && !error && leadership.length === 0 && (
+              <div className="mx-auto flex min-h-[400px] max-w-xl items-center justify-center px-4">
+                <div className="w-full rounded-3xl border border-[var(--border)] bg-[var(--surface)]/50 p-8 sm:p-10 text-center shadow-sm backdrop-blur-sm">
+                  <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[var(--primary)]/10">
+                    <UserRound className="h-6 w-6 sm:h-7 sm:w-7 text-[var(--primary)]" />
+                  </div>
+                  <h2 className="mt-5 sm:mt-6 text-lg sm:text-xl font-bold text-[var(--foreground)]">Leadership unavailable</h2>
+                  <p className="mx-auto mt-3 max-w-md text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">
+                    No current leadership assignments are available in the branch system yet.
                   </p>
                 </div>
               </div>
             )}
 
-            {!isLoading &&
-              !error &&
-              leadership.length === 0 && (
-                <div className="mx-auto flex min-h-[420px] max-w-xl items-center justify-center">
-                  <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center shadow-sm">
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)]/[0.08]">
-                      <UserRound className="h-6 w-6 text-[var(--primary)]" />
-                    </div>
+            {!isLoading && !error && leadership.length > 0 && (
+              <div className="animate-in slide-in-from-bottom-8 fade-in duration-700 ease-out">
+                <FacultyTree
+                  counselor={structure.counselor}
+                  facultyAdvisor={structure.facultyAdvisor}
+                  facultyMember={structure.facultyMember}
+                />
 
-                    <h2 className="mt-5 text-lg font-bold text-[var(--foreground)]">
-                      Leadership information unavailable
-                    </h2>
-
-                    <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--muted-foreground)]">
-                      No current leadership assignments
-                      are available in the branch system yet.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-            {!isLoading &&
-              !error &&
-              leadership.length > 0 && (
-                <div>
-                  <FacultyTree
-                    counselor={structure.counselor}
-                    facultyAdvisor={
-                      structure.facultyAdvisor
-                    }
-                    facultyMember={
-                      structure.facultyMember
-                    }
-                  />
-
-                  <StudentTree
-                    chairman={structure.chairman}
-                    viceChairman={
-                      structure.viceChairman
-                    }
-                    jointSecretary={
-                      structure.jointSecretary
-                    }
-                    webmaster={
-                      structure.webmaster
-                    }
-                    photographer={
-                      structure.photographer
-                    }
-                    treasurer={
-                      structure.treasurer
-                    }
-                  />
-                </div>
-              )}
+                <StudentTree
+                  chairman={structure.chairman}
+                  viceChairman={structure.viceChairman}
+                  jointSecretary={structure.jointSecretary}
+                  webmaster={structure.webmaster}
+                  photographer={structure.photographer}
+                  treasurer={structure.treasurer}
+                />
+              </div>
+            )}
           </div>
         </Container>
       </section>

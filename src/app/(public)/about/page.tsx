@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -73,48 +75,49 @@ const branchActivities = [
 
 export default function AboutPage() {
   return (
-    <>
-      <section className="border-b border-[var(--border)] bg-white py-16 sm:py-20 lg:py-24">
+    <main className="min-h-screen overflow-x-hidden bg-[var(--background)]">
+     
+      <section className="border-b border-[var(--border)] bg-white py-16 sm:py-24 lg:py-32">
         <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-            <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+            <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+              <span className="inline-flex px-3 py-1 text-md font-bold uppercase tracking-widest text-[var(--primary)]">
                 About IEEE
-              </p>
+              </span>
 
-              <h1 className="mt-3 text-4xl font-bold leading-[1.08] tracking-tight text-[var(--secondary)] sm:text-5xl lg:text-6xl">
+              <h1 className="mt-5 text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--secondary)] sm:text-5xl lg:text-6xl">
                 Advancing technology for the benefit of humanity.
               </h1>
 
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-[var(--muted)]">
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--muted-foreground)]">
                 IEEE is a global technical professional organization bringing
                 together engineers, scientists, technologists, educators,
                 researchers, and students across a broad range of technology and
                 engineering disciplines.
               </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/membership"
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-5 py-3 text-sm font-semibold !text-white transition-colors hover:bg-[var(--primary-dark)]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-6 py-3.5 text-sm font-semibold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--primary)]/90 hover:shadow-lg hover:shadow-[var(--primary)]/20"
                 >
                   Explore Membership
-                  <ArrowRight size={17} />
+                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
 
                 <a
                   href="https://www.ieee.org/"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border)] bg-white px-5 py-3 text-sm font-semibold text-[var(--secondary)] transition-colors hover:bg-[var(--surface)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-white px-6 py-3.5 text-sm font-semibold text-[var(--secondary)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
                 >
                   Visit IEEE
                 </a>
               </div>
             </div>
 
-            <div className="hidden items-center justify-center lg:flex lg:justify-end">
-              <div className="w-full max-w-[440px] px-4 sm:px-8 lg:px-0">
+            <div className="hidden lg:flex items-center justify-end animate-in fade-in slide-in-from-right-8 duration-700 ease-out delay-150 fill-mode-both">
+              <div className="w-full max-w-[480px] transition-transform duration-700 hover:scale-105">
                 <Image
                   src="/ieee-official-logo.png"
                   alt="IEEE - Advancing Technology for Humanity"
@@ -129,11 +132,12 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-24">
+     
+      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-28">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+          <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:items-center">
+            <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+              <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
                 The IEEE
               </p>
 
@@ -141,7 +145,7 @@ export default function AboutPage() {
                 A global technical community
               </h2>
 
-              <div className="mt-6 space-y-5 text-base leading-7 text-[var(--muted)]">
+              <div className="mt-6 space-y-6 text-base leading-8 text-[var(--muted-foreground)]">
                 <p>
                   IEEE is a not-for-profit technical professional organization
                   dedicated to advancing technology for the benefit of humanity.
@@ -166,78 +170,68 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-8">
-              <div className="flex items-center justify-between gap-6">
-                <div className="flex min-w-0 items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)]">
-                    <Globe2 size={22} />
+          
+            <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-10 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                    <Globe2 size={24} />
                   </div>
-
-                  <div className="min-w-0">
-                    <p className="text-base font-bold text-[var(--secondary)]">
+                  <div>
+                    <p className="text-lg font-bold text-[var(--secondary)]">
                       IEEE at a glance
                     </p>
-
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
                       Current figures published by IEEE Students
                     </p>
                   </div>
                 </div>
 
-                <div className="flex h-12 shrink-0 items-center justify-center">
+                <div className="hidden sm:flex h-10 shrink-0 items-center justify-center">
                   <Image
                     src="/ieee-official-logo.png"
                     alt="IEEE"
                     width={82}
                     height={48}
-                    className="h-10 w-auto object-contain"
+                    className="h-full w-auto object-contain"
                   />
                 </div>
               </div>
 
-              <div className="mt-7 overflow-hidden rounded-xl border border-[var(--border)]">
+            
+              <div className="mt-8 overflow-hidden rounded-xl border border-[var(--border)] bg-white">
                 <div className="grid grid-cols-2">
-                  <div className="border-b border-r border-[var(--border)] p-6 sm:p-7">
-                    <p className="text-3xl font-bold tracking-tight text-[var(--secondary)]">
+                  <div className="border-b border-r border-[var(--border)] p-6 sm:p-8 transition-colors duration-300 hover:bg-[var(--surface)]/50">
+                    <p className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--secondary)]">
                       450K+
                     </p>
-
-                    <p className="mt-2 text-sm text-[var(--muted)]">Members</p>
+                    <p className="mt-2 text-sm font-medium text-[var(--muted-foreground)]">Members</p>
                   </div>
 
-                  <div className="border-b border-[var(--border)] p-6 sm:p-7">
-                    <p className="text-3xl font-bold tracking-tight text-[var(--secondary)]">
+                  <div className="border-b border-[var(--border)] p-6 sm:p-8 transition-colors duration-300 hover:bg-[var(--surface)]/50">
+                    <p className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--secondary)]">
                       3,000+
                     </p>
-
-                    <p className="mt-2 text-sm text-[var(--muted)]">
-                      Student Branches
-                    </p>
+                    <p className="mt-2 text-sm font-medium text-[var(--muted-foreground)]">Student Branches</p>
                   </div>
 
-                  <div className="border-r border-[var(--border)] p-6 sm:p-7">
-                    <p className="text-3xl font-bold tracking-tight text-[var(--secondary)]">
+                  <div className="border-r border-[var(--border)] p-6 sm:p-8 transition-colors duration-300 hover:bg-[var(--surface)]/50">
+                    <p className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--secondary)]">
                       120K+
                     </p>
-
-                    <p className="mt-2 text-sm text-[var(--muted)]">
-                      Student Members
-                    </p>
+                    <p className="mt-2 text-sm font-medium text-[var(--muted-foreground)]">Student Members</p>
                   </div>
 
-                  <div className="p-6 sm:p-7">
-                    <p className="text-3xl font-bold tracking-tight text-[var(--secondary)]">
+                  <div className="p-6 sm:p-8 transition-colors duration-300 hover:bg-[var(--surface)]/50">
+                    <p className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--secondary)]">
                       100
                     </p>
-
-                    <p className="mt-2 text-sm text-[var(--muted)]">
-                      Countries
-                    </p>
+                    <p className="mt-2 text-sm font-medium text-[var(--muted-foreground)]">Countries</p>
                   </div>
                 </div>
               </div>
 
-              <p className="mt-6 text-sm leading-6 text-[var(--muted)]">
+              <p className="mt-6 text-sm leading-relaxed text-[var(--muted-foreground)]">
                 IEEE is organized across geographic regions and technical
                 communities, creating opportunities for members to connect
                 locally while participating in a global professional network.
@@ -247,10 +241,11 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-b border-[var(--border)] bg-white py-20 sm:py-24">
+      
+      <section className="border-b border-[var(--border)] bg-white py-20 sm:py-28">
         <Container>
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+            <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
               What IEEE does
             </p>
 
@@ -258,7 +253,7 @@ export default function AboutPage() {
               Connecting knowledge, people, and technology
             </h2>
 
-            <p className="mt-4 text-base leading-7 text-[var(--muted)]">
+            <p className="mt-5 text-base leading-8 text-[var(--muted-foreground)]">
               IEEE's work extends across many parts of the technology ecosystem.
               These activities help members and the wider technical community
               learn, collaborate, publish, innovate, and contribute to
@@ -266,24 +261,25 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ieeeAreas.map((area) => {
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ieeeAreas.map((area, index) => {
               const Icon = area.icon;
 
               return (
                 <article
                   key={area.title}
-                  className="rounded-xl border border-[var(--border)] bg-white p-6 transition-shadow hover:shadow-md"
+                  className="group flex flex-col rounded-xl border border-[var(--border)] bg-white p-8 transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--primary)]/30 hover:shadow-lg hover:shadow-[var(--primary)]/5 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
+                  style={{ animationDelay: `${100 + index * 100}ms` }}
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--primary-light)] text-[var(--primary)]">
-                    <Icon size={21} />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white">
+                    <Icon size={24} />
                   </div>
 
-                  <h3 className="mt-5 text-lg font-bold text-[var(--secondary)]">
+                  <h3 className="mt-6 text-xl font-bold text-[var(--secondary)] transition-colors duration-300 group-hover:text-[var(--primary)]">
                     {area.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+                  <p className="mt-4 text-sm leading-relaxed text-[var(--muted-foreground)] flex-grow">
                     {area.description}
                   </p>
                 </article>
@@ -293,15 +289,16 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-24">
+   
+      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-28">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--primary)] text-white">
-                <Users size={23} />
+          <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:items-center">
+            <div className="animate-in fade-in slide-in-from-left-8 duration-700 ease-out">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[var(--primary)] text-white shadow-sm transition-transform duration-300 hover:scale-105 hover:rotate-3">
+                <Users size={28} />
               </div>
 
-              <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+              <p className="mt-8 text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
                 IEEE Student Branches
               </p>
 
@@ -309,7 +306,7 @@ export default function AboutPage() {
                 Where IEEE becomes part of student life
               </h2>
 
-              <p className="mt-5 text-base leading-7 text-[var(--muted)]">
+              <p className="mt-6 text-base leading-8 text-[var(--muted-foreground)]">
                 An IEEE Student Branch provides students with a local community
                 of peers and a connection to faculty members and industry
                 professionals. Branch activities give students opportunities to
@@ -318,20 +315,19 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[var(--border)] bg-white p-7 sm:p-8">
-              <h3 className="text-xl font-bold text-[var(--secondary)]">
+            <div className="rounded-2xl border border-[var(--border)] bg-white p-8 sm:p-10 shadow-sm transition-all duration-500 hover:shadow-md animate-in fade-in slide-in-from-right-8 duration-700 ease-out">
+              <h3 className="text-xl font-bold text-[var(--secondary)] border-b border-[var(--border)] pb-5 mb-5">
                 What a Student Branch can provide
               </h3>
 
-              <div className="mt-6 space-y-4">
+              <div className="space-y-5">
                 {branchBenefits.map((benefit) => (
-                  <div key={benefit} className="flex gap-3">
+                  <div key={benefit} className="group flex gap-4">
                     <CheckCircle2
-                      size={19}
-                      className="mt-0.5 shrink-0 text-[var(--primary)]"
+                      size={20}
+                      className="mt-0.5 shrink-0 text-[var(--muted-foreground)] transition-colors duration-300 group-hover:text-[var(--primary)]"
                     />
-
-                    <p className="text-sm leading-6 text-[var(--muted)]">
+                    <p className="text-sm leading-relaxed text-[var(--muted-foreground)]">
                       {benefit}
                     </p>
                   </div>
@@ -342,11 +338,12 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-b border-[var(--border)] bg-white py-20 sm:py-24">
+      
+      <section className="border-b border-[var(--border)] bg-white py-20 sm:py-28">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+          <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+              <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
                 IEEE in India
               </p>
 
@@ -354,7 +351,7 @@ export default function AboutPage() {
                 A strong student community across India
               </h2>
 
-              <div className="mt-6 space-y-5 text-base leading-7 text-[var(--muted)]">
+              <div className="mt-6 space-y-6 text-base leading-8 text-[var(--muted-foreground)]">
                 <p>
                   IEEE has an extensive presence in India, with Student Branches
                   at educational institutions across the country. These branches
@@ -370,14 +367,16 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[var(--secondary)] p-7 sm:p-8">
-              <Building2 size={28} className="text-white" />
+            <div className="group rounded-2xl bg-[var(--secondary)] p-8 sm:p-12 shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-xl animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-white/10 text-white transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                <Building2 size={28} />
+              </div>
 
-              <h3 className="mt-6 text-2xl font-bold text-white">
+              <h3 className="mt-6 text-2xl font-bold text-white sm:text-3xl">
                 From global IEEE to your campus
               </h3>
 
-              <p className="mt-4 text-sm leading-7 text-slate-300">
+              <p className="mt-5 text-base leading-8 text-slate-300">
                 A Student Branch brings the larger IEEE community closer to
                 students by creating opportunities for local activities,
                 technical learning, networking, leadership, and professional
@@ -388,59 +387,55 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-24">
+     
+      <section className="border-b border-[var(--border)] bg-[var(--surface)] py-20 sm:py-28">
         <Container>
-          <div className="max-w-4xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
-              Our Student Branch
-            </p>
+          <div className="grid gap-16 lg:grid-cols-[1fr_1fr]">
+            {/* Left Col: Branch Info */}
+            <div className="flex flex-col animate-in fade-in slide-in-from-left-8 duration-700 ease-out">
+              <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
+                Our Student Branch
+              </p>
 
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--secondary)] sm:text-4xl">
-              IEEE Geeta University Student Branch
-            </h2>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--secondary)] sm:text-4xl">
+                IEEE Geeta University Student Branch
+              </h2>
 
-            <p className="mt-5 text-base leading-7 text-[var(--muted)]">
-              The IEEE Geeta University Student Branch is the IEEE student
-              community at Geeta University, Panipat, Haryana. The branch
-              provides a platform for students to engage with IEEE, participate
-              in technical and professional activities, and collaborate with
-              fellow students and faculty.
-            </p>
+              <p className="mt-6 text-base leading-8 text-[var(--muted-foreground)]">
+                The IEEE Geeta University Student Branch is the IEEE student
+                community at Geeta University, Panipat, Haryana. The branch
+                provides a platform for students to engage with IEEE, participate
+                in technical and professional activities, and collaborate with
+                fellow students and faculty.
+              </p>
 
-            <div className="mt-8 grid gap-5 sm:grid-cols-2">
-              <div className="rounded-xl border border-[var(--border)] bg-white p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-                  Institution
-                </p>
+              <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                <div className="rounded-xl border border-[var(--border)] bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                    Institution
+                  </p>
+                  <p className="mt-3 text-xl font-bold text-[var(--secondary)]">
+                    Geeta University
+                  </p>
+                  <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                    Panipat, Haryana, India
+                  </p>
+                </div>
 
-                <p className="mt-2 text-lg font-bold text-[var(--secondary)]">
-                  Geeta University
-                </p>
-
-                <p className="mt-1 text-sm text-[var(--muted)]">
-                  Panipat, Haryana, India
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[var(--border)] bg-white p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
-                  IEEE Student Branch ID
-                </p>
-
-                <p className="mt-2 text-lg font-bold text-[var(--secondary)]">
-                  STB60229309
-                </p>
+                <div className="rounded-xl border border-[var(--border)] bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                    Student Branch ID
+                  </p>
+                  <p className="mt-3 text-xl font-bold text-[var(--secondary)]">
+                    STB60229309
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </Container>
-      </section>
 
-      <section className="border-b border-[var(--border)] bg-white py-20 sm:py-24">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+            
+            <div className="flex flex-col animate-in fade-in slide-in-from-right-8 duration-700 ease-out">
+              <p className="text-sm font-bold uppercase tracking-widest text-[var(--primary)]">
                 Our activities
               </p>
 
@@ -448,71 +443,70 @@ export default function AboutPage() {
                 Learn, participate, and contribute
               </h2>
 
-              <p className="mt-5 text-base leading-7 text-[var(--muted)]">
+              <p className="mt-6 text-base leading-8 text-[var(--muted-foreground)] mb-8">
                 The branch organizes and supports activities that help students
                 engage with technical knowledge, research, professional
                 development, and the IEEE community.
               </p>
-            </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              {branchActivities.map((activity) => (
-                <div
-                  key={activity}
-                  className="flex items-center gap-3 rounded-lg border border-[var(--border)] bg-white p-4"
-                >
-                  <CheckCircle2
-                    size={18}
-                    className="shrink-0 text-[var(--primary)]"
-                  />
-
-                  <span className="text-sm font-medium text-[var(--secondary)]">
-                    {activity}
-                  </span>
-                </div>
-              ))}
+              <div className="grid gap-4">
+                {branchActivities.map((activity) => (
+                  <div
+                    key={activity}
+                    className="group flex items-center gap-4 rounded-lg border border-[var(--border)] bg-white p-4 shadow-sm transition-all duration-300 hover:border-[var(--primary)]/40 hover:shadow-md"
+                  >
+                    <CheckCircle2
+                      size={20}
+                      className="shrink-0 text-[var(--muted-foreground)] transition-colors duration-300 group-hover:text-[var(--primary)]"
+                    />
+                    <span className="text-sm font-semibold text-[var(--secondary)]">
+                      {activity}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-white py-20 sm:py-24">
-        <Container>
-          <div className="overflow-hidden rounded-2xl bg-[var(--secondary)] px-6 py-12 sm:px-10 sm:py-14 lg:px-16">
-            <div className="mx-auto max-w-3xl text-center">
-              <GraduationCap size={30} className="mx-auto text-white" />
 
-              <h2 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+      <section className="bg-white py-16 sm:py-24">
+        <Container>
+          <div className="overflow-hidden rounded-3xl bg-[var(--secondary)] px-6 py-16 text-center shadow-lg sm:px-16 sm:py-20 lg:px-24 transition-transform duration-700 hover:shadow-xl">
+            <div className="mx-auto max-w-3xl animate-in zoom-in-95 duration-700 ease-out">
+              <GraduationCap size={44} className="mx-auto text-white opacity-90 transition-transform duration-500 hover:scale-110 hover:rotate-12" />
+
+              <h2 className="mt-8 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
                 Be part of the IEEE GU community
               </h2>
 
-              <p className="mt-4 text-base leading-7 text-slate-300">
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
                 Explore upcoming activities, connect with the branch, and
                 discover opportunities to learn and contribute through IEEE
                 Geeta University Student Branch.
               </p>
 
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
                 <Link
                   href="/events"
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-[var(--secondary)] transition-colors hover:bg-slate-100"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-4 text-sm font-bold text-[var(--secondary)] transition-all duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-lg"
                 >
                   Explore Events
-                  <ArrowRight size={17} />
+                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
 
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center gap-2 rounded-md border border-white/30 px-5 py-3 text-sm font-semibold !text-white transition-colors hover:bg-white/10"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white/30 bg-transparent px-7 py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/50"
                 >
                   Join IEEE
-                  <ArrowRight size={17} />
                 </Link>
               </div>
             </div>
           </div>
         </Container>
       </section>
-    </>
+    </main>
   );
 }

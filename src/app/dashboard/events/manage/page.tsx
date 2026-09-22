@@ -475,15 +475,19 @@ function StatCard({
   icon: typeof CalendarDays;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-white p-4">
+    <div className="group rounded-2xl border border-[var(--border)] bg-white p-4 shadow-sm transition-all duration-300 hover:border-[var(--primary)]/30 hover:shadow-md">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-[var(--muted)]">{label}</p>
-          <p className="mt-1 text-2xl font-bold text-[var(--text)]">{value}</p>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+            {label}
+          </p>
+          <p className="mt-1.5 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
+            {value}
+          </p>
         </div>
 
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--surface)]">
-          <Icon className="h-4 w-4 text-[var(--primary)]" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-transform duration-300 group-hover:scale-110">
+          <Icon size={18} />
         </div>
       </div>
     </div>
@@ -512,36 +516,31 @@ function BannerUploader({
   const displayedImage = previewUrl || currentImage;
 
   return (
-    <div className="md:col-span-2">
-      <div className="mb-2 flex items-center justify-between">
-        <div>
-          <label className="text-xs font-semibold text-[var(--text)]">
-            Event Banner
-          </label>
-          <p className="mt-0.5 text-[10px] text-[var(--muted)]">
-            JPG, PNG or WebP · Maximum 5 MB
-          </p>
-        </div>
+    <div className="md:col-span-2 space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="block text-sm font-bold text-[var(--secondary)]">
+          Event Banner
+        </label>
 
         {selectedFile && (
-          <span className="text-[10px] font-semibold text-[var(--primary)]">
+          <span className="text-xs font-bold text-[var(--primary)]">
             New image selected
           </span>
         )}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+      <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50">
         {displayedImage ? (
-          <div className="relative aspect-[16/7]">
+          <div className="relative aspect-[16/7] max-h-48 bg-slate-900">
             <img
               src={displayedImage}
               alt="Event banner preview"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
 
-            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-black/55 p-3">
-              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-slate-100">
-                <Upload className="h-3.5 w-3.5" />
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-black/60 p-3 backdrop-blur-sm">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-white px-3.5 py-2 text-xs font-bold text-slate-900 transition-all hover:bg-slate-100 shadow-sm">
+                <Upload size={14} />
                 {uploading ? "Uploading..." : "Replace Banner"}
                 <input
                   type="file"
@@ -560,7 +559,7 @@ function BannerUploader({
                   type="button"
                   onClick={onRemove}
                   disabled={disabled || uploading || removing}
-                  className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold !text-white transition hover:bg-red-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-3.5 py-2 text-xs font-bold !text-white transition-all hover:bg-red-700 shadow-sm disabled:opacity-50"
                 >
                   {removing ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -573,21 +572,21 @@ function BannerUploader({
             </div>
           </div>
         ) : (
-          <label className="flex aspect-[16/7] cursor-pointer flex-col items-center justify-center px-5 text-center transition hover:bg-white">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white">
-              <ImagePlus className="h-6 w-6 text-[var(--primary)]" />
+          <label className="flex aspect-[16/7] max-h-44 cursor-pointer flex-col items-center justify-center p-6 text-center transition-colors hover:bg-[var(--surface)]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)] shadow-sm">
+              <ImagePlus size={22} />
             </div>
 
-            <p className="mt-3 text-sm font-semibold text-[var(--text)]">
+            <p className="mt-3 text-sm font-bold text-[var(--secondary)]">
               Upload event banner
             </p>
 
-            <p className="mt-1 text-xs text-[var(--muted)]">
+            <p className="mt-1 text-xs text-[var(--muted-foreground)]">
               Choose a JPG, PNG or WebP image up to 5 MB
             </p>
 
-            <span className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-3 py-2 text-xs font-semibold !text-white">
-              <Upload className="h-3.5 w-3.5" />
+            <span className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-blue-700">
+              <Upload size={14} />
               Choose Image
             </span>
 
@@ -636,7 +635,6 @@ function EventActions({
   onDelete: () => void;
 }) {
   const busy = loadingAction !== null;
-
   const canEdit =
     event.status === "DRAFT" ||
     event.status === "REJECTED" ||
@@ -648,9 +646,9 @@ function EventActions({
         type="button"
         onClick={onView}
         disabled={busy}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--text)] transition hover:bg-[var(--surface)] disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
       >
-        <Eye className="h-3.5 w-3.5" />
+        <Eye size={14} />
         View
       </button>
 
@@ -659,10 +657,10 @@ function EventActions({
           type="button"
           onClick={onEdit}
           disabled={busy}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3 py-2 text-xs font-semibold !text-white transition hover:opacity-90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-[var(--primary)] px-3 py-1.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
         >
-          <Pencil className="h-3.5 w-3.5" />
-          Edit Event
+          <Pencil size={14} />
+          Edit
         </button>
       )}
 
@@ -671,10 +669,10 @@ function EventActions({
           type="button"
           onClick={onForm}
           disabled={busy}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--text)] transition hover:bg-[var(--surface)] disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
         >
-          <FileText className="h-3.5 w-3.5 text-[var(--primary)]" />
-          Registration Form
+          <FileText size={14} className="text-[var(--primary)]" />
+          Form
         </button>
       )}
 
@@ -684,12 +682,12 @@ function EventActions({
             type="button"
             onClick={onSubmit}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--text)] transition hover:bg-[var(--surface)] disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
           >
             {loadingAction === "submit" ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <Loader2 className="h-3 w-3 animate-spin" />
             ) : (
-              <Send className="h-3.5 w-3.5" />
+              <Send size={14} />
             )}
             Submit
           </button>
@@ -698,9 +696,9 @@ function EventActions({
             type="button"
             onClick={onDelete}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700 transition-all hover:bg-red-100 disabled:opacity-50"
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <Trash2 size={14} />
             Delete
           </button>
         </>
@@ -712,12 +710,12 @@ function EventActions({
             type="button"
             onClick={onApprove}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold !text-white transition hover:opacity-90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-1.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-emerald-700 disabled:opacity-50"
           >
             {loadingAction === "approve" ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <Loader2 className="h-3 w-3 animate-spin" />
             ) : (
-              <Check className="h-3.5 w-3.5" />
+              <Check size={14} />
             )}
             Approve
           </button>
@@ -726,9 +724,9 @@ function EventActions({
             type="button"
             onClick={onReject}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold !text-white transition hover:bg-red-700 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-3 py-1.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-red-700 disabled:opacity-50"
           >
-            <X className="h-3.5 w-3.5" />
+            <X size={14} />
             Reject
           </button>
         </>
@@ -739,12 +737,12 @@ function EventActions({
           type="button"
           onClick={onPublish}
           disabled={busy}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--text)] transition hover:bg-[var(--surface)] disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
         >
           {loadingAction === "publish" ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            <Loader2 className="h-3 w-3 animate-spin" />
           ) : (
-            <Globe2 className="h-3.5 w-3.5 text-[var(--primary)]" />
+            <Globe2 size={14} className="text-[var(--primary)]" />
           )}
           Publish
         </button>
@@ -756,9 +754,9 @@ function EventActions({
             type="button"
             onClick={onCancel}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700 transition-all hover:bg-red-100 disabled:opacity-50"
           >
-            <XCircle className="h-3.5 w-3.5" />
+            <XCircle size={14} />
             Cancel
           </button>
 
@@ -766,12 +764,12 @@ function EventActions({
             type="button"
             onClick={onComplete}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-2 text-xs font-semibold !text-white transition hover:bg-violet-700 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-1.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-violet-700 disabled:opacity-50"
           >
             {loadingAction === "complete" ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <Loader2 className="h-3 w-3 animate-spin" />
             ) : (
-              <CheckCircle2 className="h-3.5 w-3.5" />
+              <CheckCircle2 size={14} />
             )}
             Complete
           </button>
@@ -838,25 +836,27 @@ function EventFormModal({
     }
 
     setBannerFile(file);
-
     const url = URL.createObjectURL(file);
     setBannerPreview(url);
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 sm:p-6">
-      <div className="my-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
-          <div>
-            <p className="text-xs font-medium text-[var(--primary)]">
-              IEEE Geeta University
-            </p>
+  const inputClasses =
+    "w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--secondary)] shadow-sm outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10";
 
-            <h2 className="mt-1 text-lg font-bold text-[var(--text)]">
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 sm:p-6 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="my-auto w-full max-w-4xl overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-5 sm:px-8 bg-[var(--surface)]/30">
+          <div>
+            <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
+              IEEE Geeta University
+            </span>
+
+            <h2 className="mt-2 text-xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-2xl">
               {mode === "create" ? "Create Event" : "Edit Event"}
             </h2>
 
-            <p className="mt-1 text-xs text-[var(--muted)]">
+            <p className="mt-1 text-xs sm:text-sm text-[var(--muted-foreground)]">
               {mode === "create"
                 ? "Create a new event and configure its registration."
                 : "Update event information and registration settings."}
@@ -867,31 +867,31 @@ function EventFormModal({
             type="button"
             onClick={onClose}
             disabled={saving || bannerUploading || bannerRemoving}
-            className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)] disabled:opacity-50"
+            className="rounded-xl p-2.5 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--secondary)] disabled:opacity-50"
           >
-            <X className="h-5 w-5" />
+            <X size={20} />
           </button>
         </div>
 
-        <div className="max-h-[76vh] overflow-y-auto p-5">
+        <div className="max-h-[75vh] overflow-y-auto p-6 sm:p-8 space-y-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {error && (
-            <div className="mb-5 flex gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-              <p className="text-sm text-red-700">{error}</p>
+            <div className="flex gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm">
+              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+              <p className="text-sm font-semibold leading-relaxed text-red-800">
+                {error}
+              </p>
             </div>
           )}
 
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold text-[var(--text)]">
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="md:col-span-2 space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Event Title *
               </label>
-
               <input
                 value={form.title}
                 onChange={(eventInput) => {
                   const value = eventInput.target.value;
-
                   setForm((current) => ({
                     ...current,
                     title: value,
@@ -899,49 +899,45 @@ function EventFormModal({
                   }));
                 }}
                 placeholder="IEEE event title"
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Slug *
               </label>
-
               <input
                 value={form.slug}
                 onChange={(eventInput) =>
                   updateField("slug", slugify(eventInput.target.value))
                 }
                 placeholder="event-slug"
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
-
-              <p className="mt-1 text-[10px] text-[var(--muted)]">
+              <p className="text-xs text-[var(--muted-foreground)]">
                 Lowercase letters, numbers and hyphens only.
               </p>
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Venue
               </label>
-
               <input
                 value={form.venue}
                 onChange={(eventInput) =>
                   updateField("venue", eventInput.target.value)
                 }
                 placeholder="Venue or location"
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="md:col-span-2 space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Short Description
               </label>
-
               <textarea
                 value={form.shortDescription}
                 onChange={(eventInput) =>
@@ -950,23 +946,22 @@ function EventFormModal({
                 rows={2}
                 maxLength={500}
                 placeholder="Short summary shown on event cards"
-                className="mt-1.5 w-full resize-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={`${inputClasses} resize-none`}
               />
             </div>
 
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="md:col-span-2 space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Full Description *
               </label>
-
               <textarea
                 value={form.description}
                 onChange={(eventInput) =>
                   updateField("description", eventInput.target.value)
                 }
-                rows={7}
+                rows={6}
                 placeholder="Complete event description"
-                className="mt-1.5 w-full resize-y rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={`${inputClasses} resize-y leading-relaxed`}
               />
             </div>
 
@@ -981,71 +976,66 @@ function EventFormModal({
               onRemove={onRemoveBanner}
             />
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Event Date *
               </label>
-
               <input
                 type="datetime-local"
                 value={form.eventDate}
                 onChange={(eventInput) =>
                   updateField("eventDate", eventInput.target.value)
                 }
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Registration Deadline
               </label>
-
               <input
                 type="datetime-local"
                 value={form.registrationDeadline}
                 onChange={(eventInput) =>
                   updateField("registrationDeadline", eventInput.target.value)
                 }
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Start Time
               </label>
-
               <input
                 type="datetime-local"
                 value={form.startTime}
                 onChange={(eventInput) =>
                   updateField("startTime", eventInput.target.value)
                 }
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 End Time
               </label>
-
               <input
                 type="datetime-local"
                 value={form.endTime}
                 onChange={(eventInput) =>
                   updateField("endTime", eventInput.target.value)
                 }
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Capacity
               </label>
-
               <input
                 type="number"
                 min="1"
@@ -1054,16 +1044,15 @@ function EventFormModal({
                   updateField("capacity", eventInput.target.value)
                 }
                 placeholder="Leave empty for unlimited"
-                className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                className={inputClasses}
               />
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-[var(--text)]">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-[var(--secondary)]">
                 Access
               </label>
-
-              <div className="relative mt-1.5">
+              <div className="relative">
                 <select
                   value={form.access}
                   onChange={(eventInput) =>
@@ -1072,36 +1061,33 @@ function EventFormModal({
                       eventInput.target.value as EventAccess,
                     )
                   }
-                  className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 pr-9 text-sm text-[var(--text)] outline-none transition focus:border-[var(--primary)]"
+                  className={inputClasses}
                 >
                   <option value="PUBLIC">Public</option>
                   <option value="UNIVERSITY">University</option>
                   <option value="MEMBERS_ONLY">Members Only</option>
                   <option value="INVITE_ONLY">Invite Only</option>
                 </select>
-
-                <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-[var(--muted)]" />
+                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               </div>
             </div>
 
             <div className="md:col-span-2">
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-6 space-y-4">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--text)]">
+                  <h3 className="text-base font-bold text-[var(--secondary)]">
                     Registration Configuration
-                  </p>
-
-                  <p className="mt-1 text-xs text-[var(--muted)]">
+                  </h3>
+                  <p className="mt-1 text-xs text-[var(--muted-foreground)]">
                     Configure how participants will register for this event.
                   </p>
                 </div>
 
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="text-xs font-semibold text-[var(--text)]">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                       Registration Template
                     </label>
-
                     <select
                       value={form.registrationTemplate}
                       onChange={(eventInput) =>
@@ -1110,7 +1096,7 @@ function EventFormModal({
                           eventInput.target.value as EventRegistrationTemplate,
                         )
                       }
-                      className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                      className={inputClasses}
                     >
                       <option value="UNIVERSITY_INDIVIDUAL">
                         University — Individual
@@ -1130,11 +1116,10 @@ function EventFormModal({
                     </select>
                   </div>
 
-                  <div>
-                    <label className="text-xs font-semibold text-[var(--text)]">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                       Participation Type
                     </label>
-
                     <select
                       value={form.participationType}
                       onChange={(eventInput) =>
@@ -1143,7 +1128,7 @@ function EventFormModal({
                           eventInput.target.value as EventParticipationType,
                         )
                       }
-                      className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                      className={inputClasses}
                     >
                       <option value="INDIVIDUAL">Individual</option>
                       <option value="TEAM">Team</option>
@@ -1152,11 +1137,10 @@ function EventFormModal({
 
                   {form.participationType === "TEAM" && (
                     <>
-                      <div>
-                        <label className="text-xs font-semibold text-[var(--text)]">
+                      <div className="space-y-2">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                           Minimum Team Size
                         </label>
-
                         <input
                           type="number"
                           min="1"
@@ -1165,15 +1149,14 @@ function EventFormModal({
                             updateField("minTeamSize", eventInput.target.value)
                           }
                           placeholder="Minimum members"
-                          className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                          className={inputClasses}
                         />
                       </div>
 
-                      <div>
-                        <label className="text-xs font-semibold text-[var(--text)]">
+                      <div className="space-y-2">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
                           Maximum Team Size
                         </label>
-
                         <input
                           type="number"
                           min="2"
@@ -1182,57 +1165,54 @@ function EventFormModal({
                             updateField("maxTeamSize", eventInput.target.value)
                           }
                           placeholder="Maximum members"
-                          className="mt-1.5 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                          className={inputClasses}
                         />
                       </div>
                     </>
                   )}
 
-                  <label className="md:col-span-2 flex cursor-pointer items-center gap-3 rounded-lg border border-[var(--border)] bg-white p-3">
-                    <input
-                      type="checkbox"
-                      checked={form.enableQrAttendance}
-                      onChange={(eventInput) =>
-                        updateField(
-                          "enableQrAttendance",
-                          eventInput.target.checked,
-                        )
-                      }
-                      className="h-4 w-4 rounded border-[var(--border)] accent-[var(--primary)]"
-                    />
-
-                    <div>
-                      <p className="text-sm font-semibold text-[var(--text)]">
-                        Enable QR Attendance
-                      </p>
-
-                      <p className="mt-1 text-xs text-[var(--muted)]">
-                        Generate registration QR codes and use them for event
-                        attendance.
-                      </p>
-                    </div>
-                  </label>
+                  <div className="md:col-span-2 pt-2">
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-colors hover:bg-slate-50">
+                      <input
+                        type="checkbox"
+                        checked={form.enableQrAttendance}
+                        onChange={(eventInput) =>
+                          updateField(
+                            "enableQrAttendance",
+                            eventInput.target.checked,
+                          )
+                        }
+                        className="h-4.5 w-4.5 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
+                      />
+                      <div>
+                        <p className="text-sm font-bold text-[var(--secondary)]">
+                          Enable QR Attendance
+                        </p>
+                        <p className="text-xs text-[var(--muted-foreground)]">
+                          Generate registration QR codes and use them for event attendance.
+                        </p>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="md:col-span-2">
-              <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-colors hover:bg-slate-50">
                 <input
                   type="checkbox"
                   checked={form.isFeatured}
                   onChange={(eventInput) =>
                     updateField("isFeatured", eventInput.target.checked)
                   }
-                  className="h-4 w-4 rounded border-[var(--border)] accent-[var(--primary)]"
+                  className="h-4.5 w-4.5 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
                 />
-
                 <div>
-                  <p className="text-sm font-semibold text-[var(--text)]">
+                  <p className="text-sm font-bold text-[var(--secondary)]">
                     Feature this event
                   </p>
-
-                  <p className="text-xs text-[var(--muted)]">
+                  <p className="text-xs text-[var(--muted-foreground)]">
                     Mark this event as featured for supported public displays.
                   </p>
                 </div>
@@ -1241,12 +1221,12 @@ function EventFormModal({
           </div>
         </div>
 
-        <div className="flex flex-col-reverse gap-2 border-t border-[var(--border)] px-5 py-4 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onClose}
             disabled={saving || bannerUploading || bannerRemoving}
-            className="rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--surface)] disabled:opacity-50"
+            className="rounded-xl border border-[var(--border)] bg-white px-6 py-3 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
           >
             Cancel
           </button>
@@ -1255,7 +1235,7 @@ function EventFormModal({
             type="button"
             onClick={onSubmit}
             disabled={saving || bannerUploading || bannerRemoving}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white transition hover:opacity-90 disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
           >
             {saving && <Loader2 className="h-4 w-4 animate-spin" />}
             {mode === "create" ? "Create Event" : "Save Changes"}
@@ -1281,122 +1261,115 @@ function ViewEventModal({
     event.status === "APPROVED";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4">
-      <div className="w-full max-w-3xl overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 sm:p-6 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-2xl animate-in zoom-in-95 duration-300">
         {event.bannerImage ? (
-          <div className="relative h-56 bg-[var(--surface)]">
+          <div className="relative aspect-[16/7] max-h-52 bg-slate-900">
             <img
               src={event.bannerImage}
               alt={event.title}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-
-            <div className="absolute left-5 right-5 top-4 flex justify-end">
+            <div className="absolute left-6 right-6 top-6 flex justify-end">
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-lg bg-black/40 p-2 !text-white backdrop-blur transition hover:bg-black/60"
+                className="rounded-xl bg-black/40 p-2.5 !text-white backdrop-blur-md transition-colors hover:bg-black/60"
               >
-                <X className="h-5 w-5" />
+                <X size={18} />
               </button>
             </div>
 
-            <div className="absolute bottom-5 left-5 right-5">
+            <div className="absolute bottom-6 left-6 right-6">
               <span
-                className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold ${statusClass(
+                className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-sm ${statusClass(
                   event.status,
                 )}`}
               >
                 {formatStatus(event.status)}
               </span>
 
-              <h2 className="mt-2 text-xl font-bold !text-white">
+              <h2 className="mt-2 text-xl font-extrabold !text-white sm:text-2xl">
                 {event.title}
               </h2>
             </div>
           </div>
         ) : (
-          <div className="border-b border-[var(--border)] bg-[var(--surface)] px-5 py-5">
+          <div className="border-b border-[var(--border)] bg-[var(--surface)]/50 px-6 py-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <span
-                  className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold ${statusClass(
+                  className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${statusClass(
                     event.status,
                   )}`}
                 >
                   {formatStatus(event.status)}
                 </span>
-
-                <h2 className="mt-2 text-xl font-bold text-[var(--text)]">
+                <h2 className="mt-2 text-xl font-extrabold text-[var(--secondary)]">
                   {event.title}
                 </h2>
               </div>
-
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-lg p-2 text-[var(--muted)] hover:bg-white"
+                className="rounded-xl p-2.5 text-[var(--muted-foreground)] hover:bg-white"
               >
-                <X className="h-5 w-5" />
+                <X size={18} />
               </button>
             </div>
           </div>
         )}
 
-        <div className="p-5">
+        <div className="p-6 sm:p-8 space-y-6 max-h-[65vh] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl bg-[var(--surface)] p-3">
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <CalendarDays className="h-4 w-4" />
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-3.5">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                <CalendarDays size={14} className="text-[var(--primary)]" />
                 Event Date
               </div>
-
-              <p className="mt-1 text-sm font-semibold text-[var(--text)]">
+              <p className="mt-1.5 text-xs sm:text-sm font-bold text-[var(--secondary)]">
                 {formatDateTime(event.eventDate)}
               </p>
             </div>
 
-            <div className="rounded-xl bg-[var(--surface)] p-3">
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Clock3 className="h-4 w-4" />
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-3.5">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                <Clock3 size={14} className="text-[var(--primary)]" />
                 Time
               </div>
-
-              <p className="mt-1 text-sm font-semibold text-[var(--text)]">
+              <p className="mt-1.5 text-xs sm:text-sm font-bold text-[var(--secondary)]">
                 {formatTime(event.startTime)}
                 {event.endTime ? ` - ${formatTime(event.endTime)}` : ""}
               </p>
             </div>
 
-            <div className="rounded-xl bg-[var(--surface)] p-3">
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <MapPin className="h-4 w-4" />
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-3.5">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                <MapPin size={14} className="text-[var(--primary)]" />
                 Venue
               </div>
-
-              <p className="mt-1 text-sm font-semibold text-[var(--text)]">
+              <p className="mt-1.5 text-xs sm:text-sm font-bold text-[var(--secondary)]">
                 {event.venue || "Venue to be announced"}
               </p>
             </div>
 
-            <div className="rounded-xl bg-[var(--surface)] p-3">
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Users className="h-4 w-4" />
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-3.5">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                <Users size={14} className="text-[var(--primary)]" />
                 Registrations
               </div>
-
-              <p className="mt-1 text-sm font-semibold text-[var(--text)]">
+              <p className="mt-1.5 text-xs sm:text-sm font-bold text-[var(--secondary)]">
                 {event._count?.registrations ?? 0}
                 {event.capacity ? ` / ${event.capacity}` : ""}
               </p>
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <span
-              className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${accessClass(
+              className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${accessClass(
                 event.access,
               )}`}
             >
@@ -1404,17 +1377,17 @@ function ViewEventModal({
             </span>
 
             {event.isFeatured && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-semibold text-amber-700">
-                <Star className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+                <Star size={13} />
                 Featured
               </span>
             )}
 
-            <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-[10px] font-semibold text-[var(--text)]">
+            <span className="rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-bold text-[var(--secondary)] border border-[var(--border)]">
               {formatTemplate(event.registrationTemplate)}
             </span>
 
-            <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-[10px] font-semibold text-[var(--text)]">
+            <span className="rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-bold text-[var(--secondary)] border border-[var(--border)]">
               {event.participationType === "TEAM"
                 ? `Team${event.minTeamSize ? ` · ${event.minTeamSize}` : ""}${
                     event.maxTeamSize ? `-${event.maxTeamSize}` : ""
@@ -1423,39 +1396,35 @@ function ViewEventModal({
             </span>
 
             {event.enableQrAttendance && (
-              <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700">
+              <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
                 QR Attendance
               </span>
             )}
           </div>
 
           {event.shortDescription && (
-            <p className="mt-5 text-sm font-medium leading-6 text-[var(--text)]">
+            <p className="text-sm font-semibold leading-relaxed text-[var(--secondary)]">
               {event.shortDescription}
             </p>
           )}
 
-          <div className="mt-4 whitespace-pre-wrap text-sm leading-6 text-[var(--muted)]">
+          <div className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--muted-foreground)] border-t border-[var(--border)] pt-4">
             {event.description}
           </div>
 
-          <div className="mt-5 grid gap-3 border-t border-[var(--border)] pt-5 sm:grid-cols-2">
+          <div className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/30 p-4 sm:grid-cols-2 text-xs text-[var(--muted-foreground)]">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+              <p className="font-bold uppercase tracking-wider text-[var(--secondary)]">
                 Registration Deadline
               </p>
-
-              <p className="mt-1 text-sm text-[var(--text)]">
-                {formatDateTime(event.registrationDeadline)}
-              </p>
+              <p className="mt-0.5 font-medium">{formatDateTime(event.registrationDeadline)}</p>
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+              <p className="font-bold uppercase tracking-wider text-[var(--secondary)]">
                 Created By
               </p>
-
-              <p className="mt-1 text-sm text-[var(--text)]">
+              <p className="mt-0.5 font-medium">
                 {event.createdBy
                   ? `${event.createdBy.firstName} ${
                       event.createdBy.lastName ?? ""
@@ -1465,38 +1434,35 @@ function ViewEventModal({
             </div>
 
             {event.rejectionReason && (
-              <div className="sm:col-span-2">
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-red-600">
+              <div className="sm:col-span-2 rounded-xl bg-red-50 p-3.5 border border-red-200">
+                <p className="font-bold uppercase tracking-wider text-red-800">
                   Rejection Reason
                 </p>
-
-                <p className="mt-1 text-sm text-red-700">
-                  {event.rejectionReason}
-                </p>
+                <p className="mt-0.5 text-red-700 font-medium">{event.rejectionReason}</p>
               </div>
             )}
           </div>
+        </div>
 
-          <div className="mt-5 flex flex-col-reverse gap-2 border-t border-[var(--border)] pt-5 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] bg-[var(--surface)]/30 px-6 py-4 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl border border-[var(--border)] bg-white px-5 py-2.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50"
+          >
+            Close
+          </button>
+
+          {canEdit && (
             <button
               type="button"
-              onClick={onClose}
-              className="rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)]"
+              onClick={onEdit}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-blue-700"
             >
-              Close
+              <Pencil size={14} />
+              Edit Event
             </button>
-
-            {canEdit && (
-              <button
-                type="button"
-                onClick={onEdit}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white hover:opacity-90"
-              >
-                <Pencil className="h-4 w-4" />
-                Edit Event
-              </button>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -1523,34 +1489,30 @@ function ConfirmationModal({
   onConfirm: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-white p-5 shadow-2xl">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface)]">
-          {danger ? (
-            <AlertCircle className="h-5 w-5 text-red-600" />
-          ) : (
-            <CheckCircle2 className="h-5 w-5 text-[var(--primary)]" />
-          )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-md rounded-3xl border border-[var(--border)] bg-white p-6 sm:p-8 shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${danger ? "bg-red-50 text-red-600" : "bg-[var(--primary)]/10 text-[var(--primary)]"}`}>
+          {danger ? <AlertCircle size={24} /> : <CheckCircle2 size={24} />}
         </div>
 
-        <h2 className="mt-4 text-lg font-bold text-[var(--text)]">{title}</h2>
+        <h2 className="mt-5 text-xl font-extrabold tracking-tight text-[var(--secondary)]">{title}</h2>
 
-        <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+        <p className="mt-2.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
           {description}
         </p>
 
         {error && (
-          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-bold text-red-800">
             {error}
           </div>
         )}
 
-        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] disabled:opacity-50"
+            className="rounded-xl border border-[var(--border)] bg-white px-5 py-3 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
           >
             Keep
           </button>
@@ -1559,10 +1521,10 @@ function ConfirmationModal({
             type="button"
             onClick={onConfirm}
             disabled={loading}
-            className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold !text-white disabled:opacity-50 ${
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs font-bold !text-white shadow-sm transition-all disabled:opacity-50 ${
               danger
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-[var(--primary)] hover:opacity-90"
+                ? "bg-red-600 hover:bg-red-700 shadow-red-600/20"
+                : "bg-[var(--primary)] hover:bg-blue-700 shadow-[var(--primary)]/20"
             }`}
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -1592,14 +1554,13 @@ function RejectModal({
   onConfirm: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
-        <div className="border-b border-[var(--border)] px-5 py-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-lg rounded-3xl border border-[var(--border)] bg-white shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="border-b border-[var(--border)] px-6 py-5 sm:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-red-600">Event Approval</p>
-
-              <h2 className="mt-1 text-lg font-bold text-[var(--text)]">
+              <span className="text-xs font-bold uppercase tracking-widest text-red-600">Event Approval</span>
+              <h2 className="mt-2 text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                 Reject Event
               </h2>
             </div>
@@ -1608,24 +1569,24 @@ function RejectModal({
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--surface)] disabled:opacity-50"
+              className="rounded-xl p-2.5 text-[var(--muted-foreground)] hover:bg-[var(--surface)] disabled:opacity-50"
             >
-              <X className="h-5 w-5" />
+              <X size={20} />
             </button>
           </div>
         </div>
 
-        <div className="p-5">
-          <p className="text-sm text-[var(--muted)]">
+        <div className="p-6 sm:p-8 space-y-4">
+          <p className="text-sm leading-relaxed text-[var(--muted-foreground)]">
             You are rejecting{" "}
-            <span className="font-semibold text-[var(--text)]">
+            <span className="font-bold text-[var(--secondary)]">
               {event.title}
             </span>
             . A rejection reason is required.
           </p>
 
           {error && (
-            <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-bold text-red-800">
               {error}
             </div>
           )}
@@ -1633,23 +1594,23 @@ function RejectModal({
           <textarea
             value={reason}
             onChange={(eventInput) => setReason(eventInput.target.value)}
-            rows={5}
+            rows={3}
             maxLength={500}
             placeholder="Enter the reason for rejection..."
-            className="mt-4 w-full resize-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-red-500"
+            className="w-full resize-none rounded-xl border border-[var(--border)] bg-white p-4 text-xs font-medium text-[var(--secondary)] outline-none transition-all focus:border-red-500 focus:ring-4 focus:ring-red-500/10 placeholder:text-[var(--muted)]"
           />
 
-          <p className="mt-1 text-right text-[10px] text-[var(--muted)]">
+          <p className="text-right text-[11px] font-medium text-[var(--muted-foreground)]">
             {reason.length}/500
           </p>
         </div>
 
-        <div className="flex flex-col-reverse gap-2 border-t border-[var(--border)] px-5 py-4 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] bg-[var(--surface)]/30 px-6 py-4 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] disabled:opacity-50"
+            className="rounded-xl border border-[var(--border)] bg-white px-5 py-2.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
           >
             Cancel
           </button>
@@ -1658,7 +1619,7 @@ function RejectModal({
             type="button"
             onClick={onConfirm}
             disabled={loading || reason.trim().length < 5}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold !text-white disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-2.5 text-xs font-bold !text-white shadow-sm transition-all hover:bg-red-700 disabled:opacity-50"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             Reject Event
@@ -1960,15 +1921,18 @@ function RegistrationFormBuilder({
     });
   }
 
+  const inputClasses =
+    "w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--secondary)] shadow-sm outline-none transition-all duration-200 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10 disabled:bg-slate-50";
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/50 p-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="my-4 w-full max-w-5xl overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4 sm:px-6">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-black/50 p-4 sm:p-6 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="my-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-5 sm:px-8 bg-[var(--surface)]/30">
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-[var(--primary)]">
+            <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
               Registration Form
-            </p>
-            <h2 className="mt-1 truncate text-lg font-bold text-[var(--text)]">
+            </span>
+            <h2 className="mt-2 truncate text-xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-2xl">
               {event.title}
             </h2>
           </div>
@@ -1976,115 +1940,154 @@ function RegistrationFormBuilder({
             type="button"
             onClick={onClose}
             disabled={actionLoading || savingDetails || creating || fieldSaving}
-            className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)] disabled:opacity-50"
+            className="rounded-xl p-2.5 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--secondary)] disabled:opacity-50"
           >
-            <X className="h-5 w-5" />
+            <X size={20} />
           </button>
         </div>
 
-        <div className="max-h-[82vh] overflow-y-auto p-5 sm:p-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="max-h-[80vh] overflow-y-auto p-6 sm:p-8 space-y-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {error && (
-            <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
+            <div className="flex gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm">
+              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+              <p className="text-sm font-semibold leading-relaxed text-red-800">
+                {error}
+              </p>
             </div>
           )}
 
           {loading ? (
-            <div className="flex min-h-72 items-center justify-center">
-              <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                <Loader2 className="h-5 w-5 animate-spin text-[var(--primary)]" />
+            <div className="flex min-h-[300px] items-center justify-center">
+              <div className="flex items-center gap-3 text-sm font-semibold text-[var(--muted-foreground)]">
+                <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
                 Loading registration form...
               </div>
             </div>
           ) : !registrationForm ? (
-            <div className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8">
-              <FileText className="mx-auto h-10 w-10 text-[var(--muted)]" />
-              <h3 className="mt-4 text-center text-lg font-bold text-[var(--text)]">
+            <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]/30 p-10 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)] shadow-sm">
+                <FileText size={28} />
+              </div>
+              <h3 className="mt-5 text-xl font-bold tracking-tight text-[var(--secondary)]">
                 Create Registration Form
               </h3>
-              <p className="mx-auto mt-2 max-w-lg text-center text-sm leading-6 text-[var(--muted)]">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--muted-foreground)]">
                 Create the form participants will complete before this event can
                 be published.
               </p>
-              <div className="mx-auto mt-6 max-w-xl space-y-4">
-                <input
-                  value={formTitle}
-                  onChange={(e) => setFormTitle(e.target.value)}
-                  placeholder="Registration Form"
-                  className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
-                />
-                <textarea
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  rows={3}
-                  placeholder="Tell participants what they need to provide."
-                  className="w-full resize-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
-                />
+              <div className="mx-auto mt-8 max-w-xl space-y-4 text-left">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
+                    Form Title
+                  </label>
+                  <input
+                    value={formTitle}
+                    onChange={(e) => setFormTitle(e.target.value)}
+                    placeholder="Registration Form"
+                    className={inputClasses}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
+                    Form Description
+                  </label>
+                  <textarea
+                    value={formDescription}
+                    onChange={(e) => setFormDescription(e.target.value)}
+                    rows={3}
+                    placeholder="Tell participants what they need to provide."
+                    className={`${inputClasses} resize-none`}
+                  />
+                </div>
+
                 <button
                   type="button"
                   onClick={() => void handleCreateForm()}
                   disabled={creating}
-                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white disabled:opacity-50"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
                 >
                   {creating ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <Plus className="h-4 w-4" />
+                    <Plus size={18} />
                   )}
                   Create Registration Form
                 </button>
               </div>
             </div>
           ) : (
-            <div className="space-y-6">
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
+            <div className="space-y-8">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-6 sm:p-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0 flex-1 space-y-6">
+                    <div className="flex flex-wrap items-center gap-3">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${registrationForm.status === "PUBLISHED" ? "bg-emerald-50 text-emerald-700" : registrationForm.status === "CLOSED" ? "bg-orange-50 text-orange-700" : registrationForm.status === "ARCHIVED" ? "bg-slate-100 text-slate-600" : "bg-blue-50 text-blue-700"}`}
+                        className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
+                          registrationForm.status === "PUBLISHED"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            : registrationForm.status === "CLOSED"
+                              ? "bg-orange-50 text-orange-700 border border-orange-200"
+                              : registrationForm.status === "ARCHIVED"
+                                ? "bg-slate-100 text-slate-600 border border-slate-200"
+                                : "bg-blue-50 text-blue-700 border border-blue-200"
+                        }`}
                       >
                         {registrationForm.status}
                       </span>
-                      <span className="rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
+                      <span className="rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-bold text-[var(--primary)]">
                         {formatTemplate(
                           registrationForm.template ||
                             event.registrationTemplate,
                         )}
                       </span>
                     </div>
-                    <div className="mt-4 space-y-4">
-                      <input
-                        value={formTitle}
-                        onChange={(e) => setFormTitle(e.target.value)}
-                        disabled={registrationForm.status !== "DRAFT"}
-                        className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none disabled:bg-slate-50 focus:border-[var(--primary)]"
-                      />
-                      <textarea
-                        value={formDescription}
-                        onChange={(e) => setFormDescription(e.target.value)}
-                        disabled={registrationForm.status !== "DRAFT"}
-                        rows={3}
-                        className="w-full resize-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none disabled:bg-slate-50 focus:border-[var(--primary)]"
-                      />
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Form Title
+                        </label>
+                        <input
+                          value={formTitle}
+                          onChange={(e) => setFormTitle(e.target.value)}
+                          disabled={registrationForm.status !== "DRAFT"}
+                          className={inputClasses}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Form Description
+                        </label>
+                        <textarea
+                          value={formDescription}
+                          onChange={(e) => setFormDescription(e.target.value)}
+                          disabled={registrationForm.status !== "DRAFT"}
+                          rows={3}
+                          className={`${inputClasses} resize-none`}
+                        />
+                      </div>
+
                       {registrationForm.status === "DRAFT" && (
                         <button
                           type="button"
                           onClick={() => void handleSaveDetails()}
                           disabled={savingDetails}
-                          className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] disabled:opacity-50"
+                          className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
                         >
                           {savingDetails ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            <Save className="h-4 w-4" />
+                            <Save size={16} />
                           )}
                           Save Form Details
                         </button>
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 lg:justify-end">
+
+                  <div className="flex flex-wrap gap-2.5 lg:justify-end">
                     {registrationForm.status === "DRAFT" && (
                       <button
                         type="button"
@@ -2092,12 +2095,12 @@ function RegistrationFormBuilder({
                         disabled={
                           actionLoading || registrationForm.fields.length === 0
                         }
-                        className="inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {actionLoading ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <Check className="h-4 w-4" />
+                          <Check size={16} />
                         )}
                         Publish Form
                       </button>
@@ -2108,12 +2111,12 @@ function RegistrationFormBuilder({
                         type="button"
                         onClick={() => void handleFormAction("close")}
                         disabled={actionLoading}
-                        className="inline-flex items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-2.5 text-sm font-semibold text-orange-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-5 py-3 text-sm font-bold text-orange-700 shadow-sm transition-all hover:bg-orange-100 disabled:opacity-50"
                       >
                         {actionLoading ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <XCircle className="h-4 w-4" />
+                          <XCircle size={16} />
                         )}
                         Close Form
                       </button>
@@ -2124,12 +2127,12 @@ function RegistrationFormBuilder({
                         type="button"
                         onClick={() => void handleFormAction("reopen")}
                         disabled={actionLoading}
-                        className="inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
                       >
                         {actionLoading ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <Edit3 className="h-4 w-4" />
+                          <Edit3 size={16} />
                         )}
                         Reopen & Edit
                       </button>
@@ -2140,7 +2143,7 @@ function RegistrationFormBuilder({
                         type="button"
                         onClick={() => void handleFormAction("archive")}
                         disabled={actionLoading}
-                        className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-white px-5 py-3 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
                       >
                         Archive
                       </button>
@@ -2152,9 +2155,9 @@ function RegistrationFormBuilder({
                           type="button"
                           onClick={() => void handleDeleteForm()}
                           disabled={actionLoading}
-                          className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-700 shadow-sm transition-all hover:bg-red-100 disabled:opacity-50"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 size={16} />
                           Delete Form
                         </button>
                       )}
@@ -2163,12 +2166,12 @@ function RegistrationFormBuilder({
               </div>
 
               <div>
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-[var(--text)]">
+                    <h3 className="text-xl font-bold tracking-tight text-[var(--secondary)]">
                       Form Fields
                     </h3>
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
                       {registrationForm.fields.length}{" "}
                       {registrationForm.fields.length === 1
                         ? "field"
@@ -2180,77 +2183,81 @@ function RegistrationFormBuilder({
                     type="button"
                     onClick={openAddField}
                     disabled={registrationForm.status !== "DRAFT"}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white disabled:opacity-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus size={18} />
                     Add Field
                   </button>
                 </div>
+
                 {registrationForm.fields.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8 text-center">
-                    <FileText className="mx-auto h-9 w-9 text-[var(--muted)]" />
-                    <p className="mt-3 text-sm font-semibold text-[var(--text)]">
+                  <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]/30 p-10 text-center">
+                    <FileText className="mx-auto h-10 w-10 text-[var(--muted-foreground)]" />
+                    <p className="mt-4 text-base font-bold text-[var(--secondary)]">
                       No fields configured.
                     </p>
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
                       Add the information participants must submit.
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {[...registrationForm.fields]
                       .sort((a, b) => a.order - b.order)
                       .map((field, index, fields) => (
                         <div
                           key={field.id}
-                          className="rounded-xl border border-[var(--border)] bg-white p-4"
+                          className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-sm transition-all hover:shadow-md"
                         >
-                          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="flex min-w-0 gap-3">
-                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--primary-light)] text-sm font-bold text-[var(--primary)]">
+                          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="flex min-w-0 gap-4">
+                              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-base font-extrabold text-[var(--primary)]">
                                 {index + 1}
                               </div>
                               <div className="min-w-0">
-                                <div className="flex flex-wrap items-center gap-2">
-                                  <h4 className="font-semibold text-[var(--text)]">
+                                <div className="flex flex-wrap items-center gap-2.5">
+                                  <h4 className="text-lg font-bold text-[var(--secondary)]">
                                     {field.label}
                                   </h4>
                                   {field.required && (
-                                    <span className="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold text-red-600">
+                                    <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-bold text-red-600">
                                       Required
                                     </span>
                                   )}
                                   {field.isSystemField && (
-                                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-600">
                                       System
                                     </span>
                                   )}
                                 </div>
-                                <div className="mt-2 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
-                                  <span className="rounded-md bg-[var(--surface)] px-2 py-1">
+
+                                <div className="mt-2.5 flex flex-wrap gap-2 text-xs font-medium text-[var(--muted-foreground)]">
+                                  <span className="rounded-lg bg-[var(--surface)] px-2.5 py-1 border border-[var(--border)]">
                                     {FIELD_TYPE_LABELS[field.type]}
                                   </span>
-                                  <span className="rounded-md bg-[var(--surface)] px-2 py-1">
+                                  <span className="rounded-lg bg-[var(--surface)] px-2.5 py-1 border border-[var(--border)]">
                                     {field.scope === "TEAM"
                                       ? "Team"
                                       : "Participant"}
                                   </span>
-                                  <span className="rounded-md bg-[var(--surface)] px-2 py-1">
+                                  <span className="rounded-lg bg-[var(--surface)] px-2.5 py-1 border border-[var(--border)]">
                                     {field.key}
                                   </span>
                                 </div>
+
                                 {field.description && (
-                                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                                  <p className="mt-3 text-sm leading-relaxed text-[var(--muted-foreground)]">
                                     {field.description}
                                   </p>
                                 )}
+
                                 {normalizeOptions(field.options).length > 0 && (
-                                  <div className="mt-3 flex flex-wrap gap-2">
+                                  <div className="mt-4 flex flex-wrap gap-2">
                                     {normalizeOptions(field.options).map(
                                       (option) => (
                                         <span
                                           key={option}
-                                          className="rounded-md border border-[var(--border)] px-2.5 py-1 text-xs text-[var(--text)]"
+                                          className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 px-3 py-1.5 text-xs font-medium text-[var(--secondary)]"
                                         >
                                           {option}
                                         </span>
@@ -2260,7 +2267,8 @@ function RegistrationFormBuilder({
                                 )}
                               </div>
                             </div>
-                            <div className="flex flex-wrap items-center gap-2">
+
+                            <div className="flex flex-wrap items-center gap-2 shrink-0">
                               <button
                                 type="button"
                                 onClick={() =>
@@ -2270,10 +2278,10 @@ function RegistrationFormBuilder({
                                   index === 0 ||
                                   registrationForm.status !== "DRAFT"
                                 }
-                                className="rounded-lg border border-[var(--border)] bg-white p-2 text-[var(--text)] disabled:opacity-40"
+                                className="rounded-xl border border-[var(--border)] bg-white p-2.5 text-[var(--secondary)] transition-colors hover:bg-slate-50 disabled:opacity-40 shadow-sm"
                                 aria-label="Move field up"
                               >
-                                <ChevronUp className="h-4 w-4" />
+                                <ChevronUp size={16} />
                               </button>
                               <button
                                 type="button"
@@ -2284,10 +2292,10 @@ function RegistrationFormBuilder({
                                   index === fields.length - 1 ||
                                   registrationForm.status !== "DRAFT"
                                 }
-                                className="rounded-lg border border-[var(--border)] bg-white p-2 text-[var(--text)] disabled:opacity-40"
+                                className="rounded-xl border border-[var(--border)] bg-white p-2.5 text-[var(--secondary)] transition-colors hover:bg-slate-50 disabled:opacity-40 shadow-sm"
                                 aria-label="Move field down"
                               >
-                                <ChevronDown className="h-4 w-4" />
+                                <ChevronDown size={16} />
                               </button>
                               <button
                                 type="button"
@@ -2296,9 +2304,9 @@ function RegistrationFormBuilder({
                                   field.isSystemField ||
                                   registrationForm.status !== "DRAFT"
                                 }
-                                className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--text)] disabled:opacity-40"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-4 py-2.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-40"
                               >
-                                <Edit3 className="h-3.5 w-3.5" />
+                                <Edit3 size={15} />
                                 Edit
                               </button>
                               <button
@@ -2309,12 +2317,12 @@ function RegistrationFormBuilder({
                                   registrationForm.status !== "DRAFT" ||
                                   deletingFieldId === field.id
                                 }
-                                className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 disabled:opacity-40"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-xs font-bold text-red-700 shadow-sm transition-all hover:bg-red-100 disabled:opacity-40"
                               >
                                 {deletingFieldId === field.id ? (
                                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                 ) : (
-                                  <Trash2 className="h-3.5 w-3.5" />
+                                  <Trash2 size={15} />
                                 )}
                                 Delete
                               </button>
@@ -2331,14 +2339,14 @@ function RegistrationFormBuilder({
       </div>
 
       {fieldModal && registrationForm && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[var(--border)] bg-white shadow-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--border)] bg-white px-5 py-4">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-[var(--border)] bg-white shadow-2xl animate-in zoom-in-95 duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--border)] bg-white px-6 py-5">
               <div>
-                <h2 className="text-lg font-bold text-[var(--text)]">
+                <h2 className="text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                   {editingFieldId ? "Edit Form Field" : "Add Form Field"}
                 </h2>
-                <p className="mt-1 text-xs text-[var(--muted)]">
+                <p className="mt-1 text-xs text-[var(--muted-foreground)]">
                   Configure the information participants should provide.
                 </p>
               </div>
@@ -2346,15 +2354,16 @@ function RegistrationFormBuilder({
                 type="button"
                 onClick={() => setFieldModal(false)}
                 disabled={fieldSaving}
-                className="rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--surface)]"
+                className="rounded-xl p-2.5 text-[var(--muted-foreground)] hover:bg-[var(--surface)]"
               >
-                <X className="h-5 w-5" />
+                <X size={20} />
               </button>
             </div>
-            <div className="space-y-5 p-5">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+            
+            <div className="space-y-6 p-6 sm:p-8">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
                     Field Key
                   </label>
                   <input
@@ -2369,11 +2378,11 @@ function RegistrationFormBuilder({
                     }
                     disabled={Boolean(editingFieldId)}
                     placeholder="college_name"
-                    className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none disabled:bg-slate-100 focus:border-[var(--primary)]"
+                    className={inputClasses}
                   />
                 </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
                     Field Label
                   </label>
                   <input
@@ -2385,12 +2394,13 @@ function RegistrationFormBuilder({
                       }))
                     }
                     placeholder="College Name"
-                    className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                    className={inputClasses}
                   />
                 </div>
               </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-[var(--secondary)]">
                   Field Type
                 </label>
                 <select
@@ -2401,7 +2411,7 @@ function RegistrationFormBuilder({
                       type: e.target.value as FormFieldType,
                     }))
                   }
-                  className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                  className={inputClasses}
                 >
                   {Object.entries(FIELD_TYPE_LABELS).map(([value, label]) => (
                     <option key={value} value={value}>
@@ -2410,8 +2420,9 @@ function RegistrationFormBuilder({
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-[var(--secondary)]">
                   Description
                 </label>
                 <textarea
@@ -2424,12 +2435,13 @@ function RegistrationFormBuilder({
                   }
                   rows={2}
                   placeholder="Optional instructions for participants."
-                  className="w-full resize-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                  className={`${inputClasses} resize-none`}
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
                     Scope
                   </label>
                   <select
@@ -2440,14 +2452,14 @@ function RegistrationFormBuilder({
                         scope: e.target.value as FormFieldScope,
                       }))
                     }
-                    className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                    className={inputClasses}
                   >
                     <option value="PARTICIPANT">Participant</option>
                     <option value="TEAM">Team</option>
                   </select>
                 </div>
-                <div>
-                  <label className="mb-1.5 block text-sm font-semibold text-[var(--text)]">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[var(--secondary)]">
                     Placeholder
                   </label>
                   <input
@@ -2459,11 +2471,12 @@ function RegistrationFormBuilder({
                       }))
                     }
                     placeholder="Enter your answer"
-                    className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                    className={inputClasses}
                   />
                 </div>
               </div>
-              <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
+
+              <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-4 transition-colors hover:bg-[var(--surface)]">
                 <input
                   type="checkbox"
                   checked={fieldDraft.required}
@@ -2473,21 +2486,22 @@ function RegistrationFormBuilder({
                       required: e.target.checked,
                     }))
                   }
-                  className="h-4 w-4 accent-[var(--primary)]"
+                  className="h-4.5 w-4.5 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
                 />
-                <span>
-                  <span className="block text-sm font-semibold text-[var(--text)]">
+                <div>
+                  <span className="block text-sm font-bold text-[var(--secondary)]">
                     Required field
                   </span>
-                  <span className="block text-xs text-[var(--muted)]">
+                  <span className="block text-xs text-[var(--muted-foreground)]">
                     Participants must provide this information.
                   </span>
-                </span>
+                </div>
               </label>
+
               {optionTypes.includes(fieldDraft.type) && (
-                <div>
-                  <div className="mb-2 flex items-center justify-between">
-                    <label className="text-sm font-semibold text-[var(--text)]">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-bold text-[var(--secondary)]">
                       Options
                     </label>
                     <button
@@ -2498,20 +2512,20 @@ function RegistrationFormBuilder({
                           options: [...current.options, ""],
                         }))
                       }
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--primary)]"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--primary)] hover:underline"
                     >
-                      <Plus className="h-3.5 w-3.5" />
+                      <Plus size={15} />
                       Add Option
                     </button>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     {fieldDraft.options.map((option, index) => (
-                      <div key={`${index}-${option}`} className="flex gap-2">
+                      <div key={`${index}-${option}`} className="flex gap-3">
                         <input
                           value={option}
                           onChange={(e) => updateOption(index, e.target.value)}
                           placeholder={`Option ${index + 1}`}
-                          className="min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                          className={inputClasses}
                         />
                         <button
                           type="button"
@@ -2523,21 +2537,22 @@ function RegistrationFormBuilder({
                               ),
                             }))
                           }
-                          className="rounded-lg border border-red-200 bg-red-50 p-2.5 text-red-700"
+                          className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-700 transition-colors hover:bg-red-100"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-              <div className="flex flex-col-reverse gap-2 border-t border-[var(--border)] pt-5 sm:flex-row sm:justify-end">
+
+              <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:justify-end">
                 <button
                   type="button"
                   onClick={() => setFieldModal(false)}
                   disabled={fieldSaving}
-                  className="rounded-lg border border-[var(--border)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text)] disabled:opacity-50"
+                  className="rounded-xl border border-[var(--border)] bg-white px-6 py-3 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -2545,12 +2560,12 @@ function RegistrationFormBuilder({
                   type="button"
                   onClick={() => void handleSaveField()}
                   disabled={fieldSaving}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold !text-white disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50"
                 >
                   {fieldSaving ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Save className="h-4 w-4" />
+                    <Save size={16} />
                   )}
                   {editingFieldId ? "Save Changes" : "Add Field"}
                 </button>
@@ -2569,9 +2584,7 @@ export default function EventManagementPage() {
   const [pageError, setPageError] = useState("");
 
   const [statusFilter, setStatusFilter] = useState<"ALL" | EventStatus>("ALL");
-
   const [accessFilter, setAccessFilter] = useState<"ALL" | EventAccess>("ALL");
-
   const [search, setSearch] = useState("");
 
   const [modal, setModal] = useState<ModalType>(null);
@@ -2896,18 +2909,15 @@ export default function EventManagementPage() {
 
       if (modal === "edit" && selectedEvent) {
         await api.patch(`/events/${selectedEvent.id}`, payload);
-
         eventId = selectedEvent.id;
       } else {
         const response = await api.post("/events", payload);
-
         const data = getResponseData<{
           id?: string;
           event?: {
             id?: string;
           };
         }>(response);
-
         eventId = data?.id ?? data?.event?.id;
       }
 
@@ -2944,14 +2954,12 @@ export default function EventManagementPage() {
       setActionError("");
 
       const response = await request();
-
       const updated = getResponseData<EventItem>(response);
 
       if (action === "delete") {
         setEvents((current) =>
           current.filter((event) => event.id !== selectedEvent.id),
         );
-
         setModal(null);
         setSelectedEvent(null);
         return;
@@ -2977,13 +2985,11 @@ export default function EventManagementPage() {
 
   async function handleSubmit(event: EventItem) {
     setSelectedEvent(event);
-
     await performAction("submit", () => api.post(`/events/${event.id}/submit`));
   }
 
   async function handleApprove(event: EventItem) {
     setSelectedEvent(event);
-
     await performAction("approve", () =>
       api.patch(`/events/${event.id}/approve`),
     );
@@ -3049,7 +3055,6 @@ export default function EventManagementPage() {
 
   async function handleComplete(event: EventItem) {
     setSelectedEvent(event);
-
     await performAction("complete", () =>
       api.patch(`/events/${event.id}/complete`),
     );
@@ -3059,7 +3064,6 @@ export default function EventManagementPage() {
     if (!selectedEvent) {
       return;
     }
-
     await performAction("delete", () =>
       api.delete(`/events/${selectedEvent.id}`),
     );
@@ -3069,7 +3073,6 @@ export default function EventManagementPage() {
     if (!selectedEvent) {
       return;
     }
-
     await performAction("cancel", () =>
       api.patch(`/events/${selectedEvent.id}/cancel`),
     );
@@ -3127,7 +3130,6 @@ export default function EventManagementPage() {
     }
 
     window.addEventListener("keydown", handleEscape);
-
     return () => window.removeEventListener("keydown", handleEscape);
   }, [saving, loadingAction, bannerUploading, bannerRemoving]);
 
@@ -3145,18 +3147,18 @@ export default function EventManagementPage() {
           display: none;
         }
       `}</style>
-      <div className="space-y-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-8 sm:mb-10">
           <div>
-            <p className="text-xs font-medium text-[var(--primary)]">
+            <span className="inline-flex rounded-full bg-[var(--primary)]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
               IEEE Geeta University
-            </p>
+            </span>
 
-            <h1 className="mt-1 text-2xl font-bold text-[var(--text)]">
+            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl">
               Event Management
             </h1>
 
-            <p className="mt-1.5 max-w-2xl text-sm text-[var(--muted)]">
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">
               Create, edit, review, approve, publish and manage IEEE Geeta
               University events.
             </p>
@@ -3165,84 +3167,59 @@ export default function EventManagementPage() {
           <button
             type="button"
             onClick={openCreate}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold !text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
           >
-            <Plus className="h-4 w-4" />
+            <Plus size={18} />
             Create Event
           </button>
         </div>
 
         {pageError && (
-          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-
+          <div className="mb-8 flex items-start gap-4 rounded-2xl border border-red-200 bg-red-50 p-5 shadow-sm">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
             <div>
-              <p className="text-sm font-semibold text-red-700">
+              <p className="text-sm font-bold text-red-800">
                 Unable to load events
               </p>
-
-              <p className="mt-1 text-xs text-red-600">{pageError}</p>
+              <p className="mt-1 text-sm text-red-700">{pageError}</p>
             </div>
           </div>
         )}
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            label="Total Events"
-            value={stats.total}
-            icon={CalendarDays}
-          />
-
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+          <StatCard label="Total Events" value={stats.total} icon={CalendarDays} />
           <StatCard label="Draft" value={stats.draft} icon={FileText} />
-
-          <StatCard
-            label="Pending Approval"
-            value={stats.pending}
-            icon={UserCheck}
-          />
-
+          <StatCard label="Pending Approval" value={stats.pending} icon={UserCheck} />
           <StatCard label="Published" value={stats.published} icon={Globe2} />
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-10">
           <StatCard label="Approved" value={stats.approved} icon={Check} />
-
           <StatCard label="Rejected" value={stats.rejected} icon={XCircle} />
-
-          <StatCard
-            label="Cancelled"
-            value={stats.cancelled}
-            icon={AlertCircle}
-          />
-
-          <StatCard
-            label="Completed"
-            value={stats.completed}
-            icon={CheckCircle2}
-          />
+          <StatCard label="Cancelled" value={stats.cancelled} icon={AlertCircle} />
+          <StatCard label="Completed" value={stats.completed} icon={CheckCircle2} />
         </div>
 
-        <section className="rounded-xl border border-[var(--border)] bg-white">
-          <div className="border-b border-[var(--border)] p-4">
-            <div className="flex flex-col gap-3 lg:flex-row">
+        <section className="rounded-3xl border border-[var(--border)] bg-white shadow-sm overflow-hidden mb-12">
+          <div className="border-b border-[var(--border)] bg-[var(--surface)]/30 p-6">
+            <div className="flex flex-col gap-4 lg:flex-row">
               <div className="relative flex-1">
-                <Filter className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-[var(--muted)]" />
-
+                <Filter className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                 <input
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="Search events..."
-                  className="w-full rounded-lg border border-[var(--border)] bg-white py-2.5 pl-9 pr-3 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                  className="w-full rounded-xl border border-[var(--border)] bg-white py-3 pl-11 pr-4 text-sm font-medium text-[var(--secondary)] outline-none transition-all focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
                 />
               </div>
 
-              <div className="relative lg:w-52">
+              <div className="relative lg:w-56">
                 <select
                   value={statusFilter}
                   onChange={(event) =>
                     setStatusFilter(event.target.value as "ALL" | EventStatus)
                   }
-                  className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 pr-9 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                  className="w-full appearance-none rounded-xl border border-[var(--border)] bg-white px-4 py-3 pr-10 text-sm font-medium text-[var(--secondary)] outline-none transition-all focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                 >
                   {STATUS_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -3250,17 +3227,16 @@ export default function EventManagementPage() {
                     </option>
                   ))}
                 </select>
-
-                <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-[var(--muted)]" />
+                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               </div>
 
-              <div className="relative lg:w-48">
+              <div className="relative lg:w-52">
                 <select
                   value={accessFilter}
                   onChange={(event) =>
                     setAccessFilter(event.target.value as "ALL" | EventAccess)
                   }
-                  className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 pr-9 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
+                  className="w-full appearance-none rounded-xl border border-[var(--border)] bg-white px-4 py-3 pr-10 text-sm font-medium text-[var(--secondary)] outline-none transition-all focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                 >
                   {ACCESS_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -3268,31 +3244,32 @@ export default function EventManagementPage() {
                     </option>
                   ))}
                 </select>
-
-                <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-[var(--muted)]" />
+                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               </div>
             </div>
           </div>
 
-          <div className="p-4">
+          <div className="p-6">
             {isLoading ? (
-              <div className="flex min-h-64 items-center justify-center">
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+              <div className="flex min-h-[260px] items-center justify-center">
+                <div className="flex items-center gap-3 text-sm font-semibold text-[var(--muted-foreground)]">
+                  <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
                   Loading events...
                 </div>
               </div>
             ) : filteredEvents.length === 0 ? (
-              <div className="flex min-h-64 flex-col items-center justify-center text-center">
-                <CalendarDays className="h-9 w-9 text-[var(--muted)]" />
+              <div className="flex min-h-[260px] flex-col items-center justify-center text-center p-8">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface)] text-[var(--muted-foreground)]">
+                  <CalendarDays size={28} />
+                </div>
 
-                <h2 className="mt-3 text-base font-semibold text-[var(--text)]">
+                <h2 className="mt-4 text-lg font-bold text-[var(--secondary)]">
                   {events.length === 0
                     ? "No events created yet"
                     : "No matching events"}
                 </h2>
 
-                <p className="mt-1.5 max-w-md text-sm text-[var(--muted)]">
+                <p className="mt-1.5 max-w-md text-sm leading-relaxed text-[var(--muted-foreground)]">
                   {events.length === 0
                     ? "Create your first IEEE event to begin the event workflow."
                     : "Try changing the search or filter criteria."}
@@ -3302,48 +3279,48 @@ export default function EventManagementPage() {
                   <button
                     type="button"
                     onClick={openCreate}
-                    className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white"
+                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-3 text-xs font-bold !text-white shadow-sm transition-all hover:bg-blue-700"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus size={16} />
                     Create Event
                   </button>
                 )}
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {filteredEvents.map((event) => (
                   <article
                     key={event.id}
-                    className="overflow-hidden rounded-xl border border-[var(--border)] bg-white"
+                    className="overflow-hidden rounded-2xl border border-[var(--border)] bg-white transition-all hover:border-[var(--primary)]/30 hover:shadow-md"
                   >
                     <div className="flex flex-col lg:flex-row">
-                      <div className="relative h-44 shrink-0 bg-[var(--surface)] lg:h-auto lg:w-56">
+                      <div className="relative aspect-video max-h-40 shrink-0 bg-slate-900 lg:aspect-auto lg:max-h-none lg:w-56">
                         {event.bannerImage ? (
                           <img
                             src={event.bannerImage}
                             alt={event.title}
-                            className="h-full min-h-44 w-full object-cover"
+                            className="h-full w-full object-contain"
                           />
                         ) : (
-                          <div className="flex h-full min-h-44 items-center justify-center">
-                            <CalendarDays className="h-10 w-10 text-[var(--muted)]" />
+                          <div className="flex h-full min-h-[130px] items-center justify-center">
+                            <CalendarDays size={30} className="text-[var(--muted-foreground)]" />
                           </div>
                         )}
 
                         {event.isFeatured && (
-                          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-[var(--primary)] shadow-sm">
-                            <Star className="h-3 w-3" />
+                          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-[var(--primary)] shadow-sm">
+                            <Star size={11} />
                             Featured
                           </span>
                         )}
                       </div>
 
-                      <div className="min-w-0 flex-1 p-4">
-                        <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-                          <div className="min-w-0">
+                      <div className="min-w-0 flex-1 p-5 sm:p-6">
+                        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                          <div className="min-w-0 space-y-2">
                             <div className="flex flex-wrap items-center gap-2">
                               <span
-                                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold ${statusClass(
+                                className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusClass(
                                   event.status,
                                 )}`}
                               >
@@ -3351,7 +3328,7 @@ export default function EventManagementPage() {
                               </span>
 
                               <span
-                                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${accessClass(
+                                className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${accessClass(
                                   event.access,
                                 )}`}
                               >
@@ -3359,12 +3336,12 @@ export default function EventManagementPage() {
                               </span>
                             </div>
 
-                            <h2 className="mt-2 line-clamp-2 text-base font-bold text-[var(--text)]">
+                            <h2 className="text-lg font-bold tracking-tight text-[var(--secondary)] sm:text-xl">
                               {event.title}
                             </h2>
 
                             {event.shortDescription && (
-                              <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--muted)]">
+                              <p className="line-clamp-2 text-xs leading-relaxed text-[var(--muted-foreground)]">
                                 {event.shortDescription}
                               </p>
                             )}
@@ -3392,14 +3369,14 @@ export default function EventManagementPage() {
                           </div>
                         </div>
 
-                        <div className="mt-4 grid gap-2 text-xs text-[var(--muted)] sm:grid-cols-2 xl:grid-cols-4">
+                        <div className="mt-4 grid gap-3 text-xs font-medium text-[var(--muted-foreground)] sm:grid-cols-2 xl:grid-cols-4 border-t border-[var(--border)] pt-4">
                           <div className="flex items-center gap-2">
-                            <CalendarDays className="h-3.5 w-3.5 shrink-0" />
+                            <CalendarDays size={14} className="text-[var(--primary)] shrink-0" />
                             <span>{formatDate(event.eventDate)}</span>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Clock3 className="h-3.5 w-3.5 shrink-0" />
+                            <Clock3 size={14} className="text-[var(--primary)] shrink-0" />
                             <span>
                               {formatTime(event.startTime)}
                               {event.endTime
@@ -3409,14 +3386,14 @@ export default function EventManagementPage() {
                           </div>
 
                           <div className="flex min-w-0 items-center gap-2">
-                            <MapPin className="h-3.5 w-3.5 shrink-0" />
+                            <MapPin size={14} className="text-[var(--primary)] shrink-0" />
                             <span className="truncate">
                               {event.venue || "Venue to be announced"}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Users className="h-3.5 w-3.5 shrink-0" />
+                            <Users size={14} className="text-[var(--primary)] shrink-0" />
                             <span>
                               {event._count?.registrations ?? 0}
                               {event.capacity
@@ -3426,53 +3403,19 @@ export default function EventManagementPage() {
                           </div>
                         </div>
 
-                        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--border)] pt-3 text-[10px] text-[var(--muted)]">
+                        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--muted-foreground)]">
                           <span>
-                            Slug:{" "}
-                            <span className="font-medium text-[var(--text)]">
-                              {event.slug}
-                            </span>
+                            Slug: <strong className="text-[var(--secondary)] font-semibold">{event.slug}</strong>
                           </span>
-
                           <span>
-                            Registration:{" "}
-                            <span className="font-medium text-[var(--text)]">
-                              {formatTemplate(event.registrationTemplate)}
-                            </span>
+                            Registration: <strong className="text-[var(--secondary)] font-semibold">{formatTemplate(event.registrationTemplate)}</strong>
                           </span>
-
                           <span>
-                            Participation:{" "}
-                            <span className="font-medium text-[var(--text)]">
-                              {event.participationType === "TEAM"
-                                ? "Team"
-                                : "Individual"}
-                            </span>
+                            Participation: <strong className="text-[var(--secondary)] font-semibold">{event.participationType === "TEAM" ? "Team" : "Individual"}</strong>
                           </span>
-
                           {event.enableQrAttendance && (
-                            <span className="font-medium text-emerald-700">
+                            <span className="font-bold text-emerald-700">
                               QR Attendance Enabled
-                            </span>
-                          )}
-
-                          {event.createdBy && (
-                            <span>
-                              Created by:{" "}
-                              <span className="font-medium text-[var(--text)]">
-                                {`${event.createdBy.firstName} ${
-                                  event.createdBy.lastName ?? ""
-                                }`.trim()}
-                              </span>
-                            </span>
-                          )}
-
-                          {event.registrationDeadline && (
-                            <span>
-                              Registration closes:{" "}
-                              <span className="font-medium text-[var(--text)]">
-                                {formatDateTime(event.registrationDeadline)}
-                              </span>
                             </span>
                           )}
                         </div>
@@ -3485,8 +3428,8 @@ export default function EventManagementPage() {
           </div>
 
           {!isLoading && events.length > 0 && (
-            <div className="border-t border-[var(--border)] px-4 py-3">
-              <p className="text-xs text-[var(--muted)]">
+            <div className="border-t border-[var(--border)] bg-[var(--surface)]/30 px-6 py-4">
+              <p className="text-xs font-semibold text-[var(--muted-foreground)]">
                 Showing {filteredEvents.length} of {events.length} events
               </p>
             </div>
@@ -3517,9 +3460,7 @@ export default function EventManagementPage() {
           <ViewEventModal
             event={selectedEvent}
             onClose={closeModal}
-            onEdit={() => {
-              openEdit(selectedEvent);
-            }}
+            onEdit={() => openEdit(selectedEvent)}
           />
         )}
 

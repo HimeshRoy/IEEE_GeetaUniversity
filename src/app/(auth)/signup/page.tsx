@@ -194,52 +194,65 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-8">
-        <div className="w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7 text-center shadow-sm sm:p-10">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--primary)]">
-            <Check className="h-7 w-7 !text-white" />
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-[var(--primary)]/[0.04] blur-3xl" />
+          <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-emerald-500/[0.04] blur-3xl" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md animate-in zoom-in-95 duration-700 ease-out">
+          <div className="rounded-3xl border border-[var(--border)] bg-white p-8 text-center shadow-xl shadow-black/[0.02] sm:p-12">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50">
+              <Check className="h-10 w-10 text-emerald-600" />
+            </div>
+
+            <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-3xl">
+              Registration Successful
+            </h1>
+
+            <p className="mt-4 text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
+              Your account has been created and your IEEE Geeta University
+              Student Branch application is now pending review.
+            </p>
+
+            <div className="mt-8 flex items-center justify-center gap-3 text-sm font-medium text-[var(--muted)]">
+              <Loader2 className="h-4 w-4 animate-spin text-[var(--primary)]" />
+              Redirecting to login...
+            </div>
           </div>
-
-          <h1 className="mt-6 text-2xl font-bold text-[var(--foreground)]">
-            Registration Successful
-          </h1>
-
-          <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-            Your account has been created and your IEEE Geeta University
-            Student Branch application is now pending review.
-          </p>
-
-          <p className="mt-5 text-xs text-[var(--muted)]">
-            Redirecting to login...
-          </p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[var(--background)] px-4 py-8 sm:px-6 sm:py-12">
-      <div className="mx-auto w-full max-w-2xl">
-        <header className="mb-7 text-center sm:mb-8">
+    <main className="relative flex min-h-screen justify-center overflow-hidden bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-[var(--primary)]/[0.04] blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-blue-500/[0.03] blur-3xl" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-2xl">
+        <header className="mb-8 text-center sm:mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out">
           <Link
             href="/"
-            className="text-xs font-bold tracking-[0.2em] text-[var(--primary)] sm:text-sm"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--primary)]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)] transition-colors duration-300 hover:bg-[var(--primary)]/20"
           >
-            IEEE GEETA UNIVERSITY
+            IEEE Geeta University
           </Link>
 
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl">
+          <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl">
             Join the Student Branch
           </h1>
 
-          <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-[var(--muted)]">
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
             Register your account with your official IEEE Membership Number.
           </p>
         </header>
 
-        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
-          <div className="border-b border-[var(--border)] px-5 py-4 sm:px-8 sm:py-5">
-            <div className="flex items-center">
+        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-xl shadow-black/[0.02] animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
+          <div className="border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5 sm:px-10 sm:py-6">
+            <div className="flex items-center justify-center sm:justify-start">
               <Step
                 number={1}
                 label="Account"
@@ -247,7 +260,7 @@ export default function SignupPage() {
                 completed={step === 2}
               />
 
-              <div className="mx-3 h-px flex-1 bg-[var(--border)] sm:mx-5" />
+              <div className="mx-4 h-px flex-1 bg-[var(--border)] sm:mx-6" />
 
               <Step
                 number={2}
@@ -259,33 +272,35 @@ export default function SignupPage() {
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
-            <div className="p-5 sm:p-8">
+            <div className="p-6 sm:p-10">
               {error && (
                 <div
                   role="alert"
-                  className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-5 text-red-700"
+                  className="mb-8 rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm animate-in fade-in duration-300"
                 >
-                  {error}
+                  <p className="text-sm font-semibold leading-relaxed text-red-800">
+                    {error}
+                  </p>
                 </div>
               )}
 
               {step === 1 ? (
-                <section>
-                  <div className="mb-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--primary)]">
+                <section className="animate-in fade-in slide-in-from-right-4 duration-500">
+                  <div className="mb-8">
+                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                       Step 1 of 2
                     </p>
 
-                    <h2 className="mt-2 text-xl font-bold text-[var(--foreground)]">
+                    <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
                       Create your account
                     </h2>
 
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">
                       Enter your basic account details.
                     </p>
                   </div>
 
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="grid gap-6 sm:grid-cols-2">
                     <InputField
                       label="First Name"
                       name="firstName"
@@ -327,16 +342,16 @@ export default function SignupPage() {
                       autoComplete="tel"
                     />
 
-                    <div className="sm:col-span-2">
+                    <div className="space-y-2 sm:col-span-2">
                       <label
                         htmlFor="password"
-                        className="mb-2 block text-sm font-medium text-[var(--foreground)]"
+                        className="block text-sm font-bold text-[var(--secondary)]"
                       >
                         Password{" "}
-                        <span className="text-[var(--primary)]">*</span>
+                        <span className="ml-1 text-red-500">*</span>
                       </label>
 
-                      <div className="relative">
+                      <div className="group relative">
                         <input
                           id="password"
                           name="password"
@@ -348,7 +363,7 @@ export default function SignupPage() {
                           maxLength={128}
                           autoComplete="new-password"
                           required
-                          className="!h-12 !min-h-12 !max-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 pr-12 text-sm !leading-normal text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10"
+                          className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 py-3.5 pl-4 pr-12 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
                         />
 
                         <button
@@ -359,17 +374,17 @@ export default function SignupPage() {
                           aria-label={
                             showPassword ? "Hide password" : "Show password"
                           }
-                          className="!absolute !right-2.5 !top-1/2 !m-0 !flex !h-8 !min-h-8 !w-8 !min-w-8 !-translate-y-1/2 !items-center !justify-center !rounded-lg !border-0 !bg-transparent !p-0 !text-[var(--muted)]"
+                          className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--border)] hover:text-[var(--secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                         >
                           {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
+                            <EyeOff className="h-5 w-5" />
                           ) : (
-                            <Eye className="h-4 w-4" />
+                            <Eye className="h-5 w-5" />
                           )}
                         </button>
                       </div>
 
-                      <p className="mt-2 text-xs text-[var(--muted)]">
+                      <p className="mt-2 text-xs font-medium text-[var(--muted-foreground)]">
                         Use at least 8 characters.
                       </p>
                     </div>
@@ -377,35 +392,35 @@ export default function SignupPage() {
 
                   <button
                     type="submit"
-                    className="!mt-8 !flex !h-12 !min-h-12 !max-h-12 !w-full !items-center !justify-center !rounded-xl !border-0 !bg-[var(--primary)] !px-5 !py-0 !text-sm !font-semibold !leading-none !text-white transition hover:opacity-90 active:scale-[0.99]"
+                    className="group mt-10 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98]"
                   >
-                    <span className="!text-white">Continue</span>
-                    <ArrowRight className="ml-2 h-4 w-4 !text-white" />
+                    <span>Continue</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
                 </section>
               ) : (
-                <section>
-                  <div className="mb-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--primary)]">
+                <section className="animate-in fade-in slide-in-from-right-4 duration-500">
+                  <div className="mb-8">
+                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
                       Step 2 of 2
                     </p>
 
-                    <h2 className="mt-2 text-xl font-bold text-[var(--foreground)]">
+                    <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
                       Academic details
                     </h2>
 
-                    <p className="mt-1 text-sm text-[var(--muted)]">
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">
                       Complete your university and IEEE information.
                     </p>
                   </div>
 
-                  <div className="mb-7 rounded-2xl border border-[var(--primary)]/20 bg-[var(--primary)]/5 p-4 sm:p-5">
-                    <div className="mb-4">
-                      <h3 className="text-sm font-semibold text-[var(--foreground)]">
+                  <div className="mb-8 rounded-2xl border border-[var(--primary)]/20 bg-[var(--primary)]/5 p-5 sm:p-6 shadow-sm">
+                    <div className="mb-5">
+                      <h3 className="text-base font-bold text-[var(--secondary)]">
                         IEEE Membership
                       </h3>
 
-                      <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                      <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
                         Your official IEEE Membership Number is required to
                         join the student branch.
                       </p>
@@ -423,11 +438,11 @@ export default function SignupPage() {
                   </div>
 
                   <div>
-                    <h3 className="mb-4 text-sm font-semibold text-[var(--foreground)]">
+                    <h3 className="mb-6 text-base font-bold text-[var(--secondary)]">
                       University Information
                     </h3>
 
-                    <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="grid gap-6 sm:grid-cols-2">
                       <InputField
                         label="Department"
                         name="department"
@@ -466,14 +481,14 @@ export default function SignupPage() {
                     </div>
                   </div>
 
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                     <button
                       type="button"
                       onClick={handleBack}
                       disabled={isLoading}
-                      className="!order-2 !flex !h-12 !min-h-12 !max-h-12 !w-full !items-center !justify-center !rounded-xl !border !border-[var(--border)] !bg-transparent !px-5 !py-0 !text-sm !font-semibold !leading-none !text-[var(--foreground)] transition hover:bg-[var(--surface-muted)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:!order-1 sm:!w-auto sm:!flex-1"
+                      className="group flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-6 py-4 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:order-1"
                     >
-                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                       <span>Back</span>
                     </button>
 
@@ -481,19 +496,17 @@ export default function SignupPage() {
                       type="button"
                       onClick={() => void createAccount()}
                       disabled={isLoading}
-                      className="!order-1 !flex !h-12 !min-h-12 !max-h-12 !w-full !items-center !justify-center !rounded-xl !border-0 !bg-[var(--primary)] !px-5 !py-0 !text-sm !font-semibold !leading-none !text-white transition hover:opacity-90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:!order-2 sm:!flex-[2]"
+                      className="group flex flex-[2] items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:order-2"
                     >
                       {isLoading ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin !text-white" />
-                          <span className="ml-2 !text-white">
-                            Creating Account
-                          </span>
+                          <Loader2 className="h-5 w-5 animate-spin !text-white" />
+                          <span>Creating Account...</span>
                         </>
                       ) : (
                         <>
-                          <span className="!text-white">Create Account</span>
-                          <Check className="ml-2 h-4 w-4 !text-white" />
+                          <span>Create Account</span>
+                          <Check className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
                         </>
                       )}
                     </button>
@@ -503,12 +516,12 @@ export default function SignupPage() {
             </div>
           </form>
 
-          <div className="border-t border-[var(--border)] px-5 py-5 text-center">
-            <p className="text-sm text-[var(--muted)]">
+          <div className="border-t border-[var(--border)] px-6 py-6 text-center sm:px-10">
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">
               Already registered?{" "}
               <Link
                 href="/login"
-                className="font-semibold text-[var(--primary)] hover:underline"
+                className="font-bold text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-dark)] hover:underline hover:underline-offset-4"
               >
                 Login
               </Link>
@@ -516,7 +529,7 @@ export default function SignupPage() {
           </div>
         </div>
 
-        <p className="mx-auto mt-5 max-w-lg px-2 text-center text-xs leading-5 text-[var(--muted)]">
+        <p className="mx-auto mt-8 max-w-lg px-2 text-center text-xs font-medium uppercase tracking-widest text-[var(--muted-foreground)] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out delay-300 fill-mode-both">
           Your registration will be reviewed by the IEEE Geeta University
           Student Branch administration.
         </p>
@@ -537,26 +550,28 @@ function Step({
   completed: boolean;
 }) {
   return (
-    <div className="flex shrink-0 items-center gap-2.5">
+    <div className="flex shrink-0 items-center gap-3">
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+        className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
           active || completed
-            ? "bg-[var(--primary)] !text-white"
-            : "border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]"
+            ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/20"
+            : "border-2 border-[var(--border)] bg-white text-[var(--muted-foreground)]"
         }`}
       >
         {completed ? (
-          <Check className="h-4 w-4 !text-white" />
+          <Check className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
         ) : (
           number
         )}
       </div>
 
       <span
-        className={`hidden text-sm font-semibold sm:block ${
+        className={`hidden text-sm font-bold sm:block transition-colors duration-300 ${
           active
-            ? "text-[var(--foreground)]"
-            : "text-[var(--muted)]"
+            ? "text-[var(--secondary)]"
+            : completed
+              ? "text-[var(--primary)]"
+              : "text-[var(--muted-foreground)]"
         }`}
       >
         {label}
@@ -587,14 +602,14 @@ function InputField({
   autoComplete,
 }: InputFieldProps) {
   return (
-    <div>
+    <div className="space-y-2">
       <label
         htmlFor={name}
-        className="mb-2 block text-sm font-medium text-[var(--foreground)]"
+        className="block text-sm font-bold text-[var(--secondary)]"
       >
         {label}
         {required && (
-          <span className="text-[var(--primary)]"> *</span>
+          <span className="ml-1 text-red-500">*</span>
         )}
       </label>
 
@@ -607,7 +622,7 @@ function InputField({
         placeholder={placeholder}
         required={required}
         autoComplete={autoComplete}
-        className="!h-12 !min-h-12 !max-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 text-sm !leading-normal text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10"
+        className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 py-3.5 px-4 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
       />
     </div>
   );

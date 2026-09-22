@@ -259,12 +259,12 @@ function StatCard({
         <div className="min-w-0">
           <p className="text-xs font-medium text-[var(--muted)]">{label}</p>
 
-          <p className="mt-1.5 text-2xl font-bold text-[var(--text)]">
+          <p className="mt-1 text-xl font-bold text-[var(--text)]">
             {value}
           </p>
 
           {description && (
-            <p className="mt-1 text-[10px] text-[var(--muted)]">
+            <p className="mt-0.5 text-[10px] text-[var(--muted)]">
               {description}
             </p>
           )}
@@ -819,676 +819,696 @@ export default function RegistrationManagementPage() {
   }, []);
 
   return (
-    <div className="space-y-7">
-      <div>
-        <p className="text-xs font-medium text-[var(--primary)]">
-          IEEE Geeta University
-        </p>
+    <>
+      <style jsx global>{`
+        html,
+        body {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
 
-        <h1 className="mt-1 text-2xl font-bold text-[var(--text)]">
-          Registration Management
-        </h1>
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
 
-        <p className="mt-1.5 text-sm text-[var(--muted)]">
-          Manage event participants, attendance, waitlists, and registration
-          records.
-        </p>
-      </div>
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="mb-7">
+          <p className="text-xs font-semibold text-[var(--primary)]">
+            IEEE Geeta University
+          </p>
 
-      {pageError && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5">
-          <p className="text-sm font-medium text-red-700">{pageError}</p>
-        </div>
-      )}
+          <h1 className="mt-1 text-2xl font-bold text-[var(--text)]">
+            Registration Management
+          </h1>
 
-      <section className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <div className="w-full xl:max-w-2xl">
-            <label
-              htmlFor="event"
-              className="text-xs font-semibold text-[var(--text)]"
-            >
-              Event
-            </label>
-
-            <div className="relative mt-2">
-              <select
-                id="event"
-                value={selectedEventId}
-                onChange={(event) => {
-                  setSelectedEventId(event.target.value);
-                  setSearch("");
-                  setStatusFilter("ALL");
-                  setRegistrationError("");
-                  setActionError("");
-                }}
-                disabled={isLoadingEvents || events.length === 0}
-                className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 pr-10 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
-              >
-                {isLoadingEvents && <option>Loading events...</option>}
-
-                {!isLoadingEvents && events.length === 0 && (
-                  <option>No events available</option>
-                )}
-
-                {!isLoadingEvents &&
-                  events.map((event) => (
-                    <option key={event.id} value={event.id}>
-                      {event.title}
-                    </option>
-                  ))}
-              </select>
-
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={startQrScanner}
-            disabled={!selectedEventId || scannerLoading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--primary)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--primary)] transition-colors hover:bg-[var(--primary-light)] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <ScanLine className="h-4 w-4" />
-            Scan QR
-          </button>
-
-          <button
-            type="button"
-            onClick={handleDownloadExcel}
-            disabled={!selectedEventId || downloading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {downloading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            Download Excel
-          </button>
+          <p className="mt-1.5 text-sm text-[var(--muted)]">
+            Manage event participants, attendance, waitlists, and registration
+            records.
+          </p>
         </div>
 
-        {selectedEvent && (
-          <div className="mt-5 grid gap-3 border-t border-[var(--border)] pt-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <CalendarDays className="h-4 w-4 shrink-0" />
-              <span>{formatDate(selectedEvent.eventDate)}</span>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <Clock3 className="h-4 w-4 shrink-0" />
-              <span>{formatTime(selectedEvent.startTime)}</span>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <MapPin className="h-4 w-4 shrink-0" />
-              <span className="truncate">
-                {selectedEvent.venue || "Venue to be announced"}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <Users className="h-4 w-4 shrink-0" />
-              <span>
-                {selectedEvent.capacity === null ||
-                selectedEvent.capacity === undefined
-                  ? "Unlimited capacity"
-                  : `${selectedEvent.capacity} capacity`}
-              </span>
-            </div>
+        {pageError && (
+          <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-5">
+            <p className="text-sm font-medium text-red-700">{pageError}</p>
           </div>
         )}
-      </section>
 
-      {isLoadingRegistrations && (
-        <div className="rounded-xl border border-[var(--border)] bg-white p-12 text-center shadow-sm">
-          <Loader2 className="mx-auto h-7 w-7 animate-spin text-[var(--primary)]" />
+        <section className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-sm">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+            <div className="w-full xl:max-w-2xl">
+              <label
+                htmlFor="event"
+                className="text-xs font-semibold text-[var(--text)]"
+              >
+                Event
+              </label>
 
-          <p className="mt-3 text-sm text-[var(--muted)]">
-            Loading registration records...
-          </p>
-        </div>
-      )}
-
-      {!isLoadingRegistrations && registrationError && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5">
-          <p className="text-sm font-medium text-red-700">
-            {registrationError}
-          </p>
-        </div>
-      )}
-
-      {!isLoadingRegistrations && !registrationError && registrationData && (
-        <>
-          <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
-              label="Total"
-              value={registrationData.statistics.total}
-              icon={Users}
-              description="All registration records"
-            />
-
-            <StatCard
-              label="Registered"
-              value={registrationData.statistics.registered}
-              icon={CheckCircle2}
-              description="Currently registered"
-            />
-
-            <StatCard
-              label="Waitlisted"
-              value={registrationData.statistics.waitlisted}
-              icon={Clock3}
-              description="Waiting for a seat"
-            />
-
-            <StatCard
-              label="Attended"
-              value={registrationData.statistics.attended}
-              icon={UserCheck}
-              description="Attendance marked"
-            />
-
-            <StatCard
-              label="Absent"
-              value={registrationData.statistics.absent}
-              icon={UserX}
-              description="Marked absent"
-            />
-
-            <StatCard
-              label="Cancelled"
-              value={registrationData.statistics.cancelled}
-              icon={XCircle}
-              description="Cancelled registrations"
-            />
-
-            <StatCard
-              label="Available Seats"
-              value={
-                registrationData.statistics.availableSeats === null
-                  ? "Unlimited"
-                  : registrationData.statistics.availableSeats
-              }
-              icon={Users}
-              description="Remaining capacity"
-            />
-
-            <StatCard
-              label="Capacity"
-              value={
-                registrationData.event.capacity === null
-                  ? "Unlimited"
-                  : registrationData.event.capacity
-              }
-              icon={Users}
-              description="Event capacity"
-            />
-          </section>
-
-          {actionError && (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-              <div className="flex items-start justify-between gap-4">
-                <p className="text-sm font-medium text-red-700">
-                  {actionError}
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() => setActionError("")}
-                  className="text-red-500"
+              <div className="relative mt-2">
+                <select
+                  id="event"
+                  value={selectedEventId}
+                  onChange={(event) => {
+                    setSelectedEventId(event.target.value);
+                    setSearch("");
+                    setStatusFilter("ALL");
+                    setRegistrationError("");
+                    setActionError("");
+                  }}
+                  disabled={isLoadingEvents || events.length === 0}
+                  className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2.5 pr-10 text-sm text-[var(--text)] outline-none focus:border-[var(--primary)]"
                 >
-                  <X className="h-4 w-4" />
-                </button>
+                  {isLoadingEvents && <option>Loading events...</option>}
+
+                  {!isLoadingEvents && events.length === 0 && (
+                    <option>No events available</option>
+                  )}
+
+                  {!isLoadingEvents &&
+                    events.map((event) => (
+                      <option key={event.id} value={event.id}>
+                        {event.title}
+                      </option>
+                    ))}
+                </select>
+
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                onClick={startQrScanner}
+                disabled={!selectedEventId || scannerLoading}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--primary)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--primary)] transition-colors hover:bg-[var(--primary-light)] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <ScanLine className="h-4 w-4" />
+                Scan QR
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDownloadExcel}
+                disabled={!selectedEventId || downloading}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold !text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {downloading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+                Download Excel
+              </button>
+            </div>
+          </div>
+
+          {selectedEvent && (
+            <div className="mt-5 grid gap-3 border-t border-[var(--border)] pt-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                <CalendarDays className="h-4 w-4 shrink-0" />
+                <span>{formatDate(selectedEvent.eventDate)}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                <Clock3 className="h-4 w-4 shrink-0" />
+                <span>{formatTime(selectedEvent.startTime)}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                <MapPin className="h-4 w-4 shrink-0" />
+                <span className="truncate">
+                  {selectedEvent.venue || "Venue to be announced"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                <Users className="h-4 w-4 shrink-0" />
+                <span>
+                  {selectedEvent.capacity === null ||
+                  selectedEvent.capacity === undefined
+                    ? "Unlimited capacity"
+                    : `${selectedEvent.capacity} capacity`}
+                </span>
               </div>
             </div>
           )}
+        </section>
 
-          <section className="rounded-xl border border-[var(--border)] bg-white shadow-sm">
-            <div className="border-b border-[var(--border)] p-5">
-              <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-                <div>
-                  <h2 className="text-base font-bold text-[var(--text)]">
-                    Participants
-                  </h2>
+        {isLoadingRegistrations && (
+          <div className="mt-5 rounded-xl border border-[var(--border)] bg-white p-12 text-center shadow-sm">
+            <Loader2 className="mx-auto h-7 w-7 animate-spin text-[var(--primary)]" />
 
-                  <p className="mt-1 text-xs text-[var(--muted)]">
-                    {filteredRegistrations.length} of{" "}
-                    {registrationData.registrations.length} registration
-                    {registrationData.registrations.length === 1 ? "" : "s"}
+            <p className="mt-3 text-sm text-[var(--muted)]">
+              Loading registration records...
+            </p>
+          </div>
+        )}
+
+        {!isLoadingRegistrations && registrationError && (
+          <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-5">
+            <p className="text-sm font-medium text-red-700">
+              {registrationError}
+            </p>
+          </div>
+        )}
+
+        {!isLoadingRegistrations && !registrationError && registrationData && (
+          <>
+            <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard
+                label="Total"
+                value={registrationData.statistics.total}
+                icon={Users}
+                description="All registration records"
+              />
+
+              <StatCard
+                label="Registered"
+                value={registrationData.statistics.registered}
+                icon={CheckCircle2}
+                description="Currently registered"
+              />
+
+              <StatCard
+                label="Waitlisted"
+                value={registrationData.statistics.waitlisted}
+                icon={Clock3}
+                description="Waiting for a seat"
+              />
+
+              <StatCard
+                label="Attended"
+                value={registrationData.statistics.attended}
+                icon={UserCheck}
+                description="Attendance marked"
+              />
+
+              <StatCard
+                label="Absent"
+                value={registrationData.statistics.absent}
+                icon={UserX}
+                description="Marked absent"
+              />
+
+              <StatCard
+                label="Cancelled"
+                value={registrationData.statistics.cancelled}
+                icon={XCircle}
+                description="Cancelled registrations"
+              />
+
+              <StatCard
+                label="Available Seats"
+                value={
+                  registrationData.statistics.availableSeats === null
+                    ? "Unlimited"
+                    : registrationData.statistics.availableSeats
+                }
+                icon={Users}
+                description="Remaining capacity"
+              />
+
+              <StatCard
+                label="Capacity"
+                value={
+                  registrationData.event.capacity === null
+                    ? "Unlimited"
+                    : registrationData.event.capacity
+                }
+                icon={Users}
+                description="Event capacity"
+              />
+            </section>
+
+            {actionError && (
+              <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-sm font-medium text-red-700">
+                    {actionError}
                   </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setActionError("")}
+                    className="text-red-500"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 </div>
+              </div>
+            )}
 
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <div className="relative">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
+            <section className="mt-5 rounded-xl border border-[var(--border)] bg-white shadow-sm">
+              <div className="border-b border-[var(--border)] p-5">
+                <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                  <div>
+                    <h2 className="text-base font-bold text-[var(--text)]">
+                      Participants
+                    </h2>
 
-                    <input
-                      value={search}
-                      onChange={(event) => setSearch(event.target.value)}
-                      placeholder="Search participants..."
-                      className="w-full rounded-lg border border-[var(--border)] bg-white py-2 pl-9 pr-3 text-xs text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--primary)] sm:w-60"
-                    />
+                    <p className="mt-1 text-xs text-[var(--muted)]">
+                      {filteredRegistrations.length} of{" "}
+                      {registrationData.registrations.length} registration
+                      {registrationData.registrations.length === 1 ? "" : "s"}
+                    </p>
                   </div>
 
-                  <div className="relative">
-                    <select
-                      value={statusFilter}
-                      onChange={(event) =>
-                        setStatusFilter(event.target.value as StatusFilter)
-                      }
-                      className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2 pr-9 text-xs font-medium text-[var(--text)] outline-none focus:border-[var(--primary)] sm:w-44"
-                    >
-                      <option value="ALL">All statuses</option>
-                      <option value="REGISTERED">Registered</option>
-                      <option value="WAITLISTED">Waitlisted</option>
-                      <option value="ATTENDED">Attended</option>
-                      <option value="ABSENT">Absent</option>
-                      <option value="CANCELLED">Cancelled</option>
-                    </select>
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <div className="relative">
+                      <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
 
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
+                      <input
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Search participants..."
+                        className="w-full rounded-lg border border-[var(--border)] bg-white py-2 pl-9 pr-3 text-xs text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--primary)] sm:w-60"
+                      />
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        value={statusFilter}
+                        onChange={(event) =>
+                          setStatusFilter(event.target.value as StatusFilter)
+                        }
+                        className="w-full appearance-none rounded-lg border border-[var(--border)] bg-white px-3 py-2 pr-9 text-xs font-medium text-[var(--text)] outline-none focus:border-[var(--primary)] sm:w-44"
+                      >
+                        <option value="ALL">All statuses</option>
+                        <option value="REGISTERED">Registered</option>
+                        <option value="WAITLISTED">Waitlisted</option>
+                        <option value="ATTENDED">Attended</option>
+                        <option value="ABSENT">Absent</option>
+                        <option value="CANCELLED">Cancelled</option>
+                      </select>
+
+                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {waitlistedCount > 0 && (
-              <div className="flex flex-col gap-3 border-b border-amber-200 bg-amber-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-amber-800">
-                    {waitlistedCount} participant
-                    {waitlistedCount === 1 ? "" : "s"} waiting
+              {waitlistedCount > 0 && (
+                <div className="flex flex-col gap-3 border-b border-amber-200 bg-amber-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-amber-800">
+                      {waitlistedCount} participant
+                      {waitlistedCount === 1 ? "" : "s"} waiting
+                    </p>
+
+                    <p className="mt-0.5 text-xs text-amber-700">
+                      Promote the next participant when a seat becomes available.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setConfirmAction({
+                        type: "promote",
+                      })
+                    }
+                    disabled={
+                      promoting ||
+                      registrationData.statistics.availableSeats === 0
+                    }
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-300 bg-white px-3.5 py-2 text-xs font-semibold text-amber-800 transition-colors hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <UserCheck className="h-3.5 w-3.5" />
+                    Promote Next
+                  </button>
+                </div>
+              )}
+
+              {filteredRegistrations.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Users className="mx-auto h-9 w-9 text-[var(--muted)]" />
+
+                  <h3 className="mt-3 text-sm font-semibold text-[var(--text)]">
+                    No registrations found
+                  </h3>
+
+                  <p className="mt-1.5 text-xs text-[var(--muted)]">
+                    {search || statusFilter !== "ALL"
+                      ? "No participants match the current search or filter."
+                      : "No participants have registered for this event yet."}
                   </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <table className="w-full min-w-[1100px] text-left">
+                    <thead>
+                      <tr className="border-b border-[var(--border)] bg-[var(--surface)]">
+                        <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Participant
+                        </th>
 
-                  <p className="mt-0.5 text-xs text-amber-700">
-                    Promote the next participant when a seat becomes available.
+                        <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Contact
+                        </th>
+
+                        <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Status
+                        </th>
+
+                        <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Registered
+                        </th>
+
+                        <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Attendance
+                        </th>
+
+                        <th className="px-5 py-3 text-right text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {filteredRegistrations.map((registration) => (
+                        <RegistrationRow
+                          key={registration.id}
+                          registration={registration}
+                          actionLoading={actionLoading}
+                          onAction={handleRegistrationAction}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          </>
+        )}
+
+        {confirmAction && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-bold text-[var(--text)]">
+                    {confirmAction.type === "promote"
+                      ? "Promote Waitlisted Participant"
+                      : "Update Registration"}
+                  </h2>
+
+                  <p className="mt-1.5 text-sm text-[var(--muted)]">
+                    {confirmAction.type === "promote"
+                      ? "The next participant in the waitlist will be moved to Registered."
+                      : `Change ${
+                          confirmAction.registration.name
+                        } to ${formatStatus(confirmAction.status)}?`}
                   </p>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setConfirmAction({
-                      type: "promote",
-                    })
-                  }
-                  disabled={
-                    promoting ||
-                    registrationData.statistics.availableSeats === 0
-                  }
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-amber-300 bg-white px-3.5 py-2 text-xs font-semibold text-amber-800 transition-colors hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={() => {
+                    setConfirmAction(null);
+                    setActionError("");
+                  }}
+                  className="rounded-lg p-1.5 text-[var(--muted)] hover:bg-[var(--surface)]"
                 >
-                  <UserCheck className="h-3.5 w-3.5" />
-                  Promote Next
+                  <X className="h-5 w-5" />
                 </button>
               </div>
-            )}
 
-            {filteredRegistrations.length === 0 ? (
-              <div className="p-12 text-center">
-                <Users className="mx-auto h-9 w-9 text-[var(--muted)]" />
+              {confirmAction.type === "status" && (
+                <div className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                  <p className="text-sm font-semibold text-[var(--text)]">
+                    {confirmAction.registration.name}
+                  </p>
 
-                <h3 className="mt-3 text-sm font-semibold text-[var(--text)]">
-                  No registrations found
-                </h3>
+                  <p className="mt-1 text-xs text-[var(--muted)]">
+                    {confirmAction.registration.email}
+                  </p>
 
-                <p className="mt-1.5 text-xs text-[var(--muted)]">
-                  {search || statusFilter !== "ALL"
-                    ? "No participants match the current search or filter."
-                    : "No participants have registered for this event yet."}
-                </p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[1100px] text-left">
-                  <thead>
-                    <tr className="border-b border-[var(--border)] bg-[var(--surface)]">
-                      <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Participant
-                      </th>
-
-                      <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Contact
-                      </th>
-
-                      <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Status
-                      </th>
-
-                      <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Registered
-                      </th>
-
-                      <th className="px-5 py-3 text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Attendance
-                      </th>
-
-                      <th className="px-5 py-3 text-right text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {filteredRegistrations.map((registration) => (
-                      <RegistrationRow
-                        key={registration.id}
-                        registration={registration}
-                        actionLoading={actionLoading}
-                        onAction={handleRegistrationAction}
-                      />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </section>
-        </>
-      )}
-
-      {confirmAction && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-lg font-bold text-[var(--text)]">
-                  {confirmAction.type === "promote"
-                    ? "Promote Waitlisted Participant"
-                    : "Update Registration"}
-                </h2>
-
-                <p className="mt-1.5 text-sm text-[var(--muted)]">
-                  {confirmAction.type === "promote"
-                    ? "The next participant in the waitlist will be moved to Registered."
-                    : `Change ${
-                        confirmAction.registration.name
-                      } to ${formatStatus(confirmAction.status)}?`}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setConfirmAction(null);
-                  setActionError("");
-                }}
-                className="rounded-lg p-1.5 text-[var(--muted)] hover:bg-[var(--surface)]"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {confirmAction.type === "status" && (
-              <div className="mt-5 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                <p className="text-sm font-semibold text-[var(--text)]">
-                  {confirmAction.registration.name}
-                </p>
-
-                <p className="mt-1 text-xs text-[var(--muted)]">
-                  {confirmAction.registration.email}
-                </p>
-
-                <div className="mt-3">
-                  <span
-                    className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold ${getStatusClasses(
-                      confirmAction.registration.registrationStatus,
-                    )}`}
-                  >
-                    Current:{" "}
-                    {formatStatus(
-                      confirmAction.registration.registrationStatus,
-                    )}
-                  </span>
-
-                  <span className="mx-2 text-xs text-[var(--muted)]">→</span>
-
-                  <span
-                    className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold ${getStatusClasses(
-                      confirmAction.status,
-                    )}`}
-                  >
-                    {formatStatus(confirmAction.status)}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {actionError && (
-              <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
-                <p className="text-xs font-medium text-red-700">
-                  {actionError}
-                </p>
-              </div>
-            )}
-
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setConfirmAction(null);
-                  setActionError("");
-                }}
-                className="rounded-lg border border-[var(--border)] bg-white px-4 py-2 text-xs font-semibold text-[var(--text)] hover:bg-[var(--surface)]"
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                disabled={actionLoading !== null || promoting}
-                onClick={() => {
-                  if (confirmAction.type === "status") {
-                    executeStatusUpdate(
-                      confirmAction.registration,
-                      confirmAction.status,
-                    );
-                  } else {
-                    handlePromoteWaitlist();
-                  }
-                }}
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2 text-xs font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {actionLoading !== null || promoting ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <Check className="h-3.5 w-3.5" />
-                )}
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {scannerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
-                  Attendance Verification
-                </p>
-                <h2 className="mt-1 text-lg font-bold text-[var(--text)]">
-                  Scan Participant QR
-                </h2>
-                <p className="mt-1 text-xs text-[var(--muted)]">
-                  {registrationData?.event.title ?? "Selected event"}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => void closeQrScanner()}
-                className="rounded-lg p-2 text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)]"
-                aria-label="Close QR scanner"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="p-5">
-              {!scanResult ? (
-                <>
-                  <div className="overflow-hidden rounded-2xl bg-black">
-                    <div
-                      id="event-qr-reader"
-                      className="min-h-[320px] w-full"
-                    />
-                  </div>
-
-                  <div className="mt-4 flex items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                    <Camera className="mt-0.5 h-5 w-5 shrink-0 text-[var(--primary)]" />
-
-                    <div>
-                      <p className="text-sm font-semibold text-[var(--text)]">
-                        Camera verification only
-                      </p>
-                      <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                        Point the camera at the participant's event QR code.
-                        Attendance is verified directly against this event.
-                      </p>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="space-y-5">
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
-                        <ShieldCheck className="h-5 w-5 text-emerald-700" />
-                      </div>
-
-                      <div>
-                        <p className="text-sm font-bold text-emerald-800">
-                          Attendance Verified
-                        </p>
-
-                        <p className="mt-0.5 text-xs text-emerald-700">
-                          {formatDateTime(scanResult.attendanceRecordedAt)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {scanResult.type === "TEAM" && scanResult.team ? (
-                    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-                      <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Team
-                      </p>
-
-                      <h3 className="mt-1 text-xl font-bold text-[var(--text)]">
-                        {scanResult.team.name}
-                      </h3>
-
-                      <p className="mt-1 text-xs text-[var(--muted)]">
-                        {scanResult.participants.length} participant
-                        {scanResult.participants.length === 1 ? "" : "s"} marked
-                        present
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-                      <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-                        Participant
-                      </p>
-
-                      <h3 className="mt-1 text-xl font-bold text-[var(--text)]">
-                        {scanResult.scannedParticipant.name}
-                      </h3>
-                    </div>
-                  )}
-
-                  <div className="rounded-2xl border border-[var(--border)] bg-white">
-                    <div className="border-b border-[var(--border)] px-5 py-4">
-                      <h3 className="text-sm font-bold text-[var(--text)]">
-                        {scanResult.type === "TEAM"
-                          ? "Team Members"
-                          : "Participant"}
-                      </h3>
-                    </div>
-
-                    <div className="divide-y divide-[var(--border)]">
-                      {scanResult.participants.map((participant) => (
-                        <div
-                          key={participant.id}
-                          className="flex items-center justify-between gap-4 px-5 py-4"
-                        >
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <p className="truncate text-sm font-semibold text-[var(--text)]">
-                                {participant.name}
-                              </p>
-
-                              {participant.isTeamLeader ? (
-                                <span className="rounded-full bg-[var(--primary-light)] px-2 py-0.5 text-[9px] font-semibold text-[var(--primary)]">
-                                  Leader
-                                </span>
-                              ) : null}
-                            </div>
-
-                            <p className="mt-1 truncate text-xs text-[var(--muted)]">
-                              {participant.email}
-                            </p>
-                          </div>
-
-                          <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                            <CheckCircle2 className="h-4 w-4" />
-                            Present
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setScanResult(null);
-                        setScannerError("");
-                        void startQrScanner();
-                      }}
-                      className="flex-1 rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm font-semibold text-[var(--text)] transition-colors hover:bg-[var(--surface)]"
+                  <div className="mt-3">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold ${getStatusClasses(
+                        confirmAction.registration.registrationStatus,
+                      )}`}
                     >
-                      Scan Another
-                    </button>
+                      Current:{" "}
+                      {formatStatus(
+                        confirmAction.registration.registrationStatus,
+                      )}
+                    </span>
 
-                    <button
-                      type="button"
-                      onClick={() => void closeQrScanner()}
-                      className="flex-1 rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-opacity hover:opacity-90"
+                    <span className="mx-2 text-xs text-[var(--muted)]">→</span>
+
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold ${getStatusClasses(
+                        confirmAction.status,
+                      )}`}
                     >
-                      Done
-                    </button>
+                      {formatStatus(confirmAction.status)}
+                    </span>
                   </div>
                 </div>
               )}
 
-              {scannerLoading && !scanResult ? (
-                <div className="mt-4 flex items-center justify-center gap-2 text-xs text-[var(--muted)]">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Starting camera...
-                </div>
-              ) : null}
-
-              {scannerError ? (
-                <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
-                  <p className="text-sm font-medium text-red-700">
-                    {scannerError}
+              {actionError && (
+                <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
+                  <p className="text-xs font-medium text-red-700">
+                    {actionError}
                   </p>
                 </div>
-              ) : null}
+              )}
 
-              {scannerReady && !scanResult && !scannerError ? (
-                <p className="mt-3 text-center text-xs text-emerald-700">
-                  Camera ready — point it at the QR code.
-                </p>
-              ) : null}
+              <div className="mt-6 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmAction(null);
+                    setActionError("");
+                  }}
+                  className="rounded-lg border border-[var(--border)] bg-white px-4 py-2 text-xs font-semibold text-[var(--text)] hover:bg-[var(--surface)]"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  disabled={actionLoading !== null || promoting}
+                  onClick={() => {
+                    if (confirmAction.type === "status") {
+                      executeStatusUpdate(
+                        confirmAction.registration,
+                        confirmAction.status,
+                      );
+                    } else {
+                      handlePromoteWaitlist();
+                    }
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2 text-xs font-semibold !text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {actionLoading !== null || promoting ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Check className="h-3.5 w-3.5" />
+                  )}
+                  Confirm
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {scannerOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
+              <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+                    Attendance Verification
+                  </p>
+
+                  <h2 className="mt-1 text-lg font-bold text-[var(--text)]">
+                    Scan Participant QR
+                  </h2>
+
+                  <p className="mt-1 text-xs text-[var(--muted)]">
+                    {registrationData?.event.title ?? "Selected event"}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => void closeQrScanner()}
+                  className="rounded-lg p-2 text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)]"
+                  aria-label="Close QR scanner"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="p-5 max-h-[80vh] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {!scanResult ? (
+                  <>
+                    <div className="overflow-hidden rounded-2xl bg-black">
+                      <div
+                        id="event-qr-reader"
+                        className="min-h-[320px] w-full"
+                      />
+                    </div>
+
+                    <div className="mt-4 flex items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                      <Camera className="mt-0.5 h-5 w-5 shrink-0 text-[var(--primary)]" />
+
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--text)]">
+                          Camera verification only
+                        </p>
+
+                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                          Point the camera at the participant's event QR code.
+                          Attendance is verified directly against this event.
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-5">
+                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
+                          <ShieldCheck className="h-5 w-5 text-emerald-700" />
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-bold text-emerald-800">
+                            Attendance Verified
+                          </p>
+
+                          <p className="mt-0.5 text-xs text-emerald-700">
+                            {formatDateTime(scanResult.attendanceRecordedAt)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {scanResult.type === "TEAM" && scanResult.team ? (
+                      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Team
+                        </p>
+
+                        <h3 className="mt-1 text-xl font-bold text-[var(--text)]">
+                          {scanResult.team.name}
+                        </h3>
+
+                        <p className="mt-1 text-xs text-[var(--muted)]">
+                          {scanResult.participants.length} participant
+                          {scanResult.participants.length === 1 ? "" : "s"} marked
+                          present
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+                          Participant
+                        </p>
+
+                        <h3 className="mt-1 text-xl font-bold text-[var(--text)]">
+                          {scanResult.scannedParticipant.name}
+                        </h3>
+                      </div>
+                    )}
+
+                    <div className="rounded-2xl border border-[var(--border)] bg-white">
+                      <div className="border-b border-[var(--border)] px-5 py-4">
+                        <h3 className="text-sm font-bold text-[var(--text)]">
+                          {scanResult.type === "TEAM"
+                            ? "Team Members"
+                            : "Participant"}
+                        </h3>
+                      </div>
+
+                      <div className="divide-y divide-[var(--border)]">
+                        {scanResult.participants.map((participant) => (
+                          <div
+                            key={participant.id}
+                            className="flex items-center justify-between gap-4 px-5 py-4"
+                          >
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <p className="truncate text-sm font-semibold text-[var(--text)]">
+                                  {participant.name}
+                                </p>
+
+                                {participant.isTeamLeader ? (
+                                  <span className="rounded-full bg-[var(--primary-light)] px-2 py-0.5 text-[9px] font-semibold text-[var(--primary)]">
+                                    Leader
+                                  </span>
+                                ) : null}
+                              </div>
+
+                              <p className="mt-1 truncate text-xs text-[var(--muted)]">
+                                {participant.email}
+                              </p>
+                            </div>
+
+                            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                              <CheckCircle2 className="h-4 w-4" />
+                              Present
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setScanResult(null);
+                          setScannerError("");
+                          void startQrScanner();
+                        }}
+                        className="flex-1 rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm font-semibold text-[var(--text)] transition-colors hover:bg-[var(--surface)]"
+                      >
+                        Scan Another
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => void closeQrScanner()}
+                        className="flex-1 rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-opacity hover:opacity-90"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {scannerLoading && !scanResult ? (
+                  <div className="mt-4 flex items-center justify-center gap-2 text-xs text-[var(--muted)]">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Starting camera...
+                  </div>
+                ) : null}
+
+                {scannerError ? (
+                  <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
+                    <p className="text-sm font-medium text-red-700">
+                      {scannerError}
+                    </p>
+                  </div>
+                ) : null}
+
+                {scannerReady && !scanResult && !scannerError ? (
+                  <p className="mt-3 text-center text-xs text-emerald-700">
+                    Camera ready — point it at the QR code.
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

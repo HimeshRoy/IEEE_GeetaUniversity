@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, CalendarDays, Clock3, MapPin } from "lucide-react";
+import { ArrowRight, ArrowLeft, CalendarDays, Clock3, MapPin, Users, Flag } from "lucide-react";
 import Container from "@/components/ui/Container";
 
 interface Event {
@@ -107,25 +107,26 @@ export default async function EventDetailPage({
 
   if (!event) {
     return (
-      <section className="bg-[var(--surface)] py-24">
+      <section className="min-h-screen bg-[var(--background)] py-24">
         <Container>
-          <div className="mx-auto max-w-xl rounded-xl border border-[var(--border)] bg-white px-6 py-12 text-center">
-            <CalendarDays size={38} className="mx-auto text-[var(--muted)]" />
+          <div className="mx-auto flex min-h-[400px] max-w-xl flex-col items-center justify-center rounded-3xl border border-[var(--border)] bg-white px-6 py-12 text-center shadow-sm animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--surface)]">
+              <CalendarDays size={32} className="text-[var(--muted-foreground)]" />
+            </div>
 
-            <h1 className="mt-5 text-2xl font-bold text-[var(--secondary)]">
+            <h1 className="text-2xl font-bold tracking-tight text-[var(--secondary)] sm:text-3xl">
               Event not found
             </h1>
 
-            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-              The event you are looking for does not exist or is no longer
-              available.
+            <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">
+              The event you are looking for does not exist or is no longer available.
             </p>
 
             <Link
               href="/events"
-              className="mt-6 inline-flex items-center gap-2 rounded-md bg-[var(--primary)] px-5 py-3 text-sm font-semibold !text-white hover:bg-[var(--primary-dark)]"
+              className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
             >
-              <ArrowLeft size={16} />
+              <ArrowLeft size={18} className="transition-transform duration-300 group-hover:-translate-x-1" />
               Back to Events
             </Link>
           </div>
@@ -138,82 +139,58 @@ export default async function EventDetailPage({
   const endTime = formatTime(event.endTime);
 
   return (
-    <>
-      <section className="bg-[var(--surface)] py-8 sm:py-10">
+    <main className="min-h-screen bg-[var(--background)] pb-24">
+      {/* Header & Banner Section */}
+      <section className="pt-10 sm:pt-14">
         <Container>
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)] hover:text-[var(--primary-dark)]"
-          >
-            <ArrowLeft size={16} />
-            Back to Events
-          </Link>
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
+            <Link
+              href="/events"
+              className="group mb-8 inline-flex items-center gap-2 text-sm font-bold text-[var(--muted-foreground)] transition-colors duration-300 hover:text-[var(--primary)]"
+            >
+              <ArrowLeft size={16} className="transition-transform duration-300 group-hover:-translate-x-1" />
+              Back to Events
+            </Link>
 
-          <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-white">
-           <div className="relative h-44 bg-[var(--surface)] sm:h-52 lg:h-60">
-              {event.bannerImage ? (
-                <img
-                  src={event.bannerImage}
-                  alt={event.title}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <CalendarDays
-                    size={52}
-                    className="text-[var(--muted-light)]"
+            <div className="overflow-hidden rounded-[2rem] border border-[var(--border)] bg-white shadow-sm">
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--surface)] sm:aspect-[21/9] lg:aspect-[24/9]">
+                {event.bannerImage ? (
+                  <img
+                    src={event.bannerImage}
+                    alt={event.title}
+                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                   />
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 sm:p-8 lg:p-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-[var(--primary-light)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
-                  {getAccessLabel(event.access)}
-                </span>
-
-                {event.isFeatured && (
-                  <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs font-semibold text-[var(--secondary)]">
-                    Featured
-                  </span>
+                ) : (
+                  <div className="flex h-full items-center justify-center">
+                    <CalendarDays
+                      size={64}
+                      className="text-[var(--muted-light)]"
+                    />
+                  </div>
                 )}
               </div>
 
-              <h1 className="mt-4 max-w-4xl text-3xl font-bold tracking-tight text-[var(--secondary)] sm:text-4xl lg:text-5xl">
-                {event.title}
-              </h1>
+              <div className="p-8 sm:p-10 lg:p-12">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="inline-flex items-center rounded-full bg-[var(--primary)]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
+                    {getAccessLabel(event.access)}
+                  </span>
 
-              {event.shortDescription && (
-                <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-                  {event.shortDescription}
-                </p>
-              )}
-
-              <div className="mt-7 flex flex-col gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
-                <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                  <CalendarDays size={17} className="text-[var(--primary)]" />
-
-                  <span>{formatDate(event.eventDate)}</span>
+                  {event.isFeatured && (
+                    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--secondary)] shadow-sm">
+                      Featured
+                    </span>
+                  )}
                 </div>
 
-                {startTime && (
-                  <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                    <Clock3 size={17} className="text-[var(--primary)]" />
+                <h1 className="mt-6 max-w-4xl text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl lg:text-5xl lg:leading-[1.1]">
+                  {event.title}
+                </h1>
 
-                    <span>
-                      {startTime}
-                      {endTime ? ` – ${endTime}` : ""}
-                    </span>
-                  </div>
-                )}
-
-                {event.venue && (
-                  <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
-                    <MapPin size={17} className="text-[var(--primary)]" />
-
-                    <span>{event.venue}</span>
-                  </div>
+                {event.shortDescription && (
+                  <p className="mt-6 max-w-3xl text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg sm:leading-8">
+                    {event.shortDescription}
+                  </p>
                 )}
               </div>
             </div>
@@ -221,112 +198,129 @@ export default async function EventDetailPage({
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      {/* Content Grid Section */}
+      <section className="mt-12 sm:mt-16">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
-            <article>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[var(--primary)]">
+          <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:gap-16 xl:grid-cols-[1fr_400px]">
+            
+            {/* Main Content */}
+            <article className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
+              <span className="inline-flex rounded-full border border-[var(--border)] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)] shadow-sm">
                 About the event
-              </p>
+              </span>
 
-              <h2 className="mt-3 text-2xl font-bold text-[var(--secondary)] sm:text-3xl">
+              <h2 className="mt-6 text-2xl font-bold tracking-tight text-[var(--secondary)] sm:text-3xl">
                 Event Details
               </h2>
 
-              <div className="mt-6 whitespace-pre-line text-base leading-8 text-[var(--muted)]">
+              <div className="mt-8 whitespace-pre-line text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg sm:leading-8">
                 {event.description}
               </div>
             </article>
 
-            <aside className="h-fit rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-              <h2 className="text-lg font-bold text-[var(--secondary)]">
-                Event Information
-              </h2>
+            {/* Sidebar Details */}
+            <aside className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-300 fill-mode-both">
+              <div className="sticky top-24 rounded-3xl border border-[var(--border)] bg-white p-8 shadow-sm">
+                <h3 className="text-xl font-bold tracking-tight text-[var(--secondary)]">
+                  Event Information
+                </h3>
 
-              <div className="mt-5 space-y-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                    Date
-                  </p>
+                <ul className="mt-8 space-y-6">
+                  <li className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                      <CalendarDays size={22} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                        Date
+                      </p>
+                      <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                        {formatDate(event.eventDate)}
+                      </p>
+                    </div>
+                  </li>
 
-                  <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                    {formatDate(event.eventDate)}
-                  </p>
+                  {startTime && (
+                    <li className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                        <Clock3 size={22} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Time
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                          {startTime}
+                          {endTime ? ` – ${endTime}` : ""}
+                        </p>
+                      </div>
+                    </li>
+                  )}
+
+                  {event.venue && (
+                    <li className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                        <MapPin size={22} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Venue
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                          {event.venue}
+                        </p>
+                      </div>
+                    </li>
+                  )}
+
+                  {event.capacity !== null && (
+                    <li className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                        <Users size={22} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Capacity
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                          {event.capacity} participants
+                        </p>
+                      </div>
+                    </li>
+                  )}
+
+                  {event.registrationDeadline && (
+                    <li className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                        <Flag size={22} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                          Registration Deadline
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                          {formatDate(event.registrationDeadline)}
+                        </p>
+                      </div>
+                    </li>
+                  )}
+                </ul>
+
+                <div className="mt-10 border-t border-[var(--border)] pt-8">
+                  <Link
+                    href={`/events/${event.slug}/register`}
+                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
+                  >
+                    Register for Event
+                    <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
                 </div>
-
-                {startTime && (
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                      Time
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                      {startTime}
-                      {endTime ? ` – ${endTime}` : ""}
-                    </p>
-                  </div>
-                )}
-
-                {event.venue && (
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                      Venue
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                      {event.venue}
-                    </p>
-                  </div>
-                )}
-
-                {event.registrationDeadline && (
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                      Registration Deadline
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                      {formatDate(event.registrationDeadline)}
-                    </p>
-                  </div>
-                )}
-
-                {event.capacity !== null && (
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                      Capacity
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                      {event.capacity} participants
-                    </p>
-                  </div>
-                )}
-
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                    Access
-                  </p>
-
-                  <p className="mt-1 text-sm font-medium text-[var(--secondary)]">
-                    {getAccessLabel(event.access)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-6 border-t border-[var(--border)] pt-6">
-                <Link
-                  href={`/events/${event.slug}/register`}
-                  className="flex w-full items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-4 py-3 text-sm font-semibold !text-white transition-colors hover:bg-[var(--primary-dark)]"
-                >
-                  Register for Event
-                  <ArrowRight size={16} />
-                </Link>
               </div>
             </aside>
+
           </div>
         </Container>
       </section>
-    </>
+    </main>
   );
 }

@@ -11,6 +11,7 @@ import {
   ChevronRight,
   CircleUserRound,
   FileText,
+  Loader2,
   GalleryHorizontal,
   GraduationCap,
   LayoutDashboard,
@@ -180,10 +181,10 @@ function getNavigation(
         label: "Account",
         items: [
           {
-          label: "Membership",
-          href: "/dashboard/membership",
-          icon: ShieldCheck,
-        },
+            label: "Membership",
+            href: "/dashboard/membership",
+            icon: ShieldCheck,
+          },
           {
             label: "Profile",
             href: "/dashboard/profile",
@@ -454,7 +455,6 @@ export default function DashboardShell({
       setNotificationsError("");
 
       const response = await api.get("/notifications");
-
       const data = response.data?.data ?? response.data;
 
       setNotifications(Array.isArray(data) ? data : []);
@@ -467,7 +467,6 @@ export default function DashboardShell({
 
   async function toggleNotifications() {
     const nextState = !notificationsOpen;
-
     setNotificationsOpen(nextState);
 
     if (nextState) {
@@ -558,416 +557,406 @@ export default function DashboardShell({
   const navigation = getNavigation(user.role, leadershipPositions);
 
   return (
-    <div className="h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
-      {mobileOpen && (
-        <button
-          type="button"
-          aria-label="Close navigation"
-          className="fixed inset-0 z-40 bg-black/30 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+    <>
+      <style jsx global>{`
+        html,
+        body {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
 
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-[var(--border)] bg-[var(--surface)] transition-all duration-200 ${
-          collapsed ? "w-20" : "w-72"
-        } ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
-      >
-        <div className="flex h-20 shrink-0 items-center justify-between border-b border-[var(--border)] px-5">
-          {!collapsed && (
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-3"
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
+      <div className="h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {mobileOpen && (
+          <button
+            type="button"
+            aria-label="Close navigation"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden animate-in fade-in duration-300"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-[var(--border)] bg-white transition-all duration-300 ${
+            collapsed ? "w-20" : "w-72"
+          } ${
+            mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"
+          } [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+        >
+          <div className="flex h-20 shrink-0 items-center justify-between border-b border-[var(--border)] px-6">
+            {!collapsed && (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-3.5 group"
+                onClick={() => setMobileOpen(false)}
+              >
+                <div className="relative h-10 w-10 shrink-0">
+                  <Image
+                    src="/gu-logo-transparent.png"
+                    alt="Geeta University"
+                    fill
+                    sizes="40px"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+
+                <div>
+                  <p className="text-sm font-extrabold tracking-tight text-[var(--secondary)]">
+                    IEEE GU
+                  </p>
+                  <p className="text-xs font-semibold text-[var(--muted-foreground)]">Student Branch</p>
+                </div>
+              </Link>
+            )}
+
+            <button
+              type="button"
+              aria-label="Close navigation"
+              className="rounded-xl p-2 text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--secondary)] lg:hidden"
               onClick={() => setMobileOpen(false)}
             >
-              <div className="relative h-11 w-11 shrink-0">
+              <X size={20} />
+            </button>
+
+            <button
+              type="button"
+              aria-label="Toggle sidebar"
+              className="hidden rounded-xl p-2 text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--secondary)] lg:block"
+              onClick={() => setCollapsed((value) => !value)}
+            >
+              {collapsed ? (
+                <ChevronRight size={18} />
+              ) : (
+                <ChevronLeft size={18} />
+              )}
+            </button>
+          </div>
+
+          {collapsed && (
+            <div className="flex shrink-0 justify-center border-b border-[var(--border)] py-4">
+              <Link
+                href="/dashboard"
+                aria-label="Geeta University"
+                onClick={() => setMobileOpen(false)}
+                className="relative h-10 w-10"
+              >
                 <Image
                   src="/gu-logo-transparent.png"
                   alt="Geeta University"
                   fill
-                  sizes="44px"
+                  sizes="40px"
                   className="object-contain"
                   priority
                 />
-              </div>
-
-              <div>
-                <p className="text-sm font-bold text-[var(--foreground)]">
-                  IEEE GU
-                </p>
-
-                <p className="text-xs text-[var(--muted)]">Student Branch</p>
-              </div>
-            </Link>
+              </Link>
+            </div>
           )}
 
-          <button
-            type="button"
-            aria-label="Close navigation"
-            className="rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] lg:hidden"
-            onClick={() => setMobileOpen(false)}
+          <div
+            className="flex-1 overflow-y-auto px-4 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden space-y-6"
           >
-            <X className="h-5 w-5" />
-          </button>
+            {navigation.map((section) => (
+              <div key={section.label} className="space-y-1.5">
+                {!collapsed && (
+                  <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                    {section.label}
+                  </p>
+                )}
 
-          <button
-            type="button"
-            aria-label="Toggle sidebar"
-            className="hidden rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] lg:block"
-            onClick={() => setCollapsed((value) => !value)}
-          >
-            {collapsed ? (
-              <ChevronRight className="h-5 w-5" />
-            ) : (
-              <ChevronLeft className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    const active =
+                      pathname === item.href ||
+                      (item.href !== "/dashboard" &&
+                        pathname.startsWith(`${item.href}/`));
 
-        {collapsed && (
-          <div className="flex shrink-0 justify-center border-b border-[var(--border)] py-4">
-            <Link
-              href="/dashboard"
-              aria-label="Geeta University"
-              onClick={() => setMobileOpen(false)}
-              className="relative h-10 w-10"
-            >
-              <Image
-                src="/gu-logo-transparent.png"
-                alt="Geeta University"
-                fill
-                sizes="40px"
-                className="object-contain"
-                priority
-              />
-            </Link>
-          </div>
-        )}
-
-        <div
-          className="scrollbar-hide flex-1 overflow-y-auto px-3 py-5"
-          style={{
-            scrollbarWidth: "none",
-          }}
-        >
-          {navigation.map((section) => (
-            <div key={section.label} className="mb-6">
-              {!collapsed && (
-                <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-                  {section.label}
-                </p>
-              )}
-
-              <div className="space-y-1">
-                {section.items.map((item) => {
-                  const Icon = item.icon;
-
-                  const active =
-                    pathname === item.href ||
-                    (item.href !== "/dashboard" &&
-                      pathname.startsWith(`${item.href}/`));
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      title={collapsed ? item.label : undefined}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                        active
-                          ? "bg-[var(--primary)] !text-white"
-                          : "text-[var(--foreground)] hover:bg-[var(--background)]"
-                      } ${collapsed ? "justify-center" : ""}`}
-                    >
-                      <Icon className="h-4.5 w-4.5 shrink-0" />
-
-                      {!collapsed && <span>{item.label}</span>}
-                    </Link>
-                  );
-                })}
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        title={collapsed ? item.label : undefined}
+                        onClick={() => setMobileOpen(false)}
+                        className={`flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-bold transition-all duration-200 ${
+                          active
+                            ? "bg-[var(--primary)] !text-white shadow-sm shadow-[var(--primary)]/20"
+                            : "text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--secondary)]"
+                        } ${collapsed ? "justify-center px-0" : ""}`}
+                      >
+                        <Icon size={18} className="shrink-0" />
+                        {!collapsed && <span className="truncate">{item.label}</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="shrink-0 border-t border-[var(--border)] p-3">
-          <button
-            type="button"
-            onClick={logout}
-            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            <LogOut className="h-4.5 w-4.5 shrink-0" />
-
-            {!collapsed && <span>Logout</span>}
-          </button>
-        </div>
-      </aside>
-
-      <div
-        className={`flex h-screen flex-col transition-all duration-200 ${
-          collapsed ? "lg:pl-20" : "lg:pl-72"
-        }`}
-      >
-        <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/95 px-4 backdrop-blur sm:px-6">
-          <div className="flex items-center gap-3">
+          <div className="shrink-0 border-t border-[var(--border)] p-4 bg-[var(--surface)]/30">
             <button
               type="button"
-              aria-label="Open navigation"
-              className="rounded-xl border border-[var(--border)] p-2.5 text-[var(--foreground)] lg:hidden"
-              onClick={() => setMobileOpen(true)}
+              onClick={logout}
+              className={`flex w-full items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-bold text-red-600 transition-colors hover:bg-red-50 ${
+                collapsed ? "justify-center px-0" : ""
+              }`}
             >
-              <Menu className="h-5 w-5" />
+              <LogOut size={18} className="shrink-0" />
+              {!collapsed && <span className="truncate">Logout</span>}
             </button>
-
-            <div>
-              <p className="text-xs font-medium text-[var(--muted)]">
-                IEEE Geeta University
-              </p>
-
-              <h1 className="text-base font-bold text-[var(--foreground)] sm:text-lg">
-                Student Branch Portal
-              </h1>
-            </div>
           </div>
+        </aside>
 
-          <div className="flex items-center gap-2 sm:gap-4">
-            <div ref={notificationRef} className="relative">
+        <div
+          className={`flex h-screen flex-col transition-all duration-300 ${
+            collapsed ? "lg:pl-20" : "lg:pl-72"
+          }`}
+        >
+          <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center justify-between border-b border-[var(--border)] bg-white/95 px-5 backdrop-blur-md sm:px-8">
+            <div className="flex items-center gap-4">
               <button
                 type="button"
-                aria-label="Notifications"
-                aria-expanded={notificationsOpen}
-                onClick={() => void toggleNotifications()}
-                className={`relative rounded-xl border border-[var(--border)] p-2.5 transition ${
-                  notificationsOpen
-                    ? "bg-[var(--background)] text-[var(--foreground)]"
-                    : "text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)]"
-                }`}
+                aria-label="Open navigation"
+                className="rounded-xl border border-[var(--border)] p-2.5 text-[var(--secondary)] transition-colors hover:bg-[var(--surface)] lg:hidden"
+                onClick={() => setMobileOpen(true)}
               >
-                <Bell className="h-5 w-5" />
-
-                {unreadCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[10px] font-bold !text-white">
-                    {unreadCount > 99 ? "99+" : unreadCount}
-                  </span>
-                )}
+                <Menu size={20} />
               </button>
 
-              {notificationsOpen && (
-                <div className="fixed inset-x-3 top-[5.5rem] z-50 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-14 sm:w-[400px]">
-                  <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-4">
-                    <div>
-                      <h2 className="text-sm font-bold text-[var(--foreground)]">
-                        Notifications
-                      </h2>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--primary)]">
+                  IEEE Geeta University
+                </p>
+                <h1 className="text-base font-extrabold tracking-tight text-[var(--secondary)] sm:text-lg">
+                  Student Branch Portal
+                </h1>
+              </div>
+            </div>
 
-                      <p className="mt-0.5 text-xs text-[var(--muted)]">
-                        {unreadCount > 0
-                          ? `${unreadCount} unread`
-                          : "You're all caught up"}
-                      </p>
-                    </div>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div ref={notificationRef} className="relative">
+                <button
+                  type="button"
+                  aria-label="Notifications"
+                  aria-expanded={notificationsOpen}
+                  onClick={() => void toggleNotifications()}
+                  className={`relative rounded-xl border p-2.5 transition-all duration-200 ${
+                    notificationsOpen
+                      ? "border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--primary)]"
+                      : "border-[var(--border)] bg-white text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--secondary)]"
+                  }`}
+                >
+                  <Bell size={18} />
 
-                    <div className="flex items-center gap-1">
-                      {unreadCount > 0 && (
+                  {unreadCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-[10px] font-extrabold !text-white shadow-sm">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {notificationsOpen && (
+                  <div className="fixed inset-x-4 top-[5.5rem] z-50 overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-2xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-14 sm:w-[420px] animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-4">
+                      <div>
+                        <h2 className="text-base font-extrabold tracking-tight text-[var(--secondary)]">
+                          Notifications
+                        </h2>
+                        <p className="mt-0.5 text-xs font-semibold text-[var(--muted-foreground)]">
+                          {unreadCount > 0
+                            ? `${unreadCount} unread message${unreadCount === 1 ? "" : "s"}`
+                            : "You're all caught up"}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {unreadCount > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => void markAllAsRead()}
+                            className="rounded-xl px-3 py-1.5 text-xs font-bold text-[var(--primary)] transition-colors hover:bg-[var(--primary)]/10"
+                          >
+                            Mark all read
+                          </button>
+                        )}
+
                         <button
                           type="button"
-                          onClick={() => void markAllAsRead()}
-                          className="rounded-lg px-2.5 py-2 text-xs font-semibold text-[var(--primary)] hover:bg-[var(--background)]"
+                          aria-label="Close notifications"
+                          onClick={() => setNotificationsOpen(false)}
+                          className="rounded-xl p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--secondary)]"
                         >
-                          Mark all read
+                          <X size={16} />
                         </button>
-                      )}
-
-                      <button
-                        type="button"
-                        aria-label="Close notifications"
-                        onClick={() => setNotificationsOpen(false)}
-                        className="rounded-lg p-2 text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)]"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {notificationsError && (
-                    <div className="border-b border-red-200 bg-red-50 px-4 py-3 text-xs text-red-700">
-                      {notificationsError}
-                    </div>
-                  )}
-
-                  <div
-                    className="max-h-[min(70vh,520px)] overflow-y-auto"
-                    style={{
-                      scrollbarWidth: "none",
-                    }}
-                  >
-                    {notificationsLoading ? (
-                      <div className="flex items-center justify-center px-4 py-12">
-                        <div className="h-7 w-7 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--primary)]" />
                       </div>
-                    ) : notifications.length === 0 ? (
-                      <div className="px-6 py-12 text-center">
-                        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--background)]">
-                          <Bell className="h-5 w-5 text-[var(--muted)]" />
+                    </div>
+
+                    {notificationsError && (
+                      <div className="border-b border-red-200 bg-red-50 px-6 py-3 text-xs font-bold text-red-800">
+                        {notificationsError}
+                      </div>
+                    )}
+
+                    <div
+                      className="max-h-[min(70vh,480px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    >
+                      {notificationsLoading ? (
+                        <div className="flex items-center justify-center px-6 py-12">
+                          <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
                         </div>
+                      ) : notifications.length === 0 ? (
+                        <div className="px-6 py-16 text-center">
+                          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface)] text-[var(--muted-foreground)]">
+                            <Bell size={24} />
+                          </div>
+                          <p className="text-base font-bold text-[var(--secondary)]">
+                            No notifications
+                          </p>
+                          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                            New updates will appear here.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="divide-y divide-[var(--border)]">
+                          {notifications.map((notification) => (
+                            <div
+                              key={notification.id}
+                              className={`group p-5 transition-colors ${
+                                notification.isRead
+                                  ? "bg-white"
+                                  : "bg-[var(--primary)]/[0.02]"
+                              }`}
+                            >
+                              <div className="flex gap-4">
+                                <div
+                                  className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-sm ${
+                                    notification.isRead
+                                      ? "bg-[var(--surface)] text-[var(--muted-foreground)]"
+                                      : "bg-[var(--primary)] !text-white"
+                                  }`}
+                                >
+                                  <Bell size={18} />
+                                </div>
 
-                        <p className="text-sm font-semibold text-[var(--foreground)]">
-                          No notifications
-                        </p>
-
-                        <p className="mt-1 text-xs text-[var(--muted)]">
-                          New updates will appear here.
-                        </p>
-                      </div>
-                    ) : (
-                      <div>
-                        {notifications.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className={`group border-b border-[var(--border)] px-4 py-4 transition last:border-b-0 ${
-                              notification.isRead
-                                ? "bg-[var(--surface)]"
-                                : "bg-[var(--background)]"
-                            }`}
-                          >
-                            <div className="flex gap-3">
-                              <div
-                                className={`mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                                  notification.isRead
-                                    ? "bg-[var(--background)] text-[var(--muted)]"
-                                    : "bg-[var(--primary)] !text-white"
-                                }`}
-                              >
-                                <Bell className="h-4 w-4" />
-                              </div>
-
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-start justify-between gap-2">
-                                  <div className="min-w-0">
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-start justify-between gap-3">
                                     <p
-                                      className={`text-sm ${
+                                      className={`text-sm tracking-tight ${
                                         notification.isRead
-                                          ? "font-medium text-[var(--foreground)]"
-                                          : "font-bold text-[var(--foreground)]"
+                                          ? "font-bold text-[var(--secondary)]"
+                                          : "font-extrabold text-[var(--secondary)]"
                                       }`}
                                     >
                                       {notification.title}
                                     </p>
 
-                                    <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                                      {notification.message}
-                                    </p>
-                                  </div>
-
-                                  {!notification.isRead && (
-                                    <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--primary)]" />
-                                  )}
-                                </div>
-
-                                <div className="mt-2 flex items-center justify-between gap-2">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--muted)]">
-                                      {getNotificationTypeLabel(
-                                        notification.type,
-                                      )}
-                                    </span>
-
-                                    <span className="text-[10px] text-[var(--muted)]">
-                                      {formatNotificationTime(
-                                        notification.createdAt,
-                                      )}
-                                    </span>
-                                  </div>
-
-                                  <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
                                     {!notification.isRead && (
+                                      <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--primary)] shadow-sm" />
+                                    )}
+                                  </div>
+
+                                  <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted-foreground)]">
+                                    {notification.message}
+                                  </p>
+
+                                  <div className="mt-3 flex items-center justify-between gap-2 pt-3 border-t border-[var(--border)]/60">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--primary)]">
+                                        {getNotificationTypeLabel(
+                                          notification.type,
+                                        )}
+                                      </span>
+                                      <span className="text-[10px] text-[var(--muted-foreground)]">
+                                        •
+                                      </span>
+                                      <span className="text-[10px] font-medium text-[var(--muted-foreground)]">
+                                        {formatNotificationTime(
+                                          notification.createdAt,
+                                        )}
+                                      </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-1">
+                                      {!notification.isRead && (
+                                        <button
+                                          type="button"
+                                          aria-label="Mark notification as read"
+                                          title="Mark as read"
+                                          onClick={() =>
+                                            void markAsRead(notification.id)
+                                          }
+                                          className="rounded-lg p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--primary)]"
+                                        >
+                                          <Check size={14} />
+                                        </button>
+                                      )}
+
                                       <button
                                         type="button"
-                                        aria-label="Mark notification as read"
-                                        title="Mark as read"
+                                        aria-label="Delete notification"
+                                        title="Delete"
                                         onClick={() =>
-                                          void markAsRead(notification.id)
+                                          void deleteNotification(notification.id)
                                         }
-                                        className="rounded-lg p-1.5 text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--primary)]"
+                                        className="rounded-lg p-2 text-[var(--muted-foreground)] transition-colors hover:bg-red-50 hover:text-red-600"
                                       >
-                                        <Check className="h-3.5 w-3.5" />
+                                        <Trash2 size={14} />
                                       </button>
-                                    )}
-
-                                    <button
-                                      type="button"
-                                      aria-label="Delete notification"
-                                      title="Delete"
-                                      onClick={() =>
-                                        void deleteNotification(notification.id)
-                                      }
-                                      className="rounded-lg p-1.5 text-[var(--muted)] hover:bg-red-50 hover:text-red-600"
-                                    >
-                                      <Trash2 className="h-3.5 w-3.5" />
-                                    </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-
-                            {!notification.isRead && (
-                              <button
-                                type="button"
-                                onClick={() => void markAsRead(notification.id)}
-                                className="mt-2 text-left text-[11px] font-semibold text-[var(--primary)] hover:underline"
-                              >
-                                Mark as read
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            <Link
-              href="/dashboard/profile"
-              className="flex items-center gap-3 rounded-xl border border-[var(--border)] px-2.5 py-2 hover:bg-[var(--background)]"
-            >
-              <div className="hidden text-right sm:block">
-                <p className="text-sm font-semibold text-[var(--foreground)]">
-                  {user.firstName} {user.lastName ?? ""}
-                </p>
-
-                <p className="text-xs text-[var(--muted)]">{user.role}</p>
+                )}
               </div>
 
-              {user.profileImage ? (
-                <img
-                  src={user.profileImage}
-                  alt=""
-                  className="h-9 w-9 rounded-full object-cover"
-                />
-              ) : (
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold !text-white">
-                  {user.firstName.charAt(0).toUpperCase()}
+              <Link
+                href="/dashboard/profile"
+                className="group flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-white p-2 sm:px-3 sm:py-2 transition-all hover:border-[var(--primary)]/30 hover:shadow-sm"
+              >
+                <div className="hidden text-right sm:block">
+                  <p className="text-xs font-bold text-[var(--secondary)]">
+                    {user.firstName} {user.lastName ?? ""}
+                  </p>
+                  <p className="text-[10px] font-semibold text-[var(--muted-foreground)]">{user.role}</p>
                 </div>
-              )}
-            </Link>
-          </div>
-        </header>
 
-        <main
-          className="scrollbar-hide min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8"
-          style={{
-            scrollbarWidth: "none",
-          }}
-        >
-          {children}
-        </main>
+                {user.profileImage ? (
+                  <img
+                    src={user.profileImage}
+                    alt=""
+                    className="h-9 w-9 rounded-xl object-cover ring-2 ring-[var(--border)] group-hover:ring-[var(--primary)]/30 transition-all"
+                  />
+                ) : (
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--primary)] text-xs font-extrabold !text-white shadow-sm">
+                    {user.firstName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </Link>
+            </div>
+          </header>
+
+          <main
+            className="flex-1 overflow-y-auto px-4 py-8 sm:px-8 sm:py-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            style={{
+              scrollbarWidth: "none",
+            }}
+          >
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
