@@ -78,7 +78,7 @@ export default async function LatestAnnouncements() {
           <div className="mt-12 rounded-2xl border border-[var(--border)] bg-white px-6 py-16 text-center shadow-sm animate-in fade-in duration-700 ease-out delay-150 fill-mode-both">
             <Megaphone
               className="mx-auto text-[var(--muted-foreground)]"
-              size={36}
+              size={12}
             />
 
             <h3 className="mt-5 text-lg font-bold text-[var(--secondary)]">
