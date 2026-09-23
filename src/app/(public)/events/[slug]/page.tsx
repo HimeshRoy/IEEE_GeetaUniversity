@@ -1,5 +1,15 @@
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, CalendarDays, Clock3, MapPin, Users, Flag } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  CalendarDays,
+  Clock3,
+  MapPin,
+  Users,
+  Flag,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 import Container from "@/components/ui/Container";
 
 interface Event {
@@ -111,7 +121,10 @@ export default async function EventDetailPage({
         <Container>
           <div className="mx-auto flex min-h-[400px] max-w-xl flex-col items-center justify-center rounded-3xl border border-[var(--border)] bg-white px-6 py-12 text-center shadow-sm animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--surface)]">
-              <CalendarDays size={32} className="text-[var(--muted-foreground)]" />
+              <CalendarDays
+                size={32}
+                className="text-[var(--muted-foreground)]"
+              />
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight text-[var(--secondary)] sm:text-3xl">
@@ -119,14 +132,18 @@ export default async function EventDetailPage({
             </h1>
 
             <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">
-              The event you are looking for does not exist or is no longer available.
+              The event you are looking for does not exist or is no longer
+              available.
             </p>
 
             <Link
               href="/events"
               className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
             >
-              <ArrowLeft size={18} className="transition-transform duration-300 group-hover:-translate-x-1" />
+              <ArrowLeft
+                size={18}
+                className="transition-transform duration-300 group-hover:-translate-x-1"
+              />
               Back to Events
             </Link>
           </div>
@@ -148,7 +165,10 @@ export default async function EventDetailPage({
               href="/events"
               className="group mb-8 inline-flex items-center gap-2 text-sm font-bold text-[var(--muted-foreground)] transition-colors duration-300 hover:text-[var(--primary)]"
             >
-              <ArrowLeft size={16} className="transition-transform duration-300 group-hover:-translate-x-1" />
+              <ArrowLeft
+                size={16}
+                className="transition-transform duration-300 group-hover:-translate-x-1"
+              />
               Back to Events
             </Link>
 
@@ -202,7 +222,6 @@ export default async function EventDetailPage({
       <section className="mt-12 sm:mt-16">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:gap-16 xl:grid-cols-[1fr_400px]">
-            
             {/* Main Content */}
             <article className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
               <span className="inline-flex rounded-full border border-[var(--border)] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)] shadow-sm">
@@ -289,7 +308,7 @@ export default async function EventDetailPage({
                     </li>
                   )}
 
-                  {event.registrationDeadline && (
+                  {event.registrationDeadline && event.status === "PUBLISHED" && (
                     <li className="flex items-start gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
                         <Flag size={22} />
@@ -307,17 +326,31 @@ export default async function EventDetailPage({
                 </ul>
 
                 <div className="mt-10 border-t border-[var(--border)] pt-8">
-                  <Link
-                    href={`/events/${event.slug}/register`}
-                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
-                  >
-                    Register for Event
-                    <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
+                  {event.status === "COMPLETED" ? (
+                    <div className="flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-6 py-4 text-sm font-bold text-emerald-700">
+                      <CheckCircle2 size={19} />
+                      Event Completed
+                    </div>
+                  ) : event.status === "CANCELLED" ? (
+                    <div className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-6 py-4 text-sm font-bold text-red-600">
+                      <XCircle size={19} />
+                      Event Cancelled
+                    </div>
+                  ) : (
+                    <Link
+                      href={`/events/${event.slug}/register`}
+                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
+                    >
+                      Register for Event
+                      <ArrowRight
+                        size={18}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </Link>
+                  )}
                 </div>
               </div>
             </aside>
-
           </div>
         </Container>
       </section>

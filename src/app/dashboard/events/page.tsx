@@ -91,8 +91,7 @@ function formatTime(time: string | null) {
 }
 
 function getEventDateTime(event: EventItem) {
-  const time = event.startTime || event.eventDate;
-  const date = new Date(time);
+  const date = new Date(event.eventDate);
 
   if (Number.isNaN(date.getTime())) {
     return new Date(0);
