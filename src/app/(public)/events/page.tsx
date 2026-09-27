@@ -462,7 +462,7 @@ export default async function EventsPage() {
               </p>
             </div>
           ) : (
-            <EventCarousel events={pastEvents} compact />
+            <EventCarousel events={pastEvents} />
           )}
         </Container>
       </section>
