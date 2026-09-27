@@ -16,14 +16,12 @@ export default function ConsoleProtection() {
     ].join(";");
 
     const messageStyles = [
-      "color: #111827",
       "font-size: 16px",
       "font-weight: 600",
       "line-height: 1.6",
     ].join(";");
 
     const linkStyles = [
-      "color: #00629B",
       "font-size: 15px",
       "font-weight: 700",
     ].join(";");
