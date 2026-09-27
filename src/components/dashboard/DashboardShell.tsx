@@ -21,6 +21,8 @@ import {
   Trash2,
   Users,
   X,
+  ScrollText,
+  Wrench,
 } from "lucide-react";
 import { api, getCurrentUser } from "@/lib/api";
 import {
@@ -165,8 +167,32 @@ function getNavigation(
     ],
   };
 
+  const system: NavigationSection = {
+    label: "System",
+    items: [
+      {
+        label: "Audit Logs",
+        href: "/dashboard/audit-logs",
+        icon: ScrollText,
+      },
+      {
+        label: "Maintenance",
+        href: "/dashboard/maintenance",
+        icon: Wrench,
+      },
+    ],
+  };
+
   if (role === "WEBMASTER") {
-    return [overview, events, content, members, leadership, administration];
+    return [
+      overview,
+      events,
+      content,
+      members,
+      leadership,
+      administration,
+      system,
+    ];
   }
 
   if (role === "IEEE_COUNSELOR" || role === "FACULTY_ADVISOR" || isChairman) {
@@ -585,7 +611,9 @@ export default function DashboardShell({
           className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-[var(--border)] bg-white transition-all duration-300 ${
             collapsed ? "w-20" : "w-72"
           } ${
-            mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"
+            mobileOpen
+              ? "translate-x-0 shadow-2xl"
+              : "-translate-x-full lg:translate-x-0"
           } [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
         >
           <div className="flex h-20 shrink-0 items-center justify-between border-b border-[var(--border)] px-6">
@@ -610,7 +638,9 @@ export default function DashboardShell({
                   <p className="text-sm font-extrabold tracking-tight text-[var(--secondary)]">
                     IEEE GU
                   </p>
-                  <p className="text-xs font-semibold text-[var(--muted-foreground)]">Student Branch</p>
+                  <p className="text-xs font-semibold text-[var(--muted-foreground)]">
+                    Student Branch
+                  </p>
                 </div>
               </Link>
             )}
@@ -658,9 +688,7 @@ export default function DashboardShell({
             </div>
           )}
 
-          <div
-            className="flex-1 overflow-y-auto px-4 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden space-y-6"
-          >
+          <div className="flex-1 overflow-y-auto px-4 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden space-y-6">
             {navigation.map((section) => (
               <div key={section.label} className="space-y-1.5">
                 {!collapsed && (
@@ -690,7 +718,9 @@ export default function DashboardShell({
                         } ${collapsed ? "justify-center px-0" : ""}`}
                       >
                         <Icon size={18} className="shrink-0" />
-                        {!collapsed && <span className="truncate">{item.label}</span>}
+                        {!collapsed && (
+                          <span className="truncate">{item.label}</span>
+                        )}
                       </Link>
                     );
                   })}
@@ -803,9 +833,7 @@ export default function DashboardShell({
                       </div>
                     )}
 
-                    <div
-                      className="max-h-[min(70vh,480px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                    >
+                    <div className="max-h-[min(70vh,480px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       {notificationsLoading ? (
                         <div className="flex items-center justify-center px-6 py-12">
                           <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
@@ -902,7 +930,9 @@ export default function DashboardShell({
                                         aria-label="Delete notification"
                                         title="Delete"
                                         onClick={() =>
-                                          void deleteNotification(notification.id)
+                                          void deleteNotification(
+                                            notification.id,
+                                          )
                                         }
                                         className="rounded-lg p-2 text-[var(--muted-foreground)] transition-colors hover:bg-red-50 hover:text-red-600"
                                       >
@@ -929,7 +959,9 @@ export default function DashboardShell({
                   <p className="text-xs font-bold text-[var(--secondary)]">
                     {user.firstName} {user.lastName ?? ""}
                   </p>
-                  <p className="text-[10px] font-semibold text-[var(--muted-foreground)]">{user.role}</p>
+                  <p className="text-[10px] font-semibold text-[var(--muted-foreground)]">
+                    {user.role}
+                  </p>
                 </div>
 
                 {user.profileImage ? (

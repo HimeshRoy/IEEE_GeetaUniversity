@@ -25,7 +25,7 @@ async function getLatestAnnouncements(): Promise<Announcement[]> {
         next: {
           revalidate: 60,
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -52,6 +52,35 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
+function renderLinkedText(text: string) {
+  const urlRegex = /(https?:\/\/[^\s<]+)/g;
+
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (/^https?:\/\//i.test(part)) {
+      const cleanUrl = part.replace(/[),.!?;:]+$/, "");
+      const trailing = part.slice(cleanUrl.length);
+
+      return (
+        <span key={index}>
+          <a
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="!text-blue-600 underline underline-offset-2 transition-colors hover:!text-blue-800"
+          >
+            {cleanUrl}
+          </a>
+          {trailing}
+        </span>
+      );
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
 export default async function LatestAnnouncements() {
   const announcements = await getLatestAnnouncements();
 
@@ -68,9 +97,8 @@ export default async function LatestAnnouncements() {
           </h2>
 
           <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--muted-foreground)]">
-            Stay updated with the latest news, notices, opportunities,
-            and important updates from the IEEE Geeta University
-            Student Branch.
+            Stay updated with the latest news, notices, opportunities, and
+            important updates from the IEEE Geeta University Student Branch.
           </p>
         </div>
 
@@ -99,14 +127,10 @@ export default async function LatestAnnouncements() {
                     className="group px-6 py-8 transition-colors duration-300 hover:bg-[var(--surface)]/50 sm:px-10"
                   >
                     <div className="flex items-start gap-5 sm:gap-6">
-                      <div className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white group-hover:shadow-md">
-                        <Megaphone size={22} />
-                      </div>
-
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)] transition-colors duration-300 group-hover:text-[var(--primary-dark)]">
                           {formatDate(
-                            announcement.publishedAt ?? announcement.createdAt
+                            announcement.publishedAt ?? announcement.createdAt,
                           )}
                         </p>
 
@@ -114,8 +138,10 @@ export default async function LatestAnnouncements() {
                           {announcement.title}
                         </h3>
 
-                        <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
-                          {announcement.summary || announcement.content}
+                        <p className="mt-4 max-w-4xl whitespace-pre-line text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
+                          {renderLinkedText(
+                            announcement.summary || announcement.content,
+                          )}
                         </p>
                       </div>
                     </div>

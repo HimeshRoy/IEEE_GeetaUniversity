@@ -111,6 +111,34 @@ function getAccessLabel(access: Event["access"]) {
   }
 }
 
+function renderLinkedText(text: string) {
+  const urlRegex = /(https?:\/\/[^\s<]+)/gi;
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (/^https?:\/\//i.test(part)) {
+      const cleanUrl = part.replace(/[),.!?;:]+$/, "");
+      const trailing = part.slice(cleanUrl.length);
+
+      return (
+        <span key={index}>
+          <a
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className=" !text-blue-600 underline underline-offset-2 transition-colors hover:text-[var(--primary-dark)]"
+          >
+            {cleanUrl}
+          </a>
+          {trailing}
+        </span>
+      );
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
 interface EventDetailPageProps {
   params: Promise<{
     slug: string;
@@ -216,8 +244,8 @@ export default async function EventDetailPage({
                 </h1>
 
                 {event.shortDescription && (
-                  <p className="mt-6 max-w-3xl text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg sm:leading-8">
-                    {event.shortDescription}
+                  <p className="mt-6 max-w-3xl whitespace-pre-line text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg sm:leading-8">
+                    {renderLinkedText(event.shortDescription)}
                   </p>
                 )}
               </div>
@@ -241,7 +269,7 @@ export default async function EventDetailPage({
               </h2>
 
               <div className="mt-8 whitespace-pre-line text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg sm:leading-8">
-                {event.description}
+                {renderLinkedText(event.description)}
               </div>
             </article>
 
@@ -316,21 +344,22 @@ export default async function EventDetailPage({
                     </li>
                   )}
 
-                  {event.registrationDeadline && event.status === "PUBLISHED" && (
-                    <li className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
-                        <Flag size={22} />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-                          Registration Deadline
-                        </p>
-                        <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
-                          {formatDate(event.registrationDeadline)}
-                        </p>
-                      </div>
-                    </li>
-                  )}
+                  {event.registrationDeadline &&
+                    event.status === "PUBLISHED" && (
+                      <li className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
+                          <Flag size={22} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                            Registration Deadline
+                          </p>
+                          <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
+                            {formatDate(event.registrationDeadline)}
+                          </p>
+                        </div>
+                      </li>
+                    )}
                 </ul>
 
                 <div className="mt-10 border-t border-[var(--border)] pt-8">

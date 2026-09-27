@@ -91,21 +91,21 @@ function formatTime(value: string | null) {
 function getStatusClasses(status: string) {
   switch (status) {
     case "PUBLISHED":
-      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+      return "text-emerald-700";
     case "APPROVED":
-      return "border-blue-200 bg-blue-50 text-blue-700";
+      return "text-blue-700";
     case "PENDING_APPROVAL":
-      return "border-amber-200 bg-amber-50 text-amber-700";
+      return "text-amber-700";
     case "DRAFT":
-      return "border-gray-200 bg-gray-50 text-gray-700";
+      return "text-gray-700";
     case "REJECTED":
-      return "border-red-200 bg-red-50 text-red-700";
+      return "text-red-700";
     case "CANCELLED":
-      return "border-red-200 bg-red-50 text-red-700";
+      return "text-red-700";
     case "COMPLETED":
-      return "border-purple-200 bg-purple-50 text-purple-700";
+      return "text-purple-700";
     default:
-      return "border-gray-200 bg-gray-50 text-gray-700";
+      return "text-gray-700";
   }
 }
 
@@ -441,14 +441,6 @@ export default function WebHeadDashboard() {
                       <h3 className="line-clamp-1 text-base font-bold text-[var(--secondary)]">
                         {event.title}
                       </h3>
-
-                      <span
-                        className={`shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${getStatusClasses(
-                          event.status,
-                        )}`}
-                      >
-                        {getEventStatusLabel(event.status)}
-                      </span>
                     </div>
 
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-medium text-[var(--muted-foreground)]">
@@ -467,6 +459,14 @@ export default function WebHeadDashboard() {
 
                       <span>
                         {event._count?.registrations ?? 0} registrations
+                      </span>
+
+                      <span
+                        className={`shrink-0 text-[11px] font-bold uppercase tracking-wider ${getStatusClasses(
+                          event.status,
+                        )}`}
+                      >
+                        {getEventStatusLabel(event.status)}
                       </span>
                     </div>
                   </div>
