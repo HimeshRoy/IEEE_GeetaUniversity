@@ -5,10 +5,11 @@ import LatestAnnouncements from "@/components/home/LatestAnnouncements";
 import ImpactHighlights from "@/components/home/ImpactHighlights";
 import WhyJoinIEEE from "@/components/home/WhyJoinIEEE";
 import HomeCTA from "@/components/home/HomeCTA";
+import DomProtectedText from "@/components/security/DomProtectedText";
 
 export default function HomePage() {
   return (
-    <>
+    <DomProtectedText>
       <Hero />
       <Introduction />
       <UpcomingEvents />
@@ -16,6 +17,6 @@ export default function HomePage() {
       <ImpactHighlights />
       <WhyJoinIEEE />
       <HomeCTA />
-    </>
+    </DomProtectedText>
   );
 }
