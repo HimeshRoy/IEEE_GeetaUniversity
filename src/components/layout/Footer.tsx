@@ -95,13 +95,15 @@ export default function Footer() {
               communities.
             </p>
 
-            <a
+
+            {/** EMAIL NEED TO BE ADDED LATER */}
+            {/* <a
               href="mailto:ieee@geetauniversity.com"
               className="mt-5 inline-flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-white"
             >
               <Mail size={17} />
               ieee@geetauniversity.com
-            </a>
+            </a> */}
 
             <br />
             <a
