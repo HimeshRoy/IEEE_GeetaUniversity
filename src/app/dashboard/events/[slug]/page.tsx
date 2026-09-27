@@ -185,21 +185,21 @@ function formatDateTime(date: string | null) {
 
 function formatTime(time: string | null) {
   if (!time) {
-    return null;
+    return "Time not specified";
   }
 
-  const parsedDate = new Date(time);
+  const date = new Date(time);
 
-  if (Number.isNaN(parsedDate.getTime())) {
-    return null;
+  if (Number.isNaN(date.getTime())) {
+    return "Time not specified";
   }
 
-  return new Intl.DateTimeFormat("en-IN", {
+  return date.toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Asia/Kolkata",
-  }).format(parsedDate);
+  });
 }
 
 function getAccessLabel(access: Event["access"]) {
@@ -441,10 +441,7 @@ export default function StudentEventDetailPage() {
         setForm(null);
       } else {
         setFormError(
-          getErrorMessage(
-            error,
-            "Unable to load the registration form.",
-          ),
+          getErrorMessage(error, "Unable to load the registration form."),
         );
       }
     } finally {
@@ -520,12 +517,7 @@ export default function StudentEventDetailPage() {
         });
       }
     } catch (error: unknown) {
-      setFormError(
-        getErrorMessage(
-          error,
-          "Unable to save form details.",
-        ),
-      );
+      setFormError(getErrorMessage(error, "Unable to save form details."));
     } finally {
       setIsSavingForm(false);
     }
@@ -616,12 +608,7 @@ export default function StudentEventDetailPage() {
 
       await reloadForm();
     } catch (error: unknown) {
-      setFormError(
-        getErrorMessage(
-          error,
-          "Unable to save this form field.",
-        ),
-      );
+      setFormError(getErrorMessage(error, "Unable to save this form field."));
     } finally {
       setIsFieldSaving(false);
     }
@@ -639,12 +626,7 @@ export default function StudentEventDetailPage() {
       await api.delete(`/event-forms/fields/${fieldId}`);
       await reloadForm();
     } catch (error: unknown) {
-      setFormError(
-        getErrorMessage(
-          error,
-          "Unable to delete this form field.",
-        ),
-      );
+      setFormError(getErrorMessage(error, "Unable to delete this form field."));
     } finally {
       setDeletingFieldId(null);
     }
@@ -684,12 +666,7 @@ export default function StudentEventDetailPage() {
 
       await reloadForm();
     } catch (error: unknown) {
-      setFormError(
-        getErrorMessage(
-          error,
-          "Unable to reorder form fields.",
-        ),
-      );
+      setFormError(getErrorMessage(error, "Unable to reorder form fields."));
     }
   }
 
@@ -706,10 +683,7 @@ export default function StudentEventDetailPage() {
       await reloadForm();
     } catch (error: unknown) {
       setFormError(
-        getErrorMessage(
-          error,
-          `Unable to ${action} the registration form.`,
-        ),
+        getErrorMessage(error, `Unable to ${action} the registration form.`),
       );
     } finally {
       setFormActionLoading(false);
@@ -731,10 +705,7 @@ export default function StudentEventDetailPage() {
       setFormDescription("");
     } catch (error: unknown) {
       setFormError(
-        getErrorMessage(
-          error,
-          "Unable to delete the registration form.",
-        ),
+        getErrorMessage(error, "Unable to delete the registration form."),
       );
     } finally {
       setFormActionLoading(false);

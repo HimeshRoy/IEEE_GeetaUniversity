@@ -65,26 +65,27 @@ function getErrorMessage(error: unknown) {
 
 function MovingImage({ image }: { image: CarouselImage }) {
   return (
-    <article className="group relative aspect-[4/3] w-[260px] shrink-0 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-lg shadow-black/[0.03] sm:w-[320px] lg:w-[400px]">
+    <article className="group relative aspect-[16/10] w-[220px] shrink-0 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-lg shadow-black/[0.03] sm:w-[280px] sm:rounded-3xl lg:w-[360px] xl:w-[420px]">
       <img
         src={image.imageUrl}
         alt={image.caption || `${image.albumTitle} gallery image`}
         loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
 
-      <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-5 sm:p-6 translate-y-2 transition-transform duration-500 ease-out group-hover:translate-y-0">
-        <span className="inline-flex w-fit rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+      <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-4 translate-y-1 transition-transform duration-500 ease-out group-hover:translate-y-0 sm:p-5 sm:translate-y-2">
+        <span className="mb-2 inline-flex w-fit rounded-full bg-white/20 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur-md opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:mb-3 sm:text-[10px]">
           Album
         </span>
-        <p className="truncate text-base font-bold text-white sm:text-lg drop-shadow-md">
+
+        <p className="truncate text-sm font-bold text-white drop-shadow-md sm:text-base lg:text-lg">
           {image.albumTitle}
         </p>
 
         {image.caption && (
-          <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-white/80 drop-shadow-sm sm:text-sm">
+          <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/80 drop-shadow-sm sm:text-xs lg:text-sm">
             {image.caption}
           </p>
         )}
@@ -101,7 +102,10 @@ function MarqueeGroup({
   prefix: string;
 }) {
   return (
-    <div className="flex shrink-0 items-stretch gap-4 sm:gap-6" aria-hidden="true">
+    <div
+      className="flex shrink-0 items-stretch gap-4 sm:gap-6"
+      aria-hidden="true"
+    >
       {images.map((image, index) => (
         <MovingImage key={`${prefix}-${image.id}-${index}`} image={image} />
       ))}
@@ -172,7 +176,10 @@ export default function GalleryPage() {
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-[var(--background)]">
       <section className="relative overflow-hidden border-b border-[var(--border)] bg-gradient-to-b from-[var(--surface)]/40 to-transparent">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
           <div className="absolute -left-40 -top-40 h-[400px] w-[400px] sm:h-[500px] sm:w-[500px] rounded-full bg-[var(--primary)]/[0.06] blur-3xl animate-[pulse_8s_ease-in-out_infinite]" />
           <div className="absolute -right-40 top-20 h-[350px] w-[350px] sm:h-[450px] sm:w-[450px] rounded-full bg-blue-500/[0.04] blur-3xl animate-[pulse_10s_ease-in-out_infinite_reverse]" />
         </div>
@@ -192,7 +199,8 @@ export default function GalleryPage() {
             </h1>
 
             <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-sm leading-7 sm:text-base sm:leading-8 text-[var(--muted-foreground)]">
-              Explore moments captured during IEEE Geeta University Student Branch events, workshops, seminars, and activities.
+              Explore moments captured during IEEE Geeta University Student
+              Branch events, workshops, seminars, and activities.
             </p>
           </div>
         </Container>
@@ -205,8 +213,12 @@ export default function GalleryPage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-lg shadow-black/5">
                 <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
               </div>
-              <p className="mt-5 font-semibold text-[var(--foreground)]">Loading gallery</p>
-              <p className="mt-2 text-sm text-[var(--muted-foreground)]">Fetching the latest branch photos...</p>
+              <p className="mt-5 font-semibold text-[var(--foreground)]">
+                Loading gallery
+              </p>
+              <p className="mt-2 text-sm text-[var(--muted-foreground)]">
+                Fetching the latest branch photos...
+              </p>
             </div>
           </Container>
         </section>
@@ -220,8 +232,12 @@ export default function GalleryPage() {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10">
                   <AlertCircle className="h-7 w-7 text-red-500" />
                 </div>
-                <h2 className="mt-6 text-xl font-bold text-[var(--foreground)]">Unable to load gallery</h2>
-                <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">{error}</p>
+                <h2 className="mt-6 text-xl font-bold text-[var(--foreground)]">
+                  Unable to load gallery
+                </h2>
+                <p className="mt-3 text-base leading-relaxed text-[var(--muted-foreground)]">
+                  {error}
+                </p>
               </div>
             </div>
           </Container>
@@ -236,9 +252,12 @@ export default function GalleryPage() {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--primary)]/10">
                   <ImageIcon className="h-7 w-7 text-[var(--primary)]" />
                 </div>
-                <h2 className="mt-6 text-xl font-bold text-[var(--foreground)]">No images available</h2>
+                <h2 className="mt-6 text-xl font-bold text-[var(--foreground)]">
+                  No images available
+                </h2>
                 <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-[var(--muted-foreground)]">
-                  Public gallery photos will appear here once they are uploaded and published by the branch leadership.
+                  Public gallery photos will appear here once they are uploaded
+                  and published by the branch leadership.
                 </p>
               </div>
             </div>
@@ -298,22 +317,36 @@ export default function GalleryPage() {
         }
 
         @keyframes galleryMoveLeft {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
         }
 
         @keyframes galleryMoveRight {
-          from { transform: translateX(-50%); }
-          to { transform: translateX(0); }
+          from {
+            transform: translateX(-50%);
+          }
+          to {
+            transform: translateX(0);
+          }
         }
 
         @media (min-width: 640px) {
-          .gallery-marquee { gap: 24px; }
+          .gallery-marquee {
+            gap: 24px;
+          }
         }
 
         @media (max-width: 639px) {
-          .gallery-marquee-left { animation-duration: 90s; }
-          .gallery-marquee-right { animation-duration: 95s; }
+          .gallery-marquee-left {
+            animation-duration: 90s;
+          }
+          .gallery-marquee-right {
+            animation-duration: 95s;
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {

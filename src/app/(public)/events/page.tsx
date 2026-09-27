@@ -67,15 +67,23 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
-function formatTime(date: string | null) {
-  if (!date) {
-    return null;
+function formatTime(time: string | null) {
+  if (!time) {
+    return "Time not specified";
   }
 
-  return new Intl.DateTimeFormat("en-IN", {
+  const date = new Date(time);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Time not specified";
+  }
+
+  return date.toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour: "numeric",
     minute: "2-digit",
-  }).format(new Date(date));
+    hour12: true,
+  });
 }
 
 function getAccessLabel(access: Event["access"]) {
@@ -177,7 +185,10 @@ function EventCard({
 
         <div className={compact ? "min-w-0 flex-1 p-4" : "p-4"}>
           <div className="flex items-center gap-2 text-xs font-semibold text-[var(--primary)]">
-            <CalendarDays size={14} className="transition-transform duration-300 group-hover:scale-110" />
+            <CalendarDays
+              size={14}
+              className="transition-transform duration-300 group-hover:scale-110"
+            />
             {formatDate(event.eventDate)}
           </div>
 
@@ -199,7 +210,10 @@ function EventCard({
           <div className="mt-3 space-y-1.5">
             {startTime && (
               <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                <Clock3 size={14} className="transition-colors duration-300 group-hover:text-[var(--primary)]" />
+                <Clock3
+                  size={14}
+                  className="transition-colors duration-300 group-hover:text-[var(--primary)]"
+                />
                 <span>
                   {startTime}
                   {endTime ? ` – ${endTime}` : ""}
@@ -209,7 +223,10 @@ function EventCard({
 
             {event.venue && (
               <div className="flex items-start gap-2 text-xs text-[var(--muted)]">
-                <MapPin size={14} className="mt-0.5 shrink-0 transition-colors duration-300 group-hover:text-[var(--primary)]" />
+                <MapPin
+                  size={14}
+                  className="mt-0.5 shrink-0 transition-colors duration-300 group-hover:text-[var(--primary)]"
+                />
                 <span className="line-clamp-1">{event.venue}</span>
               </div>
             )}
@@ -218,12 +235,71 @@ function EventCard({
           {!compact && (
             <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--primary)]">
               View details
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
             </div>
           )}
         </div>
       </Link>
     </article>
+  );
+}
+
+function EventCarousel({
+  events,
+  compact = false,
+}: {
+  events: Event[];
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className="
+        mt-8
+        flex
+        gap-4
+        overflow-x-auto
+        overscroll-x-contain
+        scroll-smooth
+        snap-x
+        snap-mandatory
+        pb-4
+        [-ms-overflow-style:none]
+        [scrollbar-width:none]
+        [&::-webkit-scrollbar]:hidden
+        sm:gap-5
+        lg:gap-6
+      "
+    >
+      {events.map((event, index) => (
+        <div
+          key={event.id}
+          className="
+            w-[88%]
+            shrink-0
+            snap-start
+            animate-in
+            fade-in
+            slide-in-from-right-6
+            duration-700
+            ease-out
+            fill-mode-both
+
+            sm:w-[70%]
+            md:w-[48%]
+            lg:w-[38%]
+            xl:w-[32%]
+          "
+          style={{
+            animationDelay: `${index * 100}ms`,
+          }}
+        >
+          <EventCard event={event} compact={compact} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -302,17 +378,7 @@ export default async function EventsPage() {
               </p>
             </div>
           ) : (
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingEvents.slice(0, 6).map((event, index) => (
-                <div 
-                  key={event.id}
-                  className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <EventCard event={event} />
-                </div>
-              ))}
-            </div>
+            <EventCarousel events={upcomingEvents} />
           )}
         </Container>
       </section>
@@ -337,7 +403,7 @@ export default async function EventsPage() {
 
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               {ongoingEvents.map((event, index) => (
-                <div 
+                <div
                   key={event.id}
                   className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
                   style={{ animationDelay: `${index * 100}ms` }}
@@ -396,17 +462,7 @@ export default async function EventsPage() {
               </p>
             </div>
           ) : (
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {pastEvents.slice(0, 6).map((event, index) => (
-                <div 
-                  key={event.id}
-                  className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-both"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <EventCard event={event} compact />
-                </div>
-              ))}
-            </div>
+            <EventCarousel events={pastEvents} compact />
           )}
         </Container>
       </section>

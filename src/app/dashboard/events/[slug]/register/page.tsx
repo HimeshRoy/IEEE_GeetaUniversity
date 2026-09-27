@@ -206,16 +206,23 @@ function formatDateTime(value: string | null) {
   }).format(date);
 }
 
-function formatTime(value: string | null) {
-  if (!value) return null;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return new Intl.DateTimeFormat("en-IN", {
+function formatTime(time: string | null) {
+  if (!time) {
+    return "Time not specified";
+  }
+
+  const date = new Date(time);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Time not specified";
+  }
+
+  return date.toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Asia/Kolkata",
-  }).format(date);
+  });
 }
 
 function getAccessLabel(access: EventAccess) {

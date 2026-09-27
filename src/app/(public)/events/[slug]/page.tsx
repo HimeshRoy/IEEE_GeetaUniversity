@@ -79,15 +79,23 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
-function formatTime(date: string | null) {
-  if (!date) {
-    return null;
+function formatTime(time: string | null) {
+  if (!time) {
+    return "Time not specified";
   }
 
-  return new Intl.DateTimeFormat("en-IN", {
+  const date = new Date(time);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Time not specified";
+  }
+
+  return date.toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour: "numeric",
     minute: "2-digit",
-  }).format(new Date(date));
+    hour12: true,
+  });
 }
 
 function getAccessLabel(access: Event["access"]) {

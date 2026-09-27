@@ -313,6 +313,37 @@ function formatDate(value: string | null | undefined) {
   });
 }
 
+function indiaDateTimeToUTC(
+  value: string | null | undefined,
+): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const [datePart, timePart] = value.split("T");
+
+  if (!datePart || !timePart) {
+    return undefined;
+  }
+
+  const [year, month, day] = datePart.split("-").map(Number);
+  const [hour, minute] = timePart.split(":").map(Number);
+
+  if (
+    Number.isNaN(year) ||
+    Number.isNaN(month) ||
+    Number.isNaN(day) ||
+    Number.isNaN(hour) ||
+    Number.isNaN(minute)
+  ) {
+    return undefined;
+  }
+
+  const utc = new Date(Date.UTC(year, month - 1, day, hour - 5, minute - 30));
+
+  return utc.toISOString();
+}
+
 function formatDateTime(value: string | null | undefined) {
   if (!value) {
     return "Not specified";
@@ -448,7 +479,7 @@ function slugify(value: string) {
     .replace(/-+/g, "-");
 }
 
-function toLocalDateTimeInput(value: string | null | undefined) {
+function toIndiaDateTimeInput(value: string | null | undefined) {
   if (!value) {
     return "";
   }
@@ -459,10 +490,13 @@ function toLocalDateTimeInput(value: string | null | undefined) {
     return "";
   }
 
-  const offset = date.getTimezoneOffset();
-  const localDate = new Date(date.getTime() - offset * 60000);
-
-  return localDate.toISOString().slice(0, 16);
+  return date
+    .toLocaleString("sv-SE", {
+      timeZone: "Asia/Kolkata",
+      hour12: false,
+    })
+    .replace(" ", "T")
+    .slice(0, 16);
 }
 
 function StatCard({
@@ -1189,7 +1223,8 @@ function EventFormModal({
                           Enable QR Attendance
                         </p>
                         <p className="text-xs text-[var(--muted-foreground)]">
-                          Generate registration QR codes and use them for event attendance.
+                          Generate registration QR codes and use them for event
+                          attendance.
                         </p>
                       </div>
                     </label>
@@ -1417,7 +1452,9 @@ function ViewEventModal({
               <p className="font-bold uppercase tracking-wider text-[var(--secondary)]">
                 Registration Deadline
               </p>
-              <p className="mt-0.5 font-medium">{formatDateTime(event.registrationDeadline)}</p>
+              <p className="mt-0.5 font-medium">
+                {formatDateTime(event.registrationDeadline)}
+              </p>
             </div>
 
             <div>
@@ -1438,7 +1475,9 @@ function ViewEventModal({
                 <p className="font-bold uppercase tracking-wider text-red-800">
                   Rejection Reason
                 </p>
-                <p className="mt-0.5 text-red-700 font-medium">{event.rejectionReason}</p>
+                <p className="mt-0.5 text-red-700 font-medium">
+                  {event.rejectionReason}
+                </p>
               </div>
             )}
           </div>
@@ -1491,11 +1530,15 @@ function ConfirmationModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-300 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <div className="w-full max-w-md rounded-3xl border border-[var(--border)] bg-white p-6 sm:p-8 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${danger ? "bg-red-50 text-red-600" : "bg-[var(--primary)]/10 text-[var(--primary)]"}`}>
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${danger ? "bg-red-50 text-red-600" : "bg-[var(--primary)]/10 text-[var(--primary)]"}`}
+        >
           {danger ? <AlertCircle size={24} /> : <CheckCircle2 size={24} />}
         </div>
 
-        <h2 className="mt-5 text-xl font-extrabold tracking-tight text-[var(--secondary)]">{title}</h2>
+        <h2 className="mt-5 text-xl font-extrabold tracking-tight text-[var(--secondary)]">
+          {title}
+        </h2>
 
         <p className="mt-2.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
           {description}
@@ -1559,7 +1602,9 @@ function RejectModal({
         <div className="border-b border-[var(--border)] px-6 py-5 sm:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-red-600">Event Approval</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-red-600">
+                Event Approval
+              </span>
               <h2 className="mt-2 text-xl font-extrabold tracking-tight text-[var(--secondary)]">
                 Reject Event
               </h2>
@@ -2359,7 +2404,7 @@ function RegistrationFormBuilder({
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="space-y-6 p-6 sm:p-8">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -2715,10 +2760,10 @@ export default function EventManagementPage() {
       shortDescription: event.shortDescription ?? "",
       description: event.description ?? "",
       venue: event.venue ?? "",
-      eventDate: toLocalDateTimeInput(event.eventDate),
-      startTime: toLocalDateTimeInput(event.startTime),
-      endTime: toLocalDateTimeInput(event.endTime),
-      registrationDeadline: toLocalDateTimeInput(event.registrationDeadline),
+      eventDate: toIndiaDateTimeInput(event.eventDate),
+      startTime: toIndiaDateTimeInput(event.startTime),
+      endTime: toIndiaDateTimeInput(event.endTime),
+      registrationDeadline: toIndiaDateTimeInput(event.registrationDeadline),
       capacity:
         event.capacity !== null && event.capacity !== undefined
           ? String(event.capacity)
@@ -2885,10 +2930,10 @@ export default function EventManagementPage() {
         shortDescription: form.shortDescription.trim() || undefined,
         description: form.description.trim(),
         venue: form.venue.trim() || undefined,
-        eventDate: form.eventDate,
-        startTime: form.startTime,
-        endTime: form.endTime || undefined,
-        registrationDeadline: form.registrationDeadline || undefined,
+        eventDate: indiaDateTimeToUTC(form.eventDate)!,
+        startTime: indiaDateTimeToUTC(form.startTime),
+        endTime: indiaDateTimeToUTC(form.endTime),
+        registrationDeadline: indiaDateTimeToUTC(form.registrationDeadline),
         capacity: form.capacity ? Number(form.capacity) : undefined,
         access: form.access,
         isFeatured: form.isFeatured,
@@ -3187,17 +3232,33 @@ export default function EventManagementPage() {
         )}
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-          <StatCard label="Total Events" value={stats.total} icon={CalendarDays} />
+          <StatCard
+            label="Total Events"
+            value={stats.total}
+            icon={CalendarDays}
+          />
           <StatCard label="Draft" value={stats.draft} icon={FileText} />
-          <StatCard label="Pending Approval" value={stats.pending} icon={UserCheck} />
+          <StatCard
+            label="Pending Approval"
+            value={stats.pending}
+            icon={UserCheck}
+          />
           <StatCard label="Published" value={stats.published} icon={Globe2} />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-10">
           <StatCard label="Approved" value={stats.approved} icon={Check} />
           <StatCard label="Rejected" value={stats.rejected} icon={XCircle} />
-          <StatCard label="Cancelled" value={stats.cancelled} icon={AlertCircle} />
-          <StatCard label="Completed" value={stats.completed} icon={CheckCircle2} />
+          <StatCard
+            label="Cancelled"
+            value={stats.cancelled}
+            icon={AlertCircle}
+          />
+          <StatCard
+            label="Completed"
+            value={stats.completed}
+            icon={CheckCircle2}
+          />
         </div>
 
         <section className="rounded-3xl border border-[var(--border)] bg-white shadow-sm overflow-hidden mb-12">
@@ -3303,7 +3364,10 @@ export default function EventManagementPage() {
                           />
                         ) : (
                           <div className="flex h-full min-h-[130px] items-center justify-center">
-                            <CalendarDays size={30} className="text-[var(--muted-foreground)]" />
+                            <CalendarDays
+                              size={30}
+                              className="text-[var(--muted-foreground)]"
+                            />
                           </div>
                         )}
 
@@ -3371,12 +3435,18 @@ export default function EventManagementPage() {
 
                         <div className="mt-4 grid gap-3 text-xs font-medium text-[var(--muted-foreground)] sm:grid-cols-2 xl:grid-cols-4 border-t border-[var(--border)] pt-4">
                           <div className="flex items-center gap-2">
-                            <CalendarDays size={14} className="text-[var(--primary)] shrink-0" />
+                            <CalendarDays
+                              size={14}
+                              className="text-[var(--primary)] shrink-0"
+                            />
                             <span>{formatDate(event.eventDate)}</span>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Clock3 size={14} className="text-[var(--primary)] shrink-0" />
+                            <Clock3
+                              size={14}
+                              className="text-[var(--primary)] shrink-0"
+                            />
                             <span>
                               {formatTime(event.startTime)}
                               {event.endTime
@@ -3386,14 +3456,20 @@ export default function EventManagementPage() {
                           </div>
 
                           <div className="flex min-w-0 items-center gap-2">
-                            <MapPin size={14} className="text-[var(--primary)] shrink-0" />
+                            <MapPin
+                              size={14}
+                              className="text-[var(--primary)] shrink-0"
+                            />
                             <span className="truncate">
                               {event.venue || "Venue to be announced"}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Users size={14} className="text-[var(--primary)] shrink-0" />
+                            <Users
+                              size={14}
+                              className="text-[var(--primary)] shrink-0"
+                            />
                             <span>
                               {event._count?.registrations ?? 0}
                               {event.capacity
@@ -3405,13 +3481,24 @@ export default function EventManagementPage() {
 
                         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--muted-foreground)]">
                           <span>
-                            Slug: <strong className="text-[var(--secondary)] font-semibold">{event.slug}</strong>
+                            Slug:{" "}
+                            <strong className="text-[var(--secondary)] font-semibold">
+                              {event.slug}
+                            </strong>
                           </span>
                           <span>
-                            Registration: <strong className="text-[var(--secondary)] font-semibold">{formatTemplate(event.registrationTemplate)}</strong>
+                            Registration:{" "}
+                            <strong className="text-[var(--secondary)] font-semibold">
+                              {formatTemplate(event.registrationTemplate)}
+                            </strong>
                           </span>
                           <span>
-                            Participation: <strong className="text-[var(--secondary)] font-semibold">{event.participationType === "TEAM" ? "Team" : "Individual"}</strong>
+                            Participation:{" "}
+                            <strong className="text-[var(--secondary)] font-semibold">
+                              {event.participationType === "TEAM"
+                                ? "Team"
+                                : "Individual"}
+                            </strong>
                           </span>
                           {event.enableQrAttendance && (
                             <span className="font-bold text-emerald-700">
