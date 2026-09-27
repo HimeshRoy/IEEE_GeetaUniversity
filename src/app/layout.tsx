@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ConsoleProtection from "@/components/security/ConsoleProtection";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://ieegeetauniversity.vercel.app";
@@ -129,7 +130,10 @@ export default function RootLayout({
         />
       </head>
 
-      <body>{children}</body>
+      <body>
+         <ConsoleProtection />
+         {children}
+      </body>
     </html>
   );
 }
