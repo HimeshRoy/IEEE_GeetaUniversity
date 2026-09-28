@@ -78,6 +78,7 @@ function formatDate(date: string) {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "Asia/Kolkata",
   }).format(new Date(date));
 }
 
@@ -192,6 +193,9 @@ export default async function EventDetailPage({
 
   const startTime = formatTime(event.startTime);
   const endTime = formatTime(event.endTime);
+  const registrationEnded =
+    event.registrationDeadline !== null &&
+    new Date() >= new Date(event.registrationDeadline);
 
   return (
     <main className="min-h-screen bg-[var(--background)] pb-24">
@@ -357,7 +361,7 @@ export default async function EventDetailPage({
                             Registration Deadline
                           </p>
                           <p className="mt-1 text-base font-semibold text-[var(--secondary)]">
-                            {formatDate(event.registrationDeadline)}
+                            {formatDate(event.registrationDeadline)}{" - "}{formatTime(event.registrationDeadline)}
                           </p>
                         </div>
                       </li>
@@ -374,6 +378,10 @@ export default async function EventDetailPage({
                     <div className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-6 py-4 text-sm font-bold text-red-600">
                       <XCircle size={19} />
                       Event Cancelled
+                    </div>
+                  ) : registrationEnded ? (
+                    <div className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-6 py-4 text-sm font-bold text-slate-500">
+                      Registration Ended
                     </div>
                   ) : event.registrationType === "EXTERNAL" &&
                     event.externalRegistrationUrl ? (
