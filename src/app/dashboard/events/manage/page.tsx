@@ -67,6 +67,8 @@ type EventItem = {
   registrationDeadline: string | null;
   capacity: number | null;
   access: EventAccess;
+  registrationType: "INTERNAL" | "EXTERNAL";
+  externalRegistrationUrl: string | null;
   status: EventStatus;
   approvalStatus: string;
   rejectionReason: string | null;
@@ -190,6 +192,8 @@ type EventForm = {
   registrationDeadline: string;
   capacity: string;
   access: EventAccess;
+  registrationType: "INTERNAL" | "EXTERNAL";
+  externalRegistrationUrl: string;
   isFeatured: boolean;
   registrationTemplate: EventRegistrationTemplate;
   participationType: EventParticipationType;
@@ -244,6 +248,8 @@ const EMPTY_FORM: EventForm = {
   registrationDeadline: "",
   capacity: "",
   access: "PUBLIC",
+  registrationType: "INTERNAL",
+  externalRegistrationUrl: "",
   isFeatured: false,
   registrationTemplate: "UNIVERSITY_INDIVIDUAL",
   participationType: "INDIVIDUAL",
@@ -698,17 +704,19 @@ function EventActions({
         </button>
       )}
 
-      {event.status !== "CANCELLED" && event.status !== "COMPLETED" && (
-        <button
-          type="button"
-          onClick={onForm}
-          disabled={busy}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
-        >
-          <FileText size={14} className="text-[var(--primary)]" />
-          Form
-        </button>
-      )}
+      {event.registrationType === "INTERNAL" &&
+        event.status !== "CANCELLED" &&
+        event.status !== "COMPLETED" && (
+          <button
+            type="button"
+            onClick={onForm}
+            disabled={busy}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--secondary)] shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
+          >
+            <FileText size={14} className="text-[var(--primary)]" />
+            Form
+          </button>
+        )}
 
       {(event.status === "DRAFT" || event.status === "REJECTED") && (
         <>
@@ -1107,131 +1115,213 @@ function EventFormModal({
             </div>
 
             <div className="md:col-span-2">
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-6 space-y-4">
-                <div>
-                  <h3 className="text-base font-bold text-[var(--secondary)]">
-                    Registration Configuration
-                  </h3>
-                  <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-                    Configure how participants will register for this event.
-                  </p>
-                </div>
+  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/50 p-6 space-y-4">
+    <div>
+      <h3 className="text-base font-bold text-[var(--secondary)]">
+        Registration Configuration
+      </h3>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-                      Registration Template
-                    </label>
-                    <select
-                      value={form.registrationTemplate}
-                      onChange={(eventInput) =>
-                        updateField(
-                          "registrationTemplate",
-                          eventInput.target.value as EventRegistrationTemplate,
-                        )
-                      }
-                      className={inputClasses}
-                    >
-                      <option value="UNIVERSITY_INDIVIDUAL">
-                        University — Individual
-                      </option>
-                      <option value="UNIVERSITY_TEAM">University — Team</option>
-                      <option value="INTER_UNIVERSITY_INDIVIDUAL">
-                        Inter-University — Individual
-                      </option>
-                      <option value="INTER_UNIVERSITY_TEAM">
-                        Inter-University — Team
-                      </option>
-                      <option value="PUBLIC_INDIVIDUAL">
-                        Public — Individual
-                      </option>
-                      <option value="PUBLIC_TEAM">Public — Team</option>
-                      <option value="CUSTOM">Custom</option>
-                    </select>
-                  </div>
+      <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+        Configure how participants will register for this event.
+      </p>
+    </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-                      Participation Type
-                    </label>
-                    <select
-                      value={form.participationType}
-                      onChange={(eventInput) =>
-                        updateField(
-                          "participationType",
-                          eventInput.target.value as EventParticipationType,
-                        )
-                      }
-                      className={inputClasses}
-                    >
-                      <option value="INDIVIDUAL">Individual</option>
-                      <option value="TEAM">Team</option>
-                    </select>
-                  </div>
+    {/* Registration Type */}
+    <div className="space-y-2">
+      <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+        Registration Form Type
+      </label>
 
-                  {form.participationType === "TEAM" && (
-                    <>
-                      <div className="space-y-2">
-                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-                          Minimum Team Size
-                        </label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={form.minTeamSize}
-                          onChange={(eventInput) =>
-                            updateField("minTeamSize", eventInput.target.value)
-                          }
-                          placeholder="Minimum members"
-                          className={inputClasses}
-                        />
-                      </div>
+      <select
+        value={form.registrationType}
+        onChange={(eventInput) =>
+          updateField(
+            "registrationType",
+            eventInput.target.value as "INTERNAL" | "EXTERNAL",
+          )
+        }
+        className={inputClasses}
+      >
+        <option value="INTERNAL">Internal Registration Form</option>
+        <option value="EXTERNAL">External Registration Form</option>
+      </select>
+    </div>
 
-                      <div className="space-y-2">
-                        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-                          Maximum Team Size
-                        </label>
-                        <input
-                          type="number"
-                          min="2"
-                          value={form.maxTeamSize}
-                          onChange={(eventInput) =>
-                            updateField("maxTeamSize", eventInput.target.value)
-                          }
-                          placeholder="Maximum members"
-                          className={inputClasses}
-                        />
-                      </div>
-                    </>
-                  )}
+    {/* External Registration */}
+    {form.registrationType === "EXTERNAL" && (
+      <div className="space-y-2">
+        <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+          External Registration URL
+        </label>
 
-                  <div className="md:col-span-2 pt-2">
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-colors hover:bg-slate-50">
-                      <input
-                        type="checkbox"
-                        checked={form.enableQrAttendance}
-                        onChange={(eventInput) =>
-                          updateField(
-                            "enableQrAttendance",
-                            eventInput.target.checked,
-                          )
-                        }
-                        className="h-4.5 w-4.5 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
-                      />
-                      <div>
-                        <p className="text-sm font-bold text-[var(--secondary)]">
-                          Enable QR Attendance
-                        </p>
-                        <p className="text-xs text-[var(--muted-foreground)]">
-                          Generate registration QR codes and use them for event
-                          attendance.
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
+        <input
+          type="url"
+          value={form.externalRegistrationUrl}
+          onChange={(eventInput) =>
+            updateField(
+              "externalRegistrationUrl",
+              eventInput.target.value,
+            )
+          }
+          placeholder="https://example.com/register"
+          className={inputClasses}
+        />
+
+        <p className="text-xs text-[var(--muted-foreground)]">
+          Participants will be redirected to this external registration
+          page.
+        </p>
+      </div>
+    )}
+
+    {/* Internal Registration Configuration */}
+    {form.registrationType === "INTERNAL" && (
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Registration Template */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+            Registration Template
+          </label>
+
+          <select
+            value={form.registrationTemplate}
+            onChange={(eventInput) =>
+              updateField(
+                "registrationTemplate",
+                eventInput.target.value as EventRegistrationTemplate,
+              )
+            }
+            className={inputClasses}
+          >
+            <option value="UNIVERSITY_INDIVIDUAL">
+              University — Individual
+            </option>
+
+            <option value="UNIVERSITY_TEAM">
+              University — Team
+            </option>
+
+            <option value="INTER_UNIVERSITY_INDIVIDUAL">
+              Inter-University — Individual
+            </option>
+
+            <option value="INTER_UNIVERSITY_TEAM">
+              Inter-University — Team
+            </option>
+
+            <option value="PUBLIC_INDIVIDUAL">
+              Public — Individual
+            </option>
+
+            <option value="PUBLIC_TEAM">
+              Public — Team
+            </option>
+
+            <option value="CUSTOM">
+              Custom
+            </option>
+          </select>
+        </div>
+
+        {/* Participation Type */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+            Participation Type
+          </label>
+
+          <select
+            value={form.participationType}
+            onChange={(eventInput) =>
+              updateField(
+                "participationType",
+                eventInput.target.value as EventParticipationType,
+              )
+            }
+            className={inputClasses}
+          >
+            <option value="INDIVIDUAL">Individual</option>
+            <option value="TEAM">Team</option>
+          </select>
+        </div>
+
+        {/* Team Configuration */}
+        {form.participationType === "TEAM" && (
+          <>
+            {/* Minimum Team Size */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                Minimum Team Size
+              </label>
+
+              <input
+                type="number"
+                min="1"
+                value={form.minTeamSize}
+                onChange={(eventInput) =>
+                  updateField(
+                    "minTeamSize",
+                    eventInput.target.value,
+                  )
+                }
+                placeholder="Minimum members"
+                className={inputClasses}
+              />
             </div>
+
+            {/* Maximum Team Size */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
+                Maximum Team Size
+              </label>
+
+              <input
+                type="number"
+                min="2"
+                value={form.maxTeamSize}
+                onChange={(eventInput) =>
+                  updateField(
+                    "maxTeamSize",
+                    eventInput.target.value,
+                  )
+                }
+                placeholder="Maximum members"
+                className={inputClasses}
+              />
+            </div>
+          </>
+        )}
+
+        {/* QR Attendance */}
+        <div className="md:col-span-2 pt-2">
+          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-colors hover:bg-slate-50">
+            <input
+              type="checkbox"
+              checked={form.enableQrAttendance}
+              onChange={(eventInput) =>
+                updateField(
+                  "enableQrAttendance",
+                  eventInput.target.checked,
+                )
+              }
+              className="h-4.5 w-4.5 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
+            />
+
+            <div>
+              <p className="text-sm font-bold text-[var(--secondary)]">
+                Enable QR Attendance
+              </p>
+
+              <p className="text-xs text-[var(--muted-foreground)]">
+                Generate registration QR codes and use them for event
+                attendance.
+              </p>
+            </div>
+          </label>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
 
             <div className="md:col-span-2">
               <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 shadow-sm transition-colors hover:bg-slate-50">
@@ -2695,6 +2785,24 @@ export default function EventManagementPage() {
     [events],
   );
 
+  const getEventStartTimestamp = (event: EventItem) => {
+    const date = new Date(event.eventDate);
+
+    if (Number.isNaN(date.getTime())) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    if (event.startTime) {
+      const [hours, minutes] = event.startTime.split(":").map(Number);
+
+      if (Number.isFinite(hours) && Number.isFinite(minutes)) {
+        date.setHours(hours, minutes, 0, 0);
+      }
+    }
+
+    return date.getTime();
+  };
+
   const filteredEvents = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
@@ -2720,11 +2828,47 @@ export default function EventManagementPage() {
           event.description ?? "",
         ].some((value) => value.toLowerCase().includes(normalizedSearch));
       })
-      .sort(
-        (first, second) =>
-          new Date(first.eventDate).getTime() -
-          new Date(second.eventDate).getTime(),
-      );
+      .sort((first, second) => {
+        const firstCompleted = first.status === "COMPLETED";
+        const secondCompleted = second.status === "COMPLETED";
+
+        if (firstCompleted !== secondCompleted) {
+          return firstCompleted ? 1 : -1;
+        }
+
+        const firstDate = new Date(first.eventDate).getTime();
+        const secondDate = new Date(second.eventDate).getTime();
+
+        if (!firstCompleted) {
+          if (firstDate !== secondDate) {
+            return firstDate - secondDate;
+          }
+
+          const firstStart = first.startTime
+            ? new Date(first.startTime).getTime()
+            : Number.MAX_SAFE_INTEGER;
+
+          const secondStart = second.startTime
+            ? new Date(second.startTime).getTime()
+            : Number.MAX_SAFE_INTEGER;
+
+          return firstStart - secondStart;
+        }
+
+        if (firstDate !== secondDate) {
+          return secondDate - firstDate;
+        }
+
+        const firstStart = first.startTime
+          ? new Date(first.startTime).getTime()
+          : 0;
+
+        const secondStart = second.startTime
+          ? new Date(second.startTime).getTime()
+          : 0;
+
+        return secondStart - firstStart;
+      });
   }, [events, search, statusFilter, accessFilter]);
 
   function resetFormState() {
@@ -2769,6 +2913,8 @@ export default function EventManagementPage() {
           ? String(event.capacity)
           : "",
       access: event.access,
+      registrationType: event.registrationType,
+      externalRegistrationUrl: event.externalRegistrationUrl ?? "",
       isFeatured: event.isFeatured,
       registrationTemplate:
         event.registrationTemplate ?? "UNIVERSITY_INDIVIDUAL",
@@ -2909,6 +3055,14 @@ export default function EventManagementPage() {
     }
 
     if (
+      form.registrationType === "EXTERNAL" &&
+      !form.externalRegistrationUrl.trim()
+    ) {
+      setFormError("External registration URL is required.");
+      return;
+    }
+
+    if (
       form.participationType === "TEAM" &&
       form.minTeamSize &&
       form.maxTeamSize &&
@@ -2936,6 +3090,11 @@ export default function EventManagementPage() {
         registrationDeadline: indiaDateTimeToUTC(form.registrationDeadline),
         capacity: form.capacity ? Number(form.capacity) : undefined,
         access: form.access,
+        registrationType: form.registrationType,
+        externalRegistrationUrl:
+          form.registrationType === "EXTERNAL"
+            ? form.externalRegistrationUrl.trim() || undefined
+            : undefined,
         isFeatured: form.isFeatured,
         registrationTemplate: form.registrationTemplate,
         participationType: form.participationType,
@@ -3043,59 +3202,9 @@ export default function EventManagementPage() {
   async function handlePublish(event: EventItem) {
     setSelectedEvent(event);
 
-    try {
-      setLoadingAction("publish");
-      setActionError("");
-
-      let formResponse;
-      try {
-        formResponse = await api.get(`/event-forms/event/${event.id}`);
-      } catch (error) {
-        const status =
-          typeof error === "object" && error !== null && "response" in error
-            ? (error as { response?: { status?: number } }).response?.status
-            : undefined;
-        if (status !== 404) {
-          throw error;
-        }
-      }
-
-      let registrationForm = formResponse?.data?.data;
-
-      if (!registrationForm) {
-        const createdResponse = await api.post(
-          `/event-forms/event/${event.id}`,
-          {
-            title: `${event.title} Registration`,
-            template: event.registrationTemplate || undefined,
-          },
-        );
-        registrationForm = createdResponse?.data?.data;
-      }
-
-      if (!registrationForm?.id) {
-        throw new Error("Registration form could not be created.");
-      }
-
-      if (registrationForm.status !== "PUBLISHED") {
-        await api.patch(`/event-forms/${registrationForm.id}/publish`);
-      }
-
-      const response = await api.patch(`/events/${event.id}/publish`);
-      const updated = getResponseData<EventItem>(response);
-
-      if (updated) {
-        setEvents((current) =>
-          current.map((item) => (item.id === updated.id ? updated : item)),
-        );
-      } else {
-        await loadEvents();
-      }
-    } catch (error) {
-      setActionError(getErrorMessage(error, "Unable to publish the event."));
-    } finally {
-      setLoadingAction(null);
-    }
+    await performAction("publish", () =>
+      api.patch(`/events/${event.id}/publish`),
+    );
   }
 
   async function handleComplete(event: EventItem) {

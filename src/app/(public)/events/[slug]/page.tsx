@@ -27,6 +27,8 @@ interface Event {
   capacity: number | null;
   access: "PUBLIC" | "UNIVERSITY" | "MEMBERS_ONLY" | "INVITE_ONLY";
   status: string;
+  registrationType: "INTERNAL" | "EXTERNAL";
+  externalRegistrationUrl: string | null;
   isFeatured: boolean;
   createdBy: {
     id: string;
@@ -373,6 +375,20 @@ export default async function EventDetailPage({
                       <XCircle size={19} />
                       Event Cancelled
                     </div>
+                  ) : event.registrationType === "EXTERNAL" &&
+                    event.externalRegistrationUrl ? (
+                    <a
+                      href={event.externalRegistrationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20"
+                    >
+                      Register for Event
+                      <ArrowRight
+                        size={18}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </a>
                   ) : (
                     <Link
                       href={`/events/${event.slug}/register`}
