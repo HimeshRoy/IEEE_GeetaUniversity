@@ -49,23 +49,23 @@ export default function Navbar() {
 
             <div className="hidden h-9 w-px bg-[var(--border)] sm:block" />
 
-            <Image
-              src="/gulogo.png"
-              alt="Geeta University"
-              width={44}
-              height={44}
-              className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10"
-              priority
-            />
+            <div className="flex flex-row items-center">
+              <Image
+                src="/gulogo.png"
+                alt="Geeta University"
+                width={44}
+                height={44}
+                className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10"
+                priority
+              />
 
-            <div className="hidden min-w-0 md:block">
-              <p className="truncate text-sm font-bold leading-tight text-gray-950">
-                IEEE STUDENT BRANCH
-              </p>
+              <div className="hidden min-w-0 md:block">
+                <p className="truncate text-sm font-bold leading-tight text-blue-950">
+                  IEEE STUDENT BRANCH
+                </p>
 
-              <p className="text-sm text-[var(--muted)]">
-                GEETA UNIVERSITY
-              </p>
+                <p className="text-sm text-blue-950">GEETA UNIVERSITY</p>
+              </div>
             </div>
           </Link>
 
@@ -104,9 +104,7 @@ export default function Navbar() {
             type="button"
             className="ml-auto inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--secondary)] transition-colors hover:bg-[var(--surface)] lg:hidden"
             aria-label={
-              isOpen
-                ? "Close navigation menu"
-                : "Open navigation menu"
+              isOpen ? "Close navigation menu" : "Open navigation menu"
             }
             aria-expanded={isOpen}
             onClick={() => setIsOpen((current) => !current)}
@@ -121,10 +119,7 @@ export default function Navbar() {
 
         {isOpen && (
           <div className="animate-in fade-in slide-in-from-top-2 border-t border-[var(--border)] py-3 duration-200 ease-out lg:hidden">
-            <nav
-              className="flex flex-col"
-              aria-label="Mobile navigation"
-            >
+            <nav className="flex flex-col" aria-label="Mobile navigation">
               {navigation.map((item) => (
                 <Link
                   key={item.href}
