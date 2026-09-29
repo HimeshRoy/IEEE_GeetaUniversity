@@ -55,11 +55,11 @@ export default function Navbar() {
   return (
     <header className="relative z-50">
       <div className="fixed inset-x-0 top-0 z-[60] border-b border-[var(--border)] bg-white shadow-sm">
-        <div className="w-full px-2 sm:px-7 lg:px-10 xl:px-12">
+        <div className="w-full px-2 sm:px-9 lg:px-10 xl:px-12">
           <div className="flex h-[64px] items-center justify-between gap-2 sm:h-[88px] sm:gap-6">
             <Link
               href="/"
-              className="flex min-w-0 flex-1 items-center gap-1 transition-opacity hover:opacity-90 sm:gap-4"
+              className="flex min-w-0 flex-1 items-center gap-1.5 transition-opacity hover:opacity-90 sm:gap-4"
               aria-label="IEEE Geeta University Student Branch home"
               onClick={() => setIsOpen(false)}
             >
