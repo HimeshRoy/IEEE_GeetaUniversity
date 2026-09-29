@@ -72,20 +72,12 @@ export default function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3">
-              <div className="flex h-13 w-10 items-center justify-center rounded-md bg-white text-sm font-bold !text-white">
-                <Image src="/gu-logo-transparent.png"
+              <div className="flex items-center justify-center rounded-md ">
+                <Image src="/ieeeguwhitelogo.png"
                   alt="geeta university logo"
-                  width={30}
-                  height={30}
+                  width={200}
+                height={80}
                 />
-              </div>
-
-              <div className="flex flex-col justify-start">
-                <p className="text-lg font-bold !text-white">
-                  IEEE GEETA UNIVERSITY
-                </p>
-
-                <p className="mt-0.5 text-md text-slate-400">Student Branch</p>
               </div>
             </Link>
 
