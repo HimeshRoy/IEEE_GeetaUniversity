@@ -55,11 +55,11 @@ export default function Navbar() {
   return (
     <header className="relative z-50">
       <div className="fixed inset-x-0 top-0 z-[60] border-b border-[var(--border)] bg-white shadow-sm">
-        <div className="w-full px-3 sm:px-7 lg:px-10 xl:px-12">
-          <div className="flex h-[72px] items-center justify-between gap-3 sm:h-[88px] sm:gap-6">
+        <div className="w-full px-2 sm:px-7 lg:px-10 xl:px-12">
+          <div className="flex h-[64px] items-center justify-between gap-2 sm:h-[88px] sm:gap-6">
             <Link
               href="/"
-              className="flex min-w-0 items-center gap-2 transition-opacity hover:opacity-90 sm:gap-4"
+              className="flex min-w-0 flex-1 items-center gap-1 transition-opacity hover:opacity-90 sm:gap-4"
               aria-label="IEEE Geeta University Student Branch home"
               onClick={() => setIsOpen(false)}
             >
@@ -68,29 +68,29 @@ export default function Navbar() {
                 alt="IEEE"
                 width={90}
                 height={52}
-                className="h-[27px] w-auto shrink-0 object-contain sm:h-10"
+                className="h-[21px] w-auto max-w-[42px] shrink-0 object-contain sm:h-10 sm:max-w-none"
                 priority
               />
 
-              <div className="h-7 w-px bg-[var(--border)] sm:h-10" />
+              <div className="hidden h-10 w-px bg-[var(--border)] sm:block" />
 
               <Image
                 src="/ieee-delhi-section.png"
                 alt="IEEE Delhi Section"
                 width={125}
                 height={58}
-                className="h-[30px] w-auto shrink-0 object-contain sm:h-11"
+                className="h-[23px] w-auto max-w-[54px] shrink-0 object-contain sm:h-11 sm:max-w-none"
                 priority
               />
 
-              <div className="h-7 w-px bg-[var(--border)] sm:h-10" />
+              <div className="hidden h-10 w-px bg-[var(--border)] sm:block" />
 
               <Image
                 src="/ieeegusblogo.png"
                 alt="IEEE Geeta University Student Branch"
                 width={145}
                 height={58}
-                className="h-[32px] w-auto shrink-0 object-contain sm:h-12"
+                className="h-[24px] w-auto max-w-[62px] shrink-0 object-contain sm:h-12 sm:max-w-none"
                 priority
               />
 
@@ -101,7 +101,7 @@ export default function Navbar() {
                 alt="Geeta University"
                 width={145}
                 height={58}
-                className="hidden h-12 w-auto shrink-0 object-contain lg:block"
+                className="h-[24px] w-auto max-w-[62px] shrink-0 object-contain sm:h-12 sm:max-w-none"
                 priority
               />
             </Link>
@@ -124,7 +124,7 @@ export default function Navbar() {
 
             <button
               type="button"
-              className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--secondary)] transition-colors hover:bg-[var(--surface)] sm:h-10 sm:w-10 lg:hidden"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--secondary)] transition-colors hover:bg-[var(--surface)] sm:h-10 sm:w-10 lg:hidden"
               aria-label={
                 isOpen ? "Close navigation menu" : "Open navigation menu"
               }
@@ -225,7 +225,7 @@ export default function Navbar() {
 
       <div className="hidden h-[150px] lg:block" />
 
-      <div className="h-[72px] lg:hidden" />
+      <div className="h-[64px] lg:hidden" />
     </header>
   );
 }

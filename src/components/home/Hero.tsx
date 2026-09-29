@@ -45,7 +45,7 @@ export default function Hero() {
         <div className="grid min-h-[620px] items-center gap-12 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
           <div className="max-w-3xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-sm font-medium text-[var(--primary)]">
-              IEEE Geeta University Student Branch
+              IEEE Student Branch - Geeta University 
             </div>
 
             <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-[var(--secondary)] sm:text-5xl lg:text-6xl">
