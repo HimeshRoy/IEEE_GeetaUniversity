@@ -40,7 +40,7 @@ type LeadershipResponse = {
 };
 
 const POSITION_LABELS: Record<LeadershipPosition, string> = {
-  IEEE_COUNSELOR: "IEEE Student Branch Counselor",
+  IEEE_COUNSELOR: "IEEE Branch Counselor",
   FACULTY_ADVISOR: "Faculty Advisor",
   FACULTY_MEMBER: "Faculty Member",
   CHAIRMAN: "Chairman",
