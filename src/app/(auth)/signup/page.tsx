@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -194,31 +195,102 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-[var(--primary)]/[0.04] blur-3xl" />
-          <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-emerald-500/[0.04] blur-3xl" />
+      <main className="relative min-h-screen overflow-hidden bg-[var(--background)]">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-[var(--primary)]/[0.06] blur-3xl" />
+          <div className="absolute -bottom-48 -right-40 h-[520px] w-[520px] rounded-full bg-emerald-400/[0.05] blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--primary)]/[0.025] blur-3xl" />
         </div>
 
-        <div className="relative z-10 w-full max-w-md animate-in zoom-in-95 duration-700 ease-out">
-          <div className="rounded-3xl border border-[var(--border)] bg-white p-8 text-center shadow-xl shadow-black/[0.02] sm:p-12">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50">
-              <Check className="h-10 w-10 text-emerald-600" />
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+          <div className="w-full max-w-[1180px]">
+            <div className="overflow-hidden rounded-[30px] border border-[var(--border)] bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+              <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
+                <section className="relative hidden overflow-hidden bg-[var(--primary)] px-10 py-12 text-white lg:flex lg:flex-col xl:px-12 xl:py-14">
+                  <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
+                  <div className="absolute -bottom-32 -left-24 h-80 w-80 rounded-full border border-white/10" />
+
+                  <div className="relative">
+                    <Link
+                      href="/"
+                      className="inline-flex items-center transition-opacity hover:opacity-90"
+                    >
+                      <Image
+                        src="/ieeeguwhitelogo.png"
+                        alt="IEEE Geeta University Student Branch"
+                        width={200}
+                        height={75}
+                        className="h-auto w-auto max-w-[200px]"
+                        priority
+                      />
+                    </Link>
+
+                    <div className="mt-14 max-w-md">
+                      <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white/90">
+                        Student Branch
+                      </span>
+
+                      <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight xl:text-[48px]">
+                        Join the
+                        <br />
+                        community.
+                      </h1>
+
+                      <p className="mt-6 max-w-sm text-sm leading-7 text-white/75 xl:text-base">
+                        Create your IEEE Geeta University Student Branch account
+                        and become part of a student community focused on
+                        technology, innovation, leadership, and professional
+                        development.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="flex items-center px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 xl:px-16">
+                  <div className="mx-auto w-full max-w-[560px] text-center">
+                    <div className="mb-8 lg:hidden">
+                      <Link
+                        href="/"
+                        className="inline-flex items-center justify-center"
+                        aria-label="IEEE Geeta University Student Branch home"
+                      >
+                        <Image
+                          src="/ieeegusblogo.png"
+                          alt="IEEE Geeta University Student Branch"
+                          width={200}
+                          height={58}
+                          className="h-14 w-auto object-contain"
+                          priority
+                        />
+                      </Link>
+                    </div>
+
+                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50">
+                      <Check className="h-10 w-10 text-emerald-600" />
+                    </div>
+
+                    <h1 className="mt-7 text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl">
+                      Registration Successful
+                    </h1>
+
+                    <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[var(--muted-foreground)] sm:text-base">
+                      Your account has been created and your IEEE Geeta
+                      University Student Branch application is now pending
+                      review.
+                    </p>
+
+                    <div className="mt-8 flex items-center justify-center gap-3 text-sm font-semibold text-[var(--muted)]">
+                      <Loader2 className="h-4 w-4 animate-spin text-[var(--primary)]" />
+                      Redirecting to login...
+                    </div>
+                  </div>
+                </section>
+              </div>
             </div>
 
-            <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-3xl">
-              Registration Successful
-            </h1>
-
-            <p className="mt-4 text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
-              Your account has been created and your IEEE Geeta University
-              Student Branch application is now pending review.
+            <p className="mt-5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted-foreground)]">
+              IEEE Geeta University Student Branch
             </p>
-
-            <div className="mt-8 flex items-center justify-center gap-3 text-sm font-medium text-[var(--muted)]">
-              <Loader2 className="h-4 w-4 animate-spin text-[var(--primary)]" />
-              Redirecting to login...
-            </div>
           </div>
         </div>
       </main>
@@ -226,313 +298,384 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="relative flex min-h-screen justify-center overflow-hidden bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-[var(--primary)]/[0.04] blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-blue-500/[0.03] blur-3xl" />
+    <main className="relative min-h-screen overflow-hidden bg-[var(--background)]">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-[var(--primary)]/[0.06] blur-3xl" />
+        <div className="absolute -bottom-48 -right-40 h-[520px] w-[520px] rounded-full bg-blue-400/[0.05] blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--primary)]/[0.025] blur-3xl" />
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl">
-        <header className="mb-8 text-center sm:mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--primary)]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--primary)] transition-colors duration-300 hover:bg-[var(--primary)]/20"
-          >
-            IEEE Geeta University
-          </Link>
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="w-full max-w-[1180px]">
+          <div className="overflow-hidden rounded-[30px] border border-[var(--border)] bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+            <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
+              <section className="relative hidden overflow-hidden bg-[var(--primary)] px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between xl:px-12 xl:py-14">
+                <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
+                <div className="absolute -bottom-32 -left-24 h-80 w-80 rounded-full border border-white/10" />
 
-          <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[var(--secondary)] sm:text-4xl">
-            Join the Student Branch
-          </h1>
+                <div className="relative">
+                  <Link
+                    href="/"
+                    className="inline-flex items-center transition-opacity hover:opacity-90"
+                  >
+                    <Image
+                      src="/ieeeguwhitelogo.png"
+                      alt="IEEE Geeta University Student Branch"
+                      width={200}
+                      height={75}
+                      className="h-auto w-auto max-w-[200px]"
+                      priority
+                    />
+                  </Link>
 
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[var(--muted-foreground)] sm:text-base">
-            Register your account with your official IEEE Membership Number.
-          </p>
-        </header>
+                  <div className="mt-14 max-w-md">
+                    <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white/90">
+                      Student Branch
+                    </span>
 
-        <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-xl shadow-black/[0.02] animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out delay-150 fill-mode-both">
-          <div className="border-b border-[var(--border)] bg-[var(--surface)]/30 px-6 py-5 sm:px-10 sm:py-6">
-            <div className="flex items-center justify-center sm:justify-start">
-              <Step
-                number={1}
-                label="Account"
-                active={step === 1}
-                completed={step === 2}
-              />
+                    <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight xl:text-[48px]">
+                      Join the
+                      <br />
+                      community.
+                    </h1>
 
-              <div className="mx-4 h-px flex-1 bg-[var(--border)] sm:mx-6" />
-
-              <Step
-                number={2}
-                label="Academic details"
-                active={step === 2}
-                completed={false}
-              />
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="p-6 sm:p-10">
-              {error && (
-                <div
-                  role="alert"
-                  className="mb-8 rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm animate-in fade-in duration-300"
-                >
-                  <p className="text-sm font-semibold leading-relaxed text-red-800">
-                    {error}
-                  </p>
-                </div>
-              )}
-
-              {step === 1 ? (
-                <section className="animate-in fade-in slide-in-from-right-4 duration-500">
-                  <div className="mb-8">
-                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
-                      Step 1 of 2
+                    <p className="mt-6 max-w-sm text-sm leading-7 text-white/75 xl:text-base">
+                      Create your IEEE Geeta University Student Branch account
+                      and become part of a student community focused on
+                      technology, innovation, leadership, and professional
+                      development.
                     </p>
+                  </div>
+                </div>
+              </section>
 
-                    <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
-                      Create your account
-                    </h2>
+              <section className="px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-11 xl:px-16">
+                <div className="mx-auto w-full max-w-[560px]">
+                  <div className="mb-7 lg:hidden">
+                    <Link
+                      href="/"
+                      className="inline-flex items-center"
+                      aria-label="IEEE Geeta University Student Branch home"
+                    >
+                      <Image
+                        src="/ieeegusblogo.png"
+                        alt="IEEE Geeta University Student Branch"
+                        width={200}
+                        height={58}
+                        className="h-14 w-auto object-contain"
+                        priority
+                      />
+                    </Link>
+                  </div>
 
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">
-                      Enter your basic account details.
+                  <div className="mb-7">
+                    <div className="mb-4 inline-flex items-center rounded-full bg-[var(--primary)]/[0.08] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--primary)]">
+                      Student Registration
+                    </div>
+
+                    <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-[var(--secondary)] sm:text-[38px]">
+                      Join the Student Branch
+                    </h1>
+
+                    <p className="mt-2.5 max-w-lg text-sm leading-6 text-[var(--muted-foreground)] sm:text-base">
+                      Register your account with your official IEEE Membership
+                      Number.
                     </p>
                   </div>
 
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <InputField
-                      label="First Name"
-                      name="firstName"
-                      value={form.firstName}
-                      onChange={updateField}
-                      placeholder="Enter your first name"
-                      required
-                      autoComplete="given-name"
-                    />
+                  <div className="mb-6 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]/30">
+                    <div className="flex items-center px-4 py-3.5 sm:px-5">
+                      <Step
+                        number={1}
+                        label="Account"
+                        active={step === 1}
+                        completed={step === 2}
+                      />
 
-                    <InputField
-                      label="Last Name"
-                      name="lastName"
-                      value={form.lastName}
-                      onChange={updateField}
-                      placeholder="Enter your last name"
-                      autoComplete="family-name"
-                    />
+                      <div className="mx-3 h-px flex-1 bg-[var(--border)] sm:mx-5" />
 
-                    <InputField
-                      label="Email Address"
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={updateField}
-                      placeholder="you@example.com"
-                      required
-                      autoComplete="email"
-                    />
+                      <Step
+                        number={2}
+                        label="Academic details"
+                        active={step === 2}
+                        completed={false}
+                      />
+                    </div>
+                  </div>
 
-                    <InputField
-                      label="Phone Number"
-                      name="phone"
-                      type="tel"
-                      value={form.phone}
-                      onChange={updateField}
-                      placeholder="Enter your phone number"
-                      required
-                      autoComplete="tel"
-                    />
+                  {error && (
+                    <div
+                      role="alert"
+                      aria-live="polite"
+                      className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3"
+                    >
+                      <p className="text-sm font-semibold leading-5 text-red-800">
+                        {error}
+                      </p>
+                    </div>
+                  )}
 
-                    <div className="space-y-2 sm:col-span-2">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-bold text-[var(--secondary)]"
-                      >
-                        Password{" "}
-                        <span className="ml-1 text-red-500">*</span>
-                      </label>
+                  <form onSubmit={handleSubmit} noValidate>
+                    {step === 1 ? (
+                      <section className="animate-in fade-in slide-in-from-right-4 duration-500">
+                        <div className="mb-6">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--primary)]">
+                            Step 1 of 2
+                          </p>
 
-                      <div className="group relative">
-                        <input
-                          id="password"
-                          name="password"
-                          type={showPassword ? "text" : "password"}
-                          value={form.password}
-                          onChange={updateField}
-                          placeholder="Minimum 8 characters"
-                          minLength={8}
-                          maxLength={128}
-                          autoComplete="new-password"
-                          required
-                          className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 py-3.5 pl-4 pr-12 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
-                        />
+                          <h2 className="mt-1.5 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
+                            Create your account
+                          </h2>
+
+                          <p className="mt-1.5 text-sm leading-5 text-[var(--muted-foreground)]">
+                            Enter your basic account details.
+                          </p>
+                        </div>
+
+                        <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+                          <InputField
+                            label="First Name"
+                            name="firstName"
+                            value={form.firstName}
+                            onChange={updateField}
+                            placeholder="Enter your first name"
+                            required
+                            autoComplete="given-name"
+                          />
+
+                          <InputField
+                            label="Last Name"
+                            name="lastName"
+                            value={form.lastName}
+                            onChange={updateField}
+                            placeholder="Enter your last name"
+                            autoComplete="family-name"
+                          />
+
+                          <InputField
+                            label="Email Address"
+                            name="email"
+                            type="email"
+                            value={form.email}
+                            onChange={updateField}
+                            placeholder="you@example.com"
+                            required
+                            autoComplete="email"
+                          />
+
+                          <InputField
+                            label="Phone Number"
+                            name="phone"
+                            type="tel"
+                            value={form.phone}
+                            onChange={updateField}
+                            placeholder="Enter your phone number"
+                            required
+                            autoComplete="tel"
+                          />
+
+                          <div className="space-y-1.5 sm:col-span-2">
+                            <label
+                              htmlFor="password"
+                              className="block text-sm font-bold text-[var(--secondary)]"
+                            >
+                              Password
+                              <span className="ml-1 text-red-500">*</span>
+                            </label>
+
+                            <div className="group relative">
+                              <input
+                                id="password"
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                value={form.password}
+                                onChange={updateField}
+                                placeholder="Minimum 8 characters"
+                                minLength={8}
+                                maxLength={128}
+                                autoComplete="new-password"
+                                required
+                                className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/40 py-3 pl-4 pr-12 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
+                              />
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setShowPassword((current) => !current)
+                                }
+                                aria-label={
+                                  showPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                                }
+                                className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--surface)] hover:text-[var(--secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                              >
+                                {showPassword ? (
+                                  <EyeOff className="h-4.5 w-4.5" />
+                                ) : (
+                                  <Eye className="h-4.5 w-4.5" />
+                                )}
+                              </button>
+                            </div>
+
+                            <p className="text-[11px] font-medium text-[var(--muted-foreground)]">
+                              Use at least 8 characters.
+                            </p>
+                          </div>
+                        </div>
 
                         <button
-                          type="button"
-                          onClick={() =>
-                            setShowPassword((current) => !current)
-                          }
-                          aria-label={
-                            showPassword ? "Hide password" : "Show password"
-                          }
-                          className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--border)] hover:text-[var(--secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                          type="submit"
+                          className="group mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98]"
                         >
-                          {showPassword ? (
-                            <EyeOff className="h-5 w-5" />
-                          ) : (
-                            <Eye className="h-5 w-5" />
-                          )}
+                          <span>Continue</span>
+                          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                         </button>
-                      </div>
+                      </section>
+                    ) : (
+                      <section className="animate-in fade-in slide-in-from-right-4 duration-500">
+                        <div className="mb-6">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--primary)]">
+                            Step 2 of 2
+                          </p>
 
-                      <p className="mt-2 text-xs font-medium text-[var(--muted-foreground)]">
-                        Use at least 8 characters.
-                      </p>
-                    </div>
-                  </div>
+                          <h2 className="mt-1.5 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
+                            Academic details
+                          </h2>
 
-                  <button
-                    type="submit"
-                    className="group mt-10 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98]"
-                  >
-                    <span>Continue</span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
-                </section>
-              ) : (
-                <section className="animate-in fade-in slide-in-from-right-4 duration-500">
-                  <div className="mb-8">
-                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
-                      Step 2 of 2
+                          <p className="mt-1.5 text-sm leading-5 text-[var(--muted-foreground)]">
+                            Complete your university and IEEE information.
+                          </p>
+                        </div>
+
+                        <div className="mb-6 rounded-2xl border border-[var(--primary)]/20 bg-[var(--primary)]/[0.04] p-5">
+                          <div className="mb-4">
+                            <h3 className="text-base font-bold text-[var(--secondary)]">
+                              IEEE Membership
+                            </h3>
+
+                            <p className="mt-1 text-xs leading-5 text-[var(--muted-foreground)]">
+                              Your official IEEE Membership Number is required
+                              to join the student branch.
+                            </p>
+                          </div>
+
+                          <InputField
+                            label="IEEE Membership Number"
+                            name="ieeeMembershipNumber"
+                            value={form.ieeeMembershipNumber}
+                            onChange={updateField}
+                            placeholder="Enter your IEEE Membership Number"
+                            required
+                            autoComplete="off"
+                          />
+                        </div>
+
+                        <div>
+                          <h3 className="mb-4 text-base font-bold text-[var(--secondary)]">
+                            University Information
+                          </h3>
+
+                          <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+                            <InputField
+                              label="Department"
+                              name="department"
+                              value={form.department}
+                              onChange={updateField}
+                              placeholder="e.g. Computer Science"
+                              required
+                            />
+
+                            <InputField
+                              label="Course"
+                              name="course"
+                              value={form.course}
+                              onChange={updateField}
+                              placeholder="e.g. B.Tech CSE"
+                              required
+                            />
+
+                            <InputField
+                              label="Year"
+                              name="year"
+                              value={form.year}
+                              onChange={updateField}
+                              placeholder="e.g. 2nd Year"
+                              required
+                            />
+
+                            <InputField
+                              label="Roll Number"
+                              name="rollNumber"
+                              value={form.rollNumber}
+                              onChange={updateField}
+                              placeholder="Enter your roll number"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                          <button
+                            type="button"
+                            onClick={handleBack}
+                            disabled={isLoading}
+                            className="group flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-6 py-3.5 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                          >
+                            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                            <span>Back</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => void createAccount()}
+                            disabled={isLoading}
+                            className="group flex-[2] rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                          >
+                            <span className="flex items-center justify-center gap-2">
+                              {isLoading ? (
+                                <>
+                                  <Loader2 className="h-5 w-5 animate-spin !text-white" />
+                                  <span>Creating Account...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span>Create Account</span>
+                                  <Check className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                                </>
+                              )}
+                            </span>
+                          </button>
+                        </div>
+                      </section>
+                    )}
+                  </form>
+
+                  <div className="mt-7 border-t border-[var(--border)] pt-5 text-center">
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">
+                      Already registered?{" "}
+                      <Link
+                        href="/login"
+                        className="font-bold text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-dark)] hover:underline hover:underline-offset-4"
+                      >
+                        Login
+                      </Link>
                     </p>
-
-                    <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--secondary)]">
-                      Academic details
-                    </h2>
-
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">
-                      Complete your university and IEEE information.
-                    </p>
                   </div>
 
-                  <div className="mb-8 rounded-2xl border border-[var(--primary)]/20 bg-[var(--primary)]/5 p-5 sm:p-6 shadow-sm">
-                    <div className="mb-5">
-                      <h3 className="text-base font-bold text-[var(--secondary)]">
-                        IEEE Membership
-                      </h3>
-
-                      <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
-                        Your official IEEE Membership Number is required to
-                        join the student branch.
-                      </p>
-                    </div>
-
-                    <InputField
-                      label="IEEE Membership Number"
-                      name="ieeeMembershipNumber"
-                      value={form.ieeeMembershipNumber}
-                      onChange={updateField}
-                      placeholder="Enter your IEEE Membership Number"
-                      required
-                      autoComplete="off"
-                    />
-                  </div>
-
-                  <div>
-                    <h3 className="mb-6 text-base font-bold text-[var(--secondary)]">
-                      University Information
-                    </h3>
-
-                    <div className="grid gap-6 sm:grid-cols-2">
-                      <InputField
-                        label="Department"
-                        name="department"
-                        value={form.department}
-                        onChange={updateField}
-                        placeholder="e.g. Computer Science"
-                        required
-                      />
-
-                      <InputField
-                        label="Course"
-                        name="course"
-                        value={form.course}
-                        onChange={updateField}
-                        placeholder="e.g. B.Tech CSE"
-                        required
-                      />
-
-                      <InputField
-                        label="Year"
-                        name="year"
-                        value={form.year}
-                        onChange={updateField}
-                        placeholder="e.g. 2nd Year"
-                        required
-                      />
-
-                      <InputField
-                        label="Roll Number"
-                        name="rollNumber"
-                        value={form.rollNumber}
-                        onChange={updateField}
-                        placeholder="Enter your roll number"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                    <button
-                      type="button"
-                      onClick={handleBack}
-                      disabled={isLoading}
-                      className="group flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white px-6 py-4 text-sm font-bold text-[var(--secondary)] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:order-1"
-                    >
-                      <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-                      <span>Back</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => void createAccount()}
-                      disabled={isLoading}
-                      className="group flex flex-[2] items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-4 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-[var(--primary)]/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:order-2"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="h-5 w-5 animate-spin !text-white" />
-                          <span>Creating Account...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Create Account</span>
-                          <Check className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </section>
-              )}
+                  <p className="mt-5 text-center text-[10px] font-medium leading-5 text-[var(--muted-foreground)]">
+                    By continuing, you are registering for the official IEEE
+                    Geeta University Student Branch platform.
+                  </p>
+                </div>
+              </section>
             </div>
-          </form>
-
-          <div className="border-t border-[var(--border)] px-6 py-6 text-center sm:px-10">
-            <p className="text-sm font-medium text-[var(--muted-foreground)]">
-              Already registered?{" "}
-              <Link
-                href="/login"
-                className="font-bold text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-dark)] hover:underline hover:underline-offset-4"
-              >
-                Login
-              </Link>
-            </p>
           </div>
-        </div>
 
-        <p className="mx-auto mt-8 max-w-lg px-2 text-center text-xs font-medium uppercase tracking-widest text-[var(--muted-foreground)] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out delay-300 fill-mode-both">
-          Your registration will be reviewed by the IEEE Geeta University
-          Student Branch administration.
-        </p>
+          <p className="mt-5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted-foreground)]">
+            IEEE Geeta University Student Branch
+          </p>
+        </div>
       </div>
     </main>
   );
@@ -550,23 +693,23 @@ function Step({
   completed: boolean;
 }) {
   return (
-    <div className="flex shrink-0 items-center gap-3">
+    <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
       <div
-        className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
+        className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 sm:h-10 sm:w-10 sm:text-sm ${
           active || completed
             ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/20"
             : "border-2 border-[var(--border)] bg-white text-[var(--muted-foreground)]"
         }`}
       >
         {completed ? (
-          <Check className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+          <Check className="h-4 w-4 text-white sm:h-5 sm:w-5" />
         ) : (
           number
         )}
       </div>
 
       <span
-        className={`hidden text-sm font-bold sm:block transition-colors duration-300 ${
+        className={`hidden text-sm font-bold transition-colors duration-300 sm:block ${
           active
             ? "text-[var(--secondary)]"
             : completed
@@ -602,15 +745,13 @@ function InputField({
   autoComplete,
 }: InputFieldProps) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       <label
         htmlFor={name}
         className="block text-sm font-bold text-[var(--secondary)]"
       >
         {label}
-        {required && (
-          <span className="ml-1 text-red-500">*</span>
-        )}
+        {required && <span className="ml-1 text-red-500">*</span>}
       </label>
 
       <input
@@ -622,7 +763,7 @@ function InputField({
         placeholder={placeholder}
         required={required}
         autoComplete={autoComplete}
-        className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 py-3.5 px-4 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
+        className="block w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/40 px-4 py-3 text-sm font-medium text-[var(--secondary)] outline-none transition-all duration-200 focus:border-[var(--primary)] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10 placeholder:text-[var(--muted)]"
       />
     </div>
   );
